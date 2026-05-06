@@ -34,7 +34,7 @@ struct HomeBottom: View {
                 }
                 .padding(.horizontal, 20)
                 .padding(.vertical, 8)
-                .frame(maxWidth: 250)
+                .frame(maxWidth: 220)
                 .modifier(MainGlass(shape: RoundedRectangle(cornerRadius: 24), type: .clear))
             } else {
                 Button {

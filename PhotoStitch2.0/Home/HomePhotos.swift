@@ -7,4 +7,10 @@
 
 import SwiftUI
 
-
+struct HomePhotos: View {
+    var body: some View {
+        ScrollView {
+            
+        }
+    }
+}

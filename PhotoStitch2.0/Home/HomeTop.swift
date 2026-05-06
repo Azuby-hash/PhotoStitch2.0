@@ -13,13 +13,33 @@ struct HomeTop: View {
     var body: some View {
         GlassContainer {
             if updater.showMenu == .albums {
-                HomeMenu()
+                VStack(spacing: 0) {
+                    ForEach(AssetLibrary.shared.getAllAlbum(), id: \.localizedTitle) { album in
+                        Button {
+                            updater.album = album
+                            updater.showMenu = .none
+                        } label: {
+                            HStack(spacing: 12) {
+                                Text(album.getName())
+                                Spacer()
+                                Image(systemName: "checkmark")
+                                    .opacity(updater.album?.getName() == album.getName() ? 1 : 0)
+                            }
+                            .foregroundStyle(Color(uiColor: .label))
+                            .frame(height: 40)
+                        }
+                    }
+                }
+                .padding(.horizontal, 20)
+                .padding(.vertical, 8)
+                .frame(maxWidth: 240)
+                .modifier(MainGlass(shape: RoundedRectangle(cornerRadius: 24), type: .clear))
             } else {
                 Button {
                     updater.showMenu = .albums
                 } label: {
                     HStack {
-                        Text("Screenshots")
+                        Text(updater.album?.getName() ?? "Recents")
                             .font(.system(size: 26, weight: .bold, design: .rounded))
                         Image(systemName: "arrowtriangle.down.fill")
                             .resizable()

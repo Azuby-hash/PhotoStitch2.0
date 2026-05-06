@@ -37,7 +37,7 @@ var REMOVE_ORIGINALS: RemoveOriginals {
 }
 
 var PHOTO_FILTER: PhotosFilter {
-    get { PhotosFilter(rawValue: UserDefaults.standard.object(forKey: "d3451715-a5ff-4d37-ad71-bc0a8b17de73") as? Int ?? -1) ?? .both }
+    get { PhotosFilter(rawValue: UserDefaults.standard.object(forKey: "d3451715-a5ff-4d37-ad71-bc0a8b17de73") as? Int ?? -1) ?? .all }
     set { UserDefaults.standard.set(newValue.rawValue, forKey: "d3451715-a5ff-4d37-ad71-bc0a8b17de73") }
 }
 
@@ -64,23 +64,23 @@ enum RemoveOriginals: Int, CaseIterable {
 }
 
 enum PhotosFilter: Int, CaseIterable {
-    case photos
+    case images
     case videos
-    case both
+    case all
     
     var title: String {
         switch(self) {
-        case .photos: return "Photos"
+        case .images: return "Images"
         case .videos: return "Videos"
-        case .both: return "Photos & Videos"
+        case .all: return "All Photos"
         }
     }
     
     var icon: String {
         switch(self) {
-        case .photos: return "photo.on.rectangle.angled"
+        case .images: return "photo.on.rectangle.angled"
         case .videos: return "video.fill"
-        case .both: return "photo.stack"
+        case .all: return "photo.stack"
         }
     }
 }

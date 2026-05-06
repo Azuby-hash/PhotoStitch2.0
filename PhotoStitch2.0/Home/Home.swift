@@ -16,9 +16,15 @@ struct Home: View {
                 updater.showMenu = .none
             }
             
+            HomePhotos()
             HomeTop()
             HomeBottom()
         }
+        .onAppear(perform: {
+            AssetLibrary.shared.request { _ in
+                updater.album = AssetLibrary.shared.getCurrentAlbum()
+            }
+        })
         .environment(updater)
         .animation(.smooth(duration: ANIM_DURATION), value: updater.showMenu)
         .animation(.smooth(duration: ANIM_DURATION), value: updater.removeOriginals)
@@ -36,6 +42,7 @@ struct Home: View {
         case none
     }
     
+    var album: ALInfo?
     var showMenu = MenuType.none
     
     var autoSelection = AUTO_SELECTION

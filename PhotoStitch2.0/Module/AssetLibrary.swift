@@ -9,8 +9,8 @@ import UIKit
 import Photos
 
 class ALInfo {
-    private var assets: [PHAsset]
-    private var localizedTitle: String
+    private(set) var assets: [PHAsset]
+    private(set) var localizedTitle: String
     
     init(assets: [PHAsset], localizedTitle: String) {
         self.assets = assets
@@ -67,8 +67,6 @@ class ALInfo {
  */
 class AssetLibrary {
     static var shared = AssetLibrary()
-    
-    private let albumType = PHAssetMediaType.image
     
     private var req: PHImageRequestID?
     
@@ -314,15 +312,12 @@ extension AssetLibrary {
             albums.append(ALInfo(assets: assets.reversed(), localizedTitle: name))
         }
         
-        append(PHAsset.fetchAssets(with: albumType, options: nil), "Recents")
-        
         let userAlbums = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: nil)
         let smartAlbums = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .any, options: nil)
         
         [userAlbums, smartAlbums].forEach({
             $0.enumerateObjects { [self] (collection, _, _) in
                 let fetchOptions = PHFetchOptions()
-                fetchOptions.predicate = NSPredicate(format: "mediaType = %d", albumType.rawValue)
                 let result = PHAsset.fetchAssets(in: collection, options: fetchOptions)
                 let count = result.count
                 
@@ -332,8 +327,8 @@ extension AssetLibrary {
             }
         })
         
-        if let screenshot = albums.first(where: { $0.getName().lowercased().contains("screenshot") }) {
-            albums = [screenshot] + albums.filter({ $0.getName() != screenshot.getName() })
+        if let recents = albums.first(where: { $0.getName().lowercased().contains("recents") }) {
+            albums = [recents] + albums.filter({ $0.getName() != recents.getName() })
         }
     }
 }
