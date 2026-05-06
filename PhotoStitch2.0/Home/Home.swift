@@ -24,6 +24,7 @@ struct Home: View {
             HomeTop()
             HomeBottom()
         }
+        .background(Color._background)
         .onAppear(perform: {
             if !SHOW_ONBOARDING {
                 updater.registerChange()
@@ -36,6 +37,7 @@ struct Home: View {
         })
         .environment(updater)
         .animation(.smooth(duration: ANIM_DURATION), value: updater.showMenu)
+        .animation(.smooth(duration: ANIM_DURATION), value: updater.selecteds)
         .animation(.smooth(duration: ANIM_DURATION), value: updater.removeOriginals)
         .animation(.smooth(duration: ANIM_DURATION), value: updater.autoStitch)
         .animation(.smooth(duration: ANIM_DURATION), value: updater.autoSelection)
@@ -52,6 +54,8 @@ struct Home: View {
 }
 
 @Observable class HomeUpdater: NSObject {
+    @ObservationIgnored private let library = AssetLibrary()
+    
     enum MenuType {
         case settings
         case albums
@@ -60,9 +64,10 @@ struct Home: View {
         case none
     }
     
+    private(set) var album: ALInfo?
+    
     var selecteds: [PHAsset] = []
     
-    var album: ALInfo?
     var showMenu = MenuType.none
     var showOnboarding = SHOW_ONBOARDING
     var showSubscription = false
@@ -88,9 +93,36 @@ extension HomeUpdater: PHPhotoLibraryChangeObserver {
     func requestLibraryAccess(completion: (() -> Void)? = nil) {
         selecteds.removeAll()
         
-        AssetLibrary.shared.request { [self] _ in
-            album = AssetLibrary.shared.getCurrentAlbum()
+        library.request { [self] _ in
+            selectAlbum(library.getAllAlbum().first)
         }
+    }
+}
+
+extension HomeUpdater {
+    func getAllAlbum() -> [ALInfo] {
+        return library.getAllAlbum()
+    }
+    
+    func selectAlbum(_ info: ALInfo?) {
+        album = info
+        selecteds.removeAll()
+        
+        if let info = info {
+            if !info.assets.contains(where: { $0.mediaType == .image }), photofilter == .images {
+                photofilter = .all
+            }
+            
+            if !info.assets.contains(where: { $0.mediaType == .video }), photofilter == .videos {
+                photofilter = .all
+            }
+        }
+    }
+}
+
+extension HomeUpdater {
+    func warningAlert(_ string: String) {
+        
     }
 }
 

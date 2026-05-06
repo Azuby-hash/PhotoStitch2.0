@@ -66,15 +66,7 @@ class ALInfo {
    
  */
 class AssetLibrary {
-    static var shared = AssetLibrary()
-    
-    private var req: PHImageRequestID?
-    
     private var albums: [ALInfo] = []
-    
-    private var albumIndex: Int = 0
-    private var albumSelect: ALInfo?
-    
     private var didFetch = false
     
     /**
@@ -107,7 +99,6 @@ class AssetLibrary {
             }
             
             fetchAlbumData()
-            selectAlbum(albumIndex)
             
             DispatchQueue.main.async {
                 completion?(status)
@@ -118,47 +109,10 @@ class AssetLibrary {
     /**
      Return current album settings status
      */
-    func getCurrentStatus() -> PHAuthorizationStatus {
+    static func getCurrentStatus() -> PHAuthorizationStatus {
         return PHPhotoLibrary.authorizationStatus(for: .readWrite)
     }
-    
-    /**
-     Select album with index
-     
-     > Important: If index not available this will auto select to closest available index
-     
-     - Parameters:
-        - index: Index of an album in available albums. Pass nil to reselect current selected album
-     */
-    @discardableResult
-    func selectAlbum(_ index: Int? = nil) -> Int {
-        let index = index ?? albumIndex
-        
-        albumIndex = (0..<albums.count).contains(index) ? index : (albums.count - 1)
-        
-        if (albums.indices.contains(albumIndex)) {
-            albumSelect = albums[albumIndex]
-        } else {
-            albumSelect = nil
-        }
-        
-        return albumIndex
-    }
-    
-    /**
-     Return current selected album
-     */
-    func getCurrentAlbum() -> ALInfo? {
-        return albumSelect
-    }
-    
-    /**
-     Return current selected album index
-     */
-    func getCurrentAlbumIndex() -> Int {
-        return albumIndex
-    }
-    
+
     /**
      Return all available album
      - Parameters:
@@ -179,8 +133,8 @@ class AssetLibrary {
         - quality: Expect image quality to export, default is .highQualityFormat
         - resizeMode: Expect mode to export, default is .fast
      */
-    func getUIImage(from asset: PHAsset, size: CGSize = CGSize(width: -1, height: -1), quality: PHImageRequestOptionsDeliveryMode = .highQualityFormat, resizeMode: PHImageRequestOptionsResizeMode = .fast, completion: ((UIImage)->Void)? = nil) {
-        DispatchQueue.global(qos: .default).async { [self] in
+    static func getUIImage(from asset: PHAsset, size: CGSize = CGSize(width: -1, height: -1), quality: PHImageRequestOptionsDeliveryMode = .highQualityFormat, resizeMode: PHImageRequestOptionsResizeMode = .fast, completion: ((UIImage)->Void)? = nil) {
+        DispatchQueue.global(qos: .default).async {
             var size = size
             if size.width < 0 {
                 size = CGSize(width: CGFloat(asset.pixelWidth), height: CGFloat(asset.pixelHeight))
@@ -193,7 +147,7 @@ class AssetLibrary {
             options.resizeMode = resizeMode
             options.isNetworkAccessAllowed = true
             
-            req = manager.requestImage(for: asset, targetSize: size, contentMode: .aspectFill, options: options, resultHandler: {(result, _)->Void in
+            manager.requestImage(for: asset, targetSize: size, contentMode: .aspectFill, options: options, resultHandler: {(result, _)->Void in
                 guard let result = result else {
                     return
                 }
@@ -206,23 +160,13 @@ class AssetLibrary {
     }
     
     /**
-     Cancel export asset
-     */
-    func cancelRequest() {
-        guard let req = req else { return }
-        
-        PHImageManager.default().cancelImageRequest(req)
-        self.req = nil
-    }
-    
-    /**
      Delete asset in library
      
      - Parameters:
         - assets: Array of asset need to delete
         - completion: Handler return boolean declare asset delete success or not
      */
-    func deleteImage(assets: [PHAsset?], completion: @escaping (Bool)->Void) {
+    static func deleteImage(assets: [PHAsset?], completion: @escaping (Bool)->Void) {
         let locals = assets.map { asset -> String in
             if let asset = asset{
                 return asset.localIdentifier
@@ -242,7 +186,7 @@ class AssetLibrary {
     /**
      Get asset type such as PNG, JPEG,...
      */
-    func getSourceType(_ asset: PHAsset) -> String{
+    static func getSourceType(_ asset: PHAsset) -> String{
         let resource = PHAssetResource.assetResources(for: asset)
         var name = "Unknown"
         for r in resource{
@@ -257,14 +201,14 @@ class AssetLibrary {
     /**
      Get asset from specific assetID
      */
-    func getAsset(from assetID: String) -> PHAsset? {
+    static func getAsset(from assetID: String) -> PHAsset? {
         return PHAsset.fetchAssets(withLocalIdentifiers: [assetID], options: nil).firstObject
     }
     
     /**
      Get multi asset from multi specific assetID
      */
-    func getAssets(from assetID: String) -> [PHAsset] {
+    static func getAssets(from assetID: String) -> [PHAsset] {
         var assets = [PHAsset]()
         
         PHAsset.fetchAssets(withLocalIdentifiers: [assetID], options: nil).enumerateObjects { asset, _, _ in
@@ -277,14 +221,14 @@ class AssetLibrary {
     /**
      Get assetID for later to get just one specific asset only
      */
-    func getAssetID(from asset: PHAsset) -> String {
+    static func getAssetID(from asset: PHAsset) -> String {
         return asset.localIdentifier
     }
     
     /**
      Get AVAsset from PHAsset
      */
-    func getAVAsset(_ asset: PHAsset, deliveryMode: PHVideoRequestOptionsDeliveryMode = .highQualityFormat, completion: @escaping (AVAsset?) -> Void) {
+    static func getAVAsset(_ asset: PHAsset, deliveryMode: PHVideoRequestOptionsDeliveryMode = .highQualityFormat, completion: @escaping (AVAsset?) -> Void) {
         let option = PHVideoRequestOptions()
         option.deliveryMode = deliveryMode
         option.isNetworkAccessAllowed = true

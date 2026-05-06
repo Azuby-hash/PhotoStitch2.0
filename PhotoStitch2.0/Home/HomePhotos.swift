@@ -29,17 +29,32 @@ struct HomePhotos: View {
             })
             
             ScrollView(showsIndicators: false) {
-                if let assets = assets, !isPreview {
+                if let assets = assets {
+                    
                     LazyWFVStack(geometry: geometry, items: assets.map({ asset in
+                        let selected = updater.selecteds.contains(asset)
+                        let index = updater.selecteds.firstIndex(of: asset) ?? 0
+                        
                         return LazyWFVItem(id: asset.localIdentifier, size: CGSize(width: asset.pixelWidth, height: asset.pixelHeight), content: {
                             Button {
-                                updater.selecteds.append(asset)
+                                if selected {
+                                    updater.selecteds = updater.selecteds.filter({ $0 != asset })
+                                } else {
+                                    if updater.selecteds.contains(where: { $0.mediaType == .video }),
+                                       asset.mediaType == .video {
+                                        updater.warningAlert("You can select 1 video only")
+                                        return
+                                    }
+                                    
+                                    updater.selecteds.append(asset)
+                                }
                             } label: {
                                 GeometryReader { geometry in
                                     HomePhoto(asset: asset)
                                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                                         .clipShape(RoundedRectangle(cornerRadius: 16))
                                         .modifier(MainGlass(shape: RoundedRectangle(cornerRadius: 16), type: .clear, interactive: updater.showMenu == .none))
+                                        .modifier(HomePhotoSelection(selection: selected, number: index + 1))
                                 }
                             }
                         })
@@ -52,12 +67,10 @@ struct HomePhotos: View {
                     Color.clear
                 }
             }
-            .animation(.easeInOut(duration: ANIM_DURATION), value: updater.selecteds)
             .animation(.easeInOut(duration: ANIM_DURATION), value: assets)
             .modifier(HomePhotosEdge())
             .modifier(HomeNoAccess())
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color._background)
         }
     }
 }
@@ -69,16 +82,27 @@ struct HomePhoto: View {
     
     var body: some View {
         if let image = image {
-            Image(uiImage: image)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            ZStack {
+                Image(uiImage: image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                
+                if asset.mediaType == .video {
+                    Text(Duration.seconds(asset.duration), format: .time(pattern: .minuteSecond))
+                        .foregroundStyle(Color.white)
+                        .font(.system(size: 14, weight: .medium, design: .rounded))
+                        .align(edge: .trailing, constant: 8)
+                        .align(edge: .bottom, constant: 8)
+                        .shadow(color: .black, radius: 5, x: 0, y: 0)
+                }
+            }
         } else {
             Rectangle()
-                .fill(Color.clear)
+                .fill(.ultraThinMaterial)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .onAppear {
-                    AssetLibrary.shared.getUIImage(from: asset, size: CGSize(width: 300, height: 300), quality: .opportunistic, resizeMode: .fast) { image in
+                    AssetLibrary.getUIImage(from: asset, size: CGSize(width: 300, height: 300), quality: .opportunistic, resizeMode: .fast) { image in
                         self.image = image
                     }
                 }
@@ -86,11 +110,36 @@ struct HomePhoto: View {
     }
 }
 
+struct HomePhotoSelection: ViewModifier {
+    @Environment(HomeUpdater.self) var updater: HomeUpdater
+    
+    let selection: Bool
+    let number: Int
+    
+    func body(content: Content) -> some View {
+        if selection {
+            content
+                .overlay(Color._primary.opacity(0.2).clipShape(RoundedRectangle(cornerRadius: 16)).allowsHitTesting(false))
+                .overlay {
+                    Text("\(number)")
+                        .font(.system(size: 20, weight: .bold, design: .rounded))
+                        .foregroundStyle(Color._white)
+                        .frame(width: 48, height: 48)
+                        .modifier(MainGlass(shape: .capsule, type: .color(._primary), interactive: false))
+                        .allowsHitTesting(false)
+                }
+        } else {
+            content
+        }
+    }
+}
+
+
 struct HomeNoAccess: ViewModifier {
     @Environment(HomeUpdater.self) var updater: HomeUpdater
     
     func body(content: Content) -> some View {
-        let status = AssetLibrary.shared.getCurrentStatus()
+        let status = AssetLibrary.getCurrentStatus()
         
         if [.authorized, .limited, .notDetermined].contains(status) {
             ZStack {

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Photos
 
 struct HomeBottom: View {
     @Environment(HomeUpdater.self) var updater
@@ -14,7 +15,7 @@ struct HomeBottom: View {
         GlassContainer {
             if updater.showMenu == .filters {
                 VStack(spacing: 0) {
-                    ForEach(PhotosFilter.allCases, id: \.self) { filter in
+                    ForEach(getFilterCase(), id: \.self) { filter in
                         Button {
                             updater.photofilter = filter
                             updater.showMenu = .none
@@ -36,7 +37,7 @@ struct HomeBottom: View {
                 .padding(.vertical, 8)
                 .frame(maxWidth: 220)
                 .modifier(MainGlass(shape: RoundedRectangle(cornerRadius: 24), type: .clear))
-            } else {
+            } else if updater.selecteds.isEmpty {
                 Button {
                     updater.showMenu = .filters
                 } label: {
@@ -50,6 +51,15 @@ struct HomeBottom: View {
                     .frame(height: 60)
                     .modifier(MainGlass(shape: .capsule, type: .clear))
                 }
+            } else {
+                Button {
+                    
+                } label: {
+                    Image(.horizontal)
+                        .foregroundStyle(Color(uiColor: .label))
+                        .frame(width: 60, height: 60)
+                        .modifier(MainGlass(shape: .capsule, type: .clear))
+                }
             }
         }
         .align(edge: .leading, constant: 16)
@@ -58,7 +68,7 @@ struct HomeBottom: View {
         GlassContainer {
             if updater.showMenu == .web {
                 
-            } else {
+            } else if updater.selecteds.isEmpty {
                 Button {
                     updater.showMenu = .web
                 } label: {
@@ -68,9 +78,38 @@ struct HomeBottom: View {
                         .frame(width: 60, height: 60)
                         .modifier(MainGlass(shape: .capsule, type: .clear))
                 }
+            } else {
+                Button {
+                    
+                } label: {
+                    HStack(spacing: 12) {
+                        Image(.vertical).frame(width: 20)
+                        Text("Stitch Vertical")
+                    }
+                    .foregroundStyle(Color(uiColor: .label))
+                    .padding(.horizontal, 20)
+                    .frame(height: 60)
+                    .modifier(MainGlass(shape: .capsule, type: .color(._primary)))
+                }
             }
         }
         .align(edge: .trailing, constant: 16)
         .align(edge: .bottom, constant: 0)
+    }
+    
+    func getFilterCase() -> [PhotosFilter] {
+        var cases = [PhotosFilter.all]
+        
+        if let album = updater.album {
+            if album.assets.contains(where: { $0.mediaType == .image }) {
+                cases.append(.images)
+            }
+            
+            if album.assets.contains(where: { $0.mediaType == .video }) {
+                cases.append(.videos)
+            }
+        }
+        
+        return cases
     }
 }

@@ -14,9 +14,9 @@ struct HomeTop: View {
         GlassContainer {
             if updater.showMenu == .albums {
                 VStack(spacing: 0) {
-                    ForEach(AssetLibrary.shared.getAllAlbum(), id: \.localizedTitle) { album in
+                    ForEach(updater.getAllAlbum(), id: \.localizedTitle) { album in
                         Button {
-                            updater.album = album
+                            updater.selectAlbum(album)
                             updater.showMenu = .none
                         } label: {
                             HStack(spacing: 12) {
@@ -35,20 +35,29 @@ struct HomeTop: View {
                 .frame(maxWidth: 240)
                 .modifier(MainGlass(shape: RoundedRectangle(cornerRadius: 24), type: .clear))
             } else {
-                Button {
-                    updater.showMenu = .albums
-                } label: {
+                if updater.selecteds.isEmpty {
+                    Button {
+                        updater.showMenu = .albums
+                    } label: {
+                        HStack {
+                            Text(updater.album?.getName() ?? "Recents")
+                                .font(.system(size: 26, weight: .bold, design: .rounded))
+                            Image(systemName: "arrowtriangle.down.fill")
+                                .resizable()
+                                .frame(width: 10, height: 7)
+                                .modifier(GlassModifier(shape: .capsule))
+                        }
+                        .foregroundStyle(Color.primary)
+                        .frame(height: 44)
+                    }
+                } else {
                     HStack {
                         Text(updater.album?.getName() ?? "Recents")
                             .font(.system(size: 26, weight: .bold, design: .rounded))
-                        Image(systemName: "arrowtriangle.down.fill")
-                            .resizable()
-                            .frame(width: 10, height: 7)
-                            .modifier(GlassModifier(shape: .capsule))
                     }
+                    .foregroundStyle(Color.primary)
                     .frame(height: 44)
                 }
-                .foregroundStyle(Color.primary)
             }
         }
         .align(edge: .leading, constant: 16)
@@ -57,7 +66,7 @@ struct HomeTop: View {
         GlassContainer {
             if updater.showMenu == .settings {
                 HomeMenu()
-            } else {
+            } else if updater.selecteds.isEmpty {
                 Button {
                     updater.showMenu = .settings
                 } label: {
@@ -66,6 +75,25 @@ struct HomeTop: View {
                         .foregroundStyle(Color(uiColor: .label))
                         .frame(width: 44, height: 44)
                         .modifier(MainGlass(shape: .capsule, type: .clear))
+                }
+            } else {
+                Button {
+                    updater.selecteds.removeAll()
+                } label: {
+                    HStack {
+                        Text("\(updater.selecteds.count)")
+                            .font(.system(size: 16, weight: .bold, design: .rounded))
+                            .foregroundStyle(Color._white)
+                            .frame(width: 32, height: 32)
+                            .background(.ultraThinMaterial)
+                            .clipShape(.capsule)
+                        Text("Deselect All")
+                    }
+                    .foregroundStyle(Color(uiColor: ._red))
+                    .padding(.leading, 6)
+                    .padding(.trailing, 16)
+                    .frame(height: 44)
+                    .modifier(MainGlass(shape: .capsule, type: .clear))
                 }
             }
         }
