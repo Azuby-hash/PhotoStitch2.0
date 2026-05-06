@@ -21,6 +21,11 @@ let ANIM_DURATION = CGFloat(0.25)
 let MAX_ZOOM = CGFloat(100)
 let PROCESS_SIZE = CGFloat(512)
 
+var SHOW_ONBOARDING: Bool {
+    get { UserDefaults.standard.object(forKey: "4aac33cf6c6a8064") as? Bool ?? true }
+    set { UserDefaults.standard.set(newValue, forKey: "4aac33cf6c6a8064") }
+}
+
 var AUTO_SELECTION: Bool {
     get { UserDefaults.standard.object(forKey: "b3fb2293-a55d-4553-93dd-8f26129c44b2") as? Bool ?? true }
     set { UserDefaults.standard.set(newValue, forKey: "b3fb2293-a55d-4553-93dd-8f26129c44b2") }

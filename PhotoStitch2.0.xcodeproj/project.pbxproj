@@ -18,6 +18,10 @@
 		CE4231952FA78D5400701039 /* HomeBottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231942FA78D5100701039 /* HomeBottom.swift */; };
 		CE4231992FA9773400701039 /* AssetLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231982FA9773400701039 /* AssetLibrary.swift */; };
 		CE42319B2FA9784300701039 /* HomePhotos.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE42319A2FA9783E00701039 /* HomePhotos.swift */; };
+		CE4231A02FAB46A900701039 /* PhotosUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE42319F2FAB46A900701039 /* PhotosUI.framework */; };
+		CE4231A32FAB55BF00701039 /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231A22FAB55BD00701039 /* Onboarding.swift */; };
+		CE4231A52FAB562500701039 /* Subscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231A42FAB562000701039 /* Subscription.swift */; };
+		CE4231A72FAB566700701039 /* LazyWFVStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231A62FAB566700701039 /* LazyWFVStack.swift */; };
 		CEBD6BE92F9D1B1400E176D7 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6BE82F9D1B1200E176D7 /* Home.swift */; };
 		CEBD6C012F9D1CC400E176D7 /* Updater.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6BFE2F9D1CC400E176D7 /* Updater.swift */; };
 		CEBD6C022F9D1CC400E176D7 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6BEB2F9D1CC400E176D7 /* Config.swift */; };
@@ -106,6 +110,10 @@
 		CE4231942FA78D5100701039 /* HomeBottom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBottom.swift; sourceTree = "<group>"; };
 		CE4231982FA9773400701039 /* AssetLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetLibrary.swift; sourceTree = "<group>"; };
 		CE42319A2FA9783E00701039 /* HomePhotos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePhotos.swift; sourceTree = "<group>"; };
+		CE42319F2FAB46A900701039 /* PhotosUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhotosUI.framework; path = System/Library/Frameworks/PhotosUI.framework; sourceTree = SDKROOT; };
+		CE4231A22FAB55BD00701039 /* Onboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
+		CE4231A42FAB562000701039 /* Subscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subscription.swift; sourceTree = "<group>"; };
+		CE4231A62FAB566700701039 /* LazyWFVStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyWFVStack.swift; sourceTree = "<group>"; };
 		CEBD6BE82F9D1B1200E176D7 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		CEBD6BEB2F9D1CC400E176D7 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		CEBD6BF92F9D1CC400E176D7 /* Icons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Icons.xcassets; sourceTree = "<group>"; };
@@ -185,6 +193,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE4231A02FAB46A900701039 /* PhotosUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -195,6 +204,7 @@
 			isa = PBXGroup;
 			children = (
 				CE1FDC7F2F9D181000460178 /* PhotoStitch2.0 */,
+				CE42319E2FAB46A900701039 /* Frameworks */,
 				CE1FDC5F2F9D180400460178 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -218,6 +228,7 @@
 				CEBD6C592F9D1D1B00E176D7 /* Helpers */,
 				CEBD6BEC2F9D1CC400E176D7 /* Config */,
 				CEBD6BFF2F9D1CC400E176D7 /* Package */,
+				CE4231A12FAB55B500701039 /* Bonus */,
 				CEBD6BE72F9D1B0A00E176D7 /* Home */,
 				CE1FDC782F9D181000460178 /* Info.plist */,
 				CE1FDC772F9D181000460178 /* Assets.xcassets */,
@@ -227,6 +238,23 @@
 				CE1FDC7A2F9D181000460178 /* LaunchScreen.storyboard */,
 			);
 			path = PhotoStitch2.0;
+			sourceTree = "<group>";
+		};
+		CE42319E2FAB46A900701039 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CE42319F2FAB46A900701039 /* PhotosUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CE4231A12FAB55B500701039 /* Bonus */ = {
+			isa = PBXGroup;
+			children = (
+				CE4231A22FAB55BD00701039 /* Onboarding.swift */,
+				CE4231A42FAB562000701039 /* Subscription.swift */,
+			);
+			path = Bonus;
 			sourceTree = "<group>";
 		};
 		CEBD6BE72F9D1B0A00E176D7 /* Home */ = {
@@ -263,6 +291,7 @@
 			isa = PBXGroup;
 			children = (
 				CE4231982FA9773400701039 /* AssetLibrary.swift */,
+				CE4231A62FAB566700701039 /* LazyWFVStack.swift */,
 			);
 			path = Module;
 			sourceTree = "<group>";
@@ -541,12 +570,14 @@
 				CEBD6C892F9D1D1B00E176D7 /* UIViewParallax.swift in Sources */,
 				CEBD6C8A2F9D1D1B00E176D7 /* GestureHelpers.swift in Sources */,
 				CEBD6C8B2F9D1D1B00E176D7 /* UISTextField.swift in Sources */,
+				CE4231A72FAB566700701039 /* LazyWFVStack.swift in Sources */,
 				CEBD6C8C2F9D1D1B00E176D7 /* UIColorHelpers.swift in Sources */,
 				CE42319B2FA9784300701039 /* HomePhotos.swift in Sources */,
 				CEBD6C8D2F9D1D1B00E176D7 /* UIViewBorder.swift in Sources */,
 				CEBD6C8E2F9D1D1B00E176D7 /* StringHelpers.swift in Sources */,
 				CEBD6C9D2F9D1D7C00E176D7 /* Color.swift in Sources */,
 				CEBD6C8F2F9D1D1B00E176D7 /* UIViewBiggerPoint.swift in Sources */,
+				CE4231A32FAB55BF00701039 /* Onboarding.swift in Sources */,
 				CEBD6C902F9D1D1B00E176D7 /* CVPixelBufferHelpers.swift in Sources */,
 				CEBD6C912F9D1D1B00E176D7 /* UITextFieldPlaceholder.swift in Sources */,
 				CEBD6C922F9D1D1B00E176D7 /* UISSearchBar.swift in Sources */,
@@ -558,6 +589,7 @@
 				CEBD6C982F9D1D1B00E176D7 /* FileManagerExtension.swift in Sources */,
 				CEBD6C992F9D1D1B00E176D7 /* NotificationHelpers.swift in Sources */,
 				CE1FDC802F9D181000460178 /* AppDelegate.swift in Sources */,
+				CE4231A52FAB562500701039 /* Subscription.swift in Sources */,
 				CE1FDC812F9D181000460178 /* SceneDelegate.swift in Sources */,
 				CEBD6BE92F9D1B1400E176D7 /* Home.swift in Sources */,
 				CEBD6C012F9D1CC400E176D7 /* Updater.swift in Sources */,

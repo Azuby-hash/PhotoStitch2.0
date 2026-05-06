@@ -155,7 +155,7 @@ struct HomeMenu: View {
                 .padding(.bottom, 10)
             
             Button {
-                
+                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!, options: [:], completionHandler: nil)
             } label: {
                 HStack(spacing: 12) {
                     Image(systemName: "gear")
