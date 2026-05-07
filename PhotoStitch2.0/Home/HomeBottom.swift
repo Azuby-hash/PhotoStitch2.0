@@ -86,7 +86,7 @@ struct HomeBottom: View {
                         Image(.vertical).frame(width: 20)
                         Text("Stitch Vertical")
                     }
-                    .foregroundStyle(Color(uiColor: .label))
+                    .foregroundStyle(Color._white)
                     .padding(.horizontal, 20)
                     .frame(height: 60)
                     .modifier(MainGlass(shape: .capsule, type: .color(._primary)))

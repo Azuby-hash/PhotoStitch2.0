@@ -83,7 +83,7 @@ struct HomeTop: View {
                     HStack {
                         Text("\(updater.selecteds.count)")
                             .font(.system(size: 16, weight: .bold, design: .rounded))
-                            .foregroundStyle(Color._white)
+                            .foregroundStyle(Color(uiColor: .label))
                             .frame(width: 32, height: 32)
                             .background(.ultraThinMaterial)
                             .clipShape(.capsule)
@@ -199,7 +199,10 @@ struct HomeMenu: View {
             }
             
             Button {
-                
+                let email = "azuby.dev@gmail.com"
+                if let url = URL(string: "mailto:\(email)?subject=Photo Stitch Feedback") {
+                    UIApplication.shared.open(url)
+                }
             } label: {
                 HStack(spacing: 12) {
                     Image(systemName: "ellipsis.bubble.fill")
@@ -215,7 +218,9 @@ struct HomeMenu: View {
             }
             
             Button {
-                
+                if let url = URL(string: "https://apps.apple.com/us/app/photo-stitch/id6746974251") {
+                    UIApplication.shared.open(url)
+                }
             } label: {
                 HStack(spacing: 12) {
                     Image(systemName: "arrowshape.turn.up.forward.circle.fill")
@@ -238,7 +243,9 @@ struct HomeMenu: View {
             .frame(height: 21)
             
             Button {
-                
+                if let url = URL(string: "https://azuby-hash.github.io/AzubyTerms/") {
+                    UIApplication.shared.open(url)
+                }
             } label: {
                 HStack(spacing: 12) {
                     Image(systemName: "list.clipboard.fill")
@@ -254,7 +261,9 @@ struct HomeMenu: View {
             }
             
             Button {
-                
+                if let url = URL(string: "https://azuby-hash.github.io/AzubyPrivacy/") {
+                    UIApplication.shared.open(url)
+                }
             } label: {
                 HStack(spacing: 12) {
                     Image(systemName: "lock.shield.fill")

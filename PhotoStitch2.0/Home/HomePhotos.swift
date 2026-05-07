@@ -42,7 +42,7 @@ struct HomePhotos: View {
                                 } else {
                                     if updater.selecteds.contains(where: { $0.mediaType == .video }),
                                        asset.mediaType == .video {
-                                        updater.warningAlert("You can select 1 video only")
+                                        updater.warningAlert("Please select only one video!")
                                         return
                                     }
                                     

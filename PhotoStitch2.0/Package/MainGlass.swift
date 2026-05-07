@@ -21,7 +21,7 @@ struct MainGlass<S: Shape>: ViewModifier {
         switch(type) {
         case .clear:
             content.modifier(GlassModifier(shape: shape)
-                .setBaseBackground(.ultraThinMaterial)
+                .setBaseBackground(Color(uiColor: .systemBackground))
                 .setGlassBackground(Color(uiColor: .systemBackground).opacity(0.01))
                 .setInteractive(interactive))
         case .color(let color):

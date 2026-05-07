@@ -11,10 +11,12 @@ import Photos
 class ALInfo {
     private(set) var assets: [PHAsset]
     private(set) var localizedTitle: String
+    private(set) var subType: PHAssetCollectionSubtype
     
-    init(assets: [PHAsset], localizedTitle: String) {
+    init(assets: [PHAsset], localizedTitle: String, subType: PHAssetCollectionSubtype) {
         self.assets = assets
         self.localizedTitle = localizedTitle
+        self.subType = subType
     }
     
     /**
@@ -245,7 +247,7 @@ extension AssetLibrary {
     private func fetchAlbumData() {
         albums.removeAll()
         
-        func append(_ result: PHFetchResult<PHAsset>, _ name: String) {
+        func append(_ result: PHFetchResult<PHAsset>, _ name: String, _ subType: PHAssetCollectionSubtype) {
             if result.count <= 0 { return }
             
             var assets = [PHAsset]()
@@ -253,7 +255,7 @@ extension AssetLibrary {
                 assets.append(asset)
             }
             
-            albums.append(ALInfo(assets: assets.reversed(), localizedTitle: name))
+            albums.append(ALInfo(assets: assets.reversed(), localizedTitle: name, subType: subType))
         }
         
         let userAlbums = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: nil)
@@ -266,13 +268,22 @@ extension AssetLibrary {
                 let count = result.count
                 
                 if count > 0 && !albums.contains(where: { $0.getName().contains(collection.localizedTitle ?? UUID().uuidString) }) {
-                    append(result, collection.localizedTitle ?? "")
+                    append(result, collection.localizedTitle ?? "", collection.assetCollectionSubtype)
                 }
             }
         })
         
         if let recents = albums.first(where: { $0.getName().lowercased().contains("recents") }) {
             albums = [recents] + albums.filter({ $0.getName() != recents.getName() })
+        }
+        
+        let screenshotAssets = albums.filter({ $0.subType == .smartAlbumScreenshots || $0.subType == .smartAlbumScreenRecordings }).flatMap({ $0.assets })
+        let screenshotInfo = ALInfo(assets: screenshotAssets, localizedTitle: "Screenshots", subType: .smartAlbumScreenshots)
+        
+        albums = albums.filter({ $0.subType != .smartAlbumScreenshots && $0.subType != .smartAlbumScreenRecordings })
+        
+        if screenshotAssets.count > 0 {
+            albums.insert(screenshotInfo, at: 0)
         }
     }
 }
