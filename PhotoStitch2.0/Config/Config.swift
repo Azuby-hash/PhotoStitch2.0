@@ -21,6 +21,12 @@ let ANIM_DURATION = CGFloat(0.25)
 let MAX_ZOOM = CGFloat(100)
 let PROCESS_SIZE = CGFloat(512)
 
+let LOW_REMOVE: CGFloat = 141
+let HIGH_REMOVE: CGFloat = 156
+let SCROLL_REMOVE: CGFloat = 27
+
+let CICONTEXT = CIContext()
+
 var SHOW_ONBOARDING: Bool {
     get { UserDefaults.standard.object(forKey: "4aac33cf6c6a8064") as? Bool ?? true }
     set { UserDefaults.standard.set(newValue, forKey: "4aac33cf6c6a8064") }
@@ -88,4 +94,8 @@ enum PhotosFilter: Int, CaseIterable {
         case .all: return "photo.stack"
         }
     }
+}
+
+enum MainError: Error {
+    case error(String)
 }

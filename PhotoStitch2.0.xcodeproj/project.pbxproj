@@ -22,6 +22,11 @@
 		CE4231A32FAB55BF00701039 /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231A22FAB55BD00701039 /* Onboarding.swift */; };
 		CE4231A52FAB562500701039 /* Subscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231A42FAB562000701039 /* Subscription.swift */; };
 		CE4231A72FAB566700701039 /* LazyWFVStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231A62FAB566700701039 /* LazyWFVStack.swift */; };
+		CE4231AE2FACE79400701039 /* Edit.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231AD2FACE79400701039 /* Edit.swift */; };
+		CE4231B02FACEBA400701039 /* Stitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231AF2FACEBA400701039 /* Stitch.swift */; };
+		CE4231B22FACEBC500701039 /* WebViewSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231B12FACEBC500701039 /* WebViewSnapshot.swift */; };
+		CE4231B62FACFBCE00701039 /* Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231B52FACFBCE00701039 /* Loading.swift */; };
+		CE4231B82FAD6B5B00701039 /* EditItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231B72FAD6B5800701039 /* EditItem.swift */; };
 		CEBD6BE92F9D1B1400E176D7 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6BE82F9D1B1200E176D7 /* Home.swift */; };
 		CEBD6C012F9D1CC400E176D7 /* Updater.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6BFE2F9D1CC400E176D7 /* Updater.swift */; };
 		CEBD6C022F9D1CC400E176D7 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6BEB2F9D1CC400E176D7 /* Config.swift */; };
@@ -114,6 +119,12 @@
 		CE4231A22FAB55BD00701039 /* Onboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
 		CE4231A42FAB562000701039 /* Subscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subscription.swift; sourceTree = "<group>"; };
 		CE4231A62FAB566700701039 /* LazyWFVStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyWFVStack.swift; sourceTree = "<group>"; };
+		CE4231AD2FACE79400701039 /* Edit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Edit.swift; sourceTree = "<group>"; };
+		CE4231AF2FACEBA400701039 /* Stitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stitch.swift; sourceTree = "<group>"; };
+		CE4231B12FACEBC500701039 /* WebViewSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewSnapshot.swift; sourceTree = "<group>"; };
+		CE4231B32FACFABC00701039 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		CE4231B52FACFBCE00701039 /* Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loading.swift; sourceTree = "<group>"; };
+		CE4231B72FAD6B5800701039 /* EditItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditItem.swift; sourceTree = "<group>"; };
 		CEBD6BE82F9D1B1200E176D7 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		CEBD6BEB2F9D1CC400E176D7 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		CEBD6BF92F9D1CC400E176D7 /* Icons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Icons.xcassets; sourceTree = "<group>"; };
@@ -230,6 +241,7 @@
 				CEBD6BFF2F9D1CC400E176D7 /* Package */,
 				CE4231A12FAB55B500701039 /* Bonus */,
 				CEBD6BE72F9D1B0A00E176D7 /* Home */,
+				CE4231AA2FACE75200701039 /* Edit */,
 				CE1FDC782F9D181000460178 /* Info.plist */,
 				CE1FDC772F9D181000460178 /* Assets.xcassets */,
 				CEBD6BF92F9D1CC400E176D7 /* Icons.xcassets */,
@@ -255,6 +267,15 @@
 				CE4231A42FAB562000701039 /* Subscription.swift */,
 			);
 			path = Bonus;
+			sourceTree = "<group>";
+		};
+		CE4231AA2FACE75200701039 /* Edit */ = {
+			isa = PBXGroup;
+			children = (
+				CE4231AD2FACE79400701039 /* Edit.swift */,
+				CE4231B72FAD6B5800701039 /* EditItem.swift */,
+			);
+			path = Edit;
 			sourceTree = "<group>";
 		};
 		CEBD6BE72F9D1B0A00E176D7 /* Home */ = {
@@ -283,6 +304,9 @@
 				CEBD6BFD2F9D1CC400E176D7 /* Geometry.swift */,
 				CEBD6BFE2F9D1CC400E176D7 /* Updater.swift */,
 				CE4231902F9E834400701039 /* MainGlass.swift */,
+				CE4231AF2FACEBA400701039 /* Stitch.swift */,
+				CE4231B12FACEBC500701039 /* WebViewSnapshot.swift */,
+				CE4231B32FACFABC00701039 /* Model.swift */,
 			);
 			path = Package;
 			sourceTree = "<group>";
@@ -292,6 +316,7 @@
 			children = (
 				CE4231982FA9773400701039 /* AssetLibrary.swift */,
 				CE4231A62FAB566700701039 /* LazyWFVStack.swift */,
+				CE4231B52FACFBCE00701039 /* Loading.swift */,
 			);
 			path = Module;
 			sourceTree = "<group>";
@@ -554,13 +579,16 @@
 				CEBD6C7A2F9D1D1B00E176D7 /* UIViewLoadNib.swift in Sources */,
 				CEBD6C7B2F9D1D1B00E176D7 /* UIViewControllerPresent.swift in Sources */,
 				CEBD6C7C2F9D1D1B00E176D7 /* UIViewMask.swift in Sources */,
+				CE4231B02FACEBA400701039 /* Stitch.swift in Sources */,
 				CEBD6C7D2F9D1D1B00E176D7 /* ViewHelpers.swift in Sources */,
 				CEBD6C7E2F9D1D1B00E176D7 /* CGRectHelpers.swift in Sources */,
 				CEBD6C7F2F9D1D1B00E176D7 /* UISImageView.swift in Sources */,
 				CEBD6C802F9D1D1B00E176D7 /* UISLabel.swift in Sources */,
 				CEBD6C812F9D1D1B00E176D7 /* GlassModifier.swift in Sources */,
+				CE4231B82FAD6B5B00701039 /* EditItem.swift in Sources */,
 				CE4231932FA78CF800701039 /* HomeTop.swift in Sources */,
 				CEBD6C822F9D1D1B00E176D7 /* UISButton.swift in Sources */,
+				CE4231B62FACFBCE00701039 /* Loading.swift in Sources */,
 				CEBD6C832F9D1D1B00E176D7 /* UIViewPointSubview.swift in Sources */,
 				CEBD6C842F9D1D1B00E176D7 /* UIViewEmbed.swift in Sources */,
 				CEBD6C852F9D1D1B00E176D7 /* CGImageHelpers.swift in Sources */,
@@ -575,6 +603,7 @@
 				CE42319B2FA9784300701039 /* HomePhotos.swift in Sources */,
 				CEBD6C8D2F9D1D1B00E176D7 /* UIViewBorder.swift in Sources */,
 				CEBD6C8E2F9D1D1B00E176D7 /* StringHelpers.swift in Sources */,
+				CE4231B22FACEBC500701039 /* WebViewSnapshot.swift in Sources */,
 				CEBD6C9D2F9D1D7C00E176D7 /* Color.swift in Sources */,
 				CEBD6C8F2F9D1D1B00E176D7 /* UIViewBiggerPoint.swift in Sources */,
 				CE4231A32FAB55BF00701039 /* Onboarding.swift in Sources */,
@@ -596,6 +625,7 @@
 				CEBD6C022F9D1CC400E176D7 /* Config.swift in Sources */,
 				CEBD6C082F9D1CC400E176D7 /* Geometry.swift in Sources */,
 				CE1FDC822F9D181000460178 /* Main.swift in Sources */,
+				CE4231AE2FACE79400701039 /* Edit.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
