@@ -8,22 +8,22 @@
 import SwiftUI
 
 struct HomeTop: View {
-    @Environment(HomeUpdater.self) var updater
+    @Environment(HomeUpdater.self) var homeUpdater
     
     var body: some View {
         GlassContainer {
-            if updater.showMenu == .albums {
+            if homeUpdater.showMenu == .albums {
                 VStack(spacing: 0) {
-                    ForEach(updater.getAllAlbum(), id: \.localizedTitle) { album in
+                    ForEach(homeUpdater.getAllAlbum(), id: \.localizedTitle) { album in
                         Button {
-                            updater.selectAlbum(album)
-                            updater.showMenu = .none
+                            homeUpdater.selectAlbum(album)
+                            homeUpdater.showMenu = .none
                         } label: {
                             HStack(spacing: 12) {
                                 Text(album.getName())
                                 Spacer()
                                 Image(systemName: "checkmark")
-                                    .opacity(updater.album?.getName() == album.getName() ? 1 : 0)
+                                    .opacity(homeUpdater.album?.getName() == album.getName() ? 1 : 0)
                             }
                             .foregroundStyle(Color(uiColor: .label))
                             .frame(height: 40)
@@ -35,12 +35,12 @@ struct HomeTop: View {
                 .frame(maxWidth: 240)
                 .modifier(MainGlass(shape: RoundedRectangle(cornerRadius: 24), type: .clear))
             } else {
-                if updater.selecteds.isEmpty {
+                if homeUpdater.selecteds.isEmpty {
                     Button {
-                        updater.showMenu = .albums
+                        homeUpdater.showMenu = .albums
                     } label: {
                         HStack {
-                            Text(updater.album?.getName() ?? "Recents")
+                            Text(homeUpdater.album?.getName() ?? "Screenshots")
                                 .font(.system(size: 26, weight: .bold, design: .rounded))
                             Image(systemName: "arrowtriangle.down.fill")
                                 .resizable()
@@ -52,7 +52,7 @@ struct HomeTop: View {
                     }
                 } else {
                     HStack {
-                        Text(updater.album?.getName() ?? "Recents")
+                        Text(homeUpdater.album?.getName() ?? "Recents")
                             .font(.system(size: 26, weight: .bold, design: .rounded))
                     }
                     .foregroundStyle(Color.primary)
@@ -64,11 +64,11 @@ struct HomeTop: View {
         .align(edge: .top, constant: 0)
         
         GlassContainer {
-            if updater.showMenu == .settings {
+            if homeUpdater.showMenu == .settings {
                 HomeMenu()
-            } else if updater.selecteds.isEmpty {
+            } else if homeUpdater.selecteds.isEmpty {
                 Button {
-                    updater.showMenu = .settings
+                    homeUpdater.showMenu = .settings
                 } label: {
                     Image(systemName: "line.3.horizontal.decrease")
                         .font(.system(size: 22, weight: .medium))
@@ -78,10 +78,10 @@ struct HomeTop: View {
                 }
             } else {
                 Button {
-                    updater.selecteds.removeAll()
+                    homeUpdater.selecteds.removeAll()
                 } label: {
                     HStack {
-                        Text("\(updater.selecteds.count)")
+                        Text("\(homeUpdater.selecteds.count)")
                             .font(.system(size: 16, weight: .bold, design: .rounded))
                             .foregroundStyle(Color(uiColor: .label))
                             .frame(width: 32, height: 32)
@@ -104,7 +104,7 @@ struct HomeTop: View {
 }
 
 struct HomeMenu: View {
-    @Environment(HomeUpdater.self) var updater
+    @Environment(HomeUpdater.self) var homeUpdater
     
     var body: some View {
         VStack(spacing: 0) {
@@ -116,7 +116,7 @@ struct HomeMenu: View {
                 .padding(.bottom, 10)
             
             Button {
-                updater.autoSelection.toggle()
+                homeUpdater.autoSelection.toggle()
             } label: {
                 HStack(spacing: 12) {
                     Image(systemName: "app.badge.checkmark.fill")
@@ -125,14 +125,14 @@ struct HomeMenu: View {
                         .font(.system(size: 16, weight: .regular))
                     Spacer()
                     Image(systemName: "checkmark")
-                        .opacity(updater.autoSelection ? 1 : 0)
+                        .opacity(homeUpdater.autoSelection ? 1 : 0)
                 }
                 .foregroundStyle(Color(uiColor: .label))
                 .frame(height: 40)
             }
             
             Button {
-                updater.autoStitch.toggle()
+                homeUpdater.autoStitch.toggle()
             } label: {
                 HStack(spacing: 12) {
                     Image(systemName: "arrowtriangle.right.and.line.vertical.and.arrowtriangle.left.fill")
@@ -142,17 +142,17 @@ struct HomeMenu: View {
                         .font(.system(size: 16, weight: .regular))
                     Spacer()
                     Image(systemName: "checkmark")
-                        .opacity(updater.autoStitch ? 1 : 0)
+                        .opacity(homeUpdater.autoStitch ? 1 : 0)
                 }
                 .foregroundStyle(Color(uiColor: .label))
                 .frame(height: 40)
             }
             
             Button {
-                var rawValue = updater.removeOriginals.rawValue
+                var rawValue = homeUpdater.removeOriginals.rawValue
                 rawValue = (rawValue + 1) == RemoveOriginals.allCases.count ? 0 : (rawValue + 1)
                 
-                updater.removeOriginals = RemoveOriginals(rawValue: rawValue) ?? updater.removeOriginals
+                homeUpdater.removeOriginals = RemoveOriginals(rawValue: rawValue) ?? homeUpdater.removeOriginals
             } label: {
                 HStack(spacing: 12) {
                     Image(systemName: "archivebox.fill")
@@ -160,8 +160,8 @@ struct HomeMenu: View {
                     Text("Remove Originals")
                         .font(.system(size: 16, weight: .regular))
                     Spacer()
-                    Text(updater.removeOriginals.title)
-                        .foregroundStyle(updater.removeOriginals.color)
+                    Text(homeUpdater.removeOriginals.title)
+                        .foregroundStyle(homeUpdater.removeOriginals.color)
                         .font(.system(size: 14, weight: .medium))
                 }
                 .foregroundStyle(Color(uiColor: .label))

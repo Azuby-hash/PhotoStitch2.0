@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8283F3DCF15DFE99BB0325B0 /* Pods_PhotoStitch2_0.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4AAEC8C621ECAB52E001FBA /* Pods_PhotoStitch2_0.framework */; };
 		CE1FDC802F9D181000460178 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1FDC762F9D181000460178 /* AppDelegate.swift */; };
 		CE1FDC812F9D181000460178 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1FDC7D2F9D181000460178 /* SceneDelegate.swift */; };
 		CE1FDC822F9D181000460178 /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1FDC7E2F9D181000460178 /* Main.swift */; };
@@ -26,82 +27,87 @@
 		CE4231B02FACEBA400701039 /* Stitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231AF2FACEBA400701039 /* Stitch.swift */; };
 		CE4231B22FACEBC500701039 /* WebViewSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231B12FACEBC500701039 /* WebViewSnapshot.swift */; };
 		CE4231B62FACFBCE00701039 /* Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231B52FACFBCE00701039 /* Loading.swift */; };
-		CE4231B82FAD6B5B00701039 /* EditItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231B72FAD6B5800701039 /* EditItem.swift */; };
+		CE8700452FB039E200061801 /* UIImageHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700012FB039E200061801 /* UIImageHelpers.swift */; };
+		CE8700462FB039E200061801 /* CVPixelBufferHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87003A2FB039E200061801 /* CVPixelBufferHelpers.swift */; };
+		CE8700472FB039E200061801 /* UIScrollViewPointOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700312FB039E200061801 /* UIScrollViewPointOut.swift */; };
+		CE8700482FB039E200061801 /* UIButtonPro.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87002E2FB039E200061801 /* UIButtonPro.swift */; };
+		CE8700492FB039E200061801 /* UIStackViewShadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700082FB039E200061801 /* UIStackViewShadow.swift */; };
+		CE87004A2FB039E200061801 /* ArrayHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700342FB039E200061801 /* ArrayHelpers.swift */; };
+		CE87004B2FB039E200061801 /* OptionalHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700412FB039E200061801 /* OptionalHelpers.swift */; };
+		CE87004C2FB039E200061801 /* DateHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87003C2FB039E200061801 /* DateHelpers.swift */; };
+		CE87004D2FB039E200061801 /* UIViewFindViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700242FB039E200061801 /* UIViewFindViewController.swift */; };
+		CE87004E2FB039E200061801 /* MeshHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87003F2FB039E200061801 /* MeshHelpers.swift */; };
+		CE87004F2FB039E200061801 /* UISControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87000E2FB039E200061801 /* UISControl.swift */; };
+		CE8700502FB039E200061801 /* UIViewMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700262FB039E200061801 /* UIViewMask.swift */; };
+		CE8700512FB039E200061801 /* WKSWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700192FB039E200061801 /* WKSWebView.swift */; };
+		CE8700522FB039E200061801 /* UISImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87000F2FB039E200061801 /* UISImageView.swift */; };
+		CE8700532FB039E200061801 /* UIStackViewHighlight.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700052FB039E200061801 /* UIStackViewHighlight.swift */; };
+		CE8700542FB039E200061801 /* UIViewPointDetect.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700282FB039E200061801 /* UIViewPointDetect.swift */; };
+		CE8700552FB039E200061801 /* UISToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700172FB039E200061801 /* UISToolBar.swift */; };
+		CE8700562FB039E200061801 /* UIViewShadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87002A2FB039E200061801 /* UIViewShadow.swift */; };
+		CE8700572FB039E200061801 /* UISButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87000C2FB039E200061801 /* UISButton.swift */; };
+		CE8700582FB039E200061801 /* UIImageStroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700022FB039E200061801 /* UIImageStroke.swift */; };
+		CE8700592FB039E200061801 /* StringHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700422FB039E200061801 /* StringHelpers.swift */; };
+		CE87005A2FB039E200061801 /* UISTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700142FB039E200061801 /* UISTextField.swift */; };
+		CE87005B2FB039E200061801 /* UIViewClicking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700222FB039E200061801 /* UIViewClicking.swift */; };
+		CE87005C2FB039E200061801 /* IdiomHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87002D2FB039E200061801 /* IdiomHelpers.swift */; };
+		CE87005D2FB039E200061801 /* GlassModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87FFFD2FB039E200061801 /* GlassModifier.swift */; };
+		CE87005E2FB039E200061801 /* UIViewPointSubview.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700292FB039E200061801 /* UIViewPointSubview.swift */; };
+		CE87005F2FB039E200061801 /* AsyncHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700352FB039E200061801 /* AsyncHelpers.swift */; };
+		CE8700602FB039E200061801 /* UIStackViewPointSubview.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700062FB039E200061801 /* UIStackViewPointSubview.swift */; };
+		CE8700612FB039E200061801 /* UIStackViewSegmentPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700072FB039E200061801 /* UIStackViewSegmentPage.swift */; };
+		CE8700622FB039E200061801 /* UIImageViewDarkMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700032FB039E200061801 /* UIImageViewDarkMode.swift */; };
+		CE8700632FB039E200061801 /* UISTextInputTraitsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700152FB039E200061801 /* UISTextInputTraitsExtension.swift */; };
+		CE8700642FB039E200061801 /* UIView+Constrant+Frame.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87001F2FB039E200061801 /* UIView+Constrant+Frame.swift */; };
+		CE8700652FB039E200061801 /* FileManagerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87003D2FB039E200061801 /* FileManagerExtension.swift */; };
+		CE8700662FB039E200061801 /* UIViewParallax.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700272FB039E200061801 /* UIViewParallax.swift */; };
+		CE8700672FB039E200061801 /* CGPathHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700372FB039E200061801 /* CGPathHelpers.swift */; };
+		CE8700682FB039E200061801 /* CASLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87000A2FB039E200061801 /* CASLayer.swift */; };
+		CE8700692FB039E200061801 /* UISView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700182FB039E200061801 /* UISView.swift */; };
+		CE87006A2FB039E200061801 /* UIViewLoadNib.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700252FB039E200061801 /* UIViewLoadNib.swift */; };
+		CE87006B2FB039E200061801 /* UISScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700112FB039E200061801 /* UISScrollView.swift */; };
+		CE87006C2FB039E200061801 /* UISTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700162FB039E200061801 /* UISTextView.swift */; };
+		CE87006D2FB039E200061801 /* UISSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700122FB039E200061801 /* UISSearchBar.swift */; };
+		CE87006E2FB039E200061801 /* UIViewZPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87002B2FB039E200061801 /* UIViewZPosition.swift */; };
+		CE87006F2FB039E200061801 /* UILabelHighlightColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700302FB039E200061801 /* UILabelHighlightColor.swift */; };
+		CE8700702FB039E200061801 /* UITextFieldPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700322FB039E200061801 /* UITextFieldPlaceholder.swift */; };
+		CE8700712FB039E200061801 /* ViewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87FFFE2FB039E200061801 /* ViewHelpers.swift */; };
+		CE8700722FB039E200061801 /* UISBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87000B2FB039E200061801 /* UISBarItem.swift */; };
+		CE8700732FB039E200061801 /* CGRectHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700382FB039E200061801 /* CGRectHelpers.swift */; };
+		CE8700742FB039E200061801 /* UISLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700102FB039E200061801 /* UISLabel.swift */; };
+		CE8700752FB039E200061801 /* UISConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87000D2FB039E200061801 /* UISConstraints.swift */; };
+		CE8700762FB039E200061801 /* UIViewControllerPresent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87001D2FB039E200061801 /* UIViewControllerPresent.swift */; };
+		CE8700772FB039E200061801 /* UIViewBorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700212FB039E200061801 /* UIViewBorder.swift */; };
+		CE8700782FB039E200061801 /* UIViewControllerHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87001C2FB039E200061801 /* UIViewControllerHelpers.swift */; };
+		CE8700792FB039E200061801 /* UIColorHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87002F2FB039E200061801 /* UIColorHelpers.swift */; };
+		CE87007A2FB039E200061801 /* JSONHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87003E2FB039E200061801 /* JSONHelpers.swift */; };
+		CE87007B2FB039E200061801 /* UINavigationOrientationSubController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87001B2FB039E200061801 /* UINavigationOrientationSubController.swift */; };
+		CE87007C2FB039E200061801 /* UIViewFindView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700232FB039E200061801 /* UIViewFindView.swift */; };
+		CE87007D2FB039E200061801 /* CGImageHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700362FB039E200061801 /* CGImageHelpers.swift */; };
+		CE87007E2FB039E200061801 /* NotificationHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700402FB039E200061801 /* NotificationHelpers.swift */; };
+		CE87007F2FB039E200061801 /* CIImageHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700392FB039E200061801 /* CIImageHelpers.swift */; };
+		CE8700802FB039E200061801 /* UIViewBiggerPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700202FB039E200061801 /* UIViewBiggerPoint.swift */; };
+		CE8700812FB039E200061801 /* UIViewEmbed.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87FFF92FB039E200061801 /* UIViewEmbed.swift */; };
+		CE8700822FB039E200061801 /* GestureHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87FFFC2FB039E200061801 /* GestureHelpers.swift */; };
+		CE8700832FB039E200061801 /* UIImageGif.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700002FB039E200061801 /* UIImageGif.swift */; };
+		CE8700842FB039E200061801 /* DataSizeHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87003B2FB039E200061801 /* DataSizeHelpers.swift */; };
+		CE8700852FB039E200061801 /* URLSessionHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700432FB039E200061801 /* URLSessionHelpers.swift */; };
+		CE8700862FB039E200061801 /* UISStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700132FB039E200061801 /* UISStackView.swift */; };
+		CE87FFF12FB0223800061801 /* OpenCVWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = CE87FFEF2FB0223800061801 /* OpenCVWrapper.mm */; };
+		CE87FFF22FB0223800061801 /* OpenCVWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87FFEC2FB0223800061801 /* OpenCVWrapper.swift */; };
+		CE87FFF82FB0387C00061801 /* Pipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87FFF72FB0387800061801 /* Pipeline.swift */; };
 		CEBD6BE92F9D1B1400E176D7 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6BE82F9D1B1200E176D7 /* Home.swift */; };
 		CEBD6C012F9D1CC400E176D7 /* Updater.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6BFE2F9D1CC400E176D7 /* Updater.swift */; };
 		CEBD6C022F9D1CC400E176D7 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6BEB2F9D1CC400E176D7 /* Config.swift */; };
 		CEBD6C082F9D1CC400E176D7 /* Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6BFD2F9D1CC400E176D7 /* Geometry.swift */; };
 		CEBD6C0B2F9D1CC400E176D7 /* Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEBD6BF92F9D1CC400E176D7 /* Icons.xcassets */; };
 		CEBD6C0D2F9D1CC400E176D7 /* Materials.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEBD6BFA2F9D1CC400E176D7 /* Materials.xcassets */; };
-		CEBD6C5A2F9D1D1B00E176D7 /* UIView+Constrant+Frame.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C362F9D1D1B00E176D7 /* UIView+Constrant+Frame.swift */; };
-		CEBD6C5B2F9D1D1B00E176D7 /* UIImageStroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C192F9D1D1B00E176D7 /* UIImageStroke.swift */; };
-		CEBD6C5C2F9D1D1B00E176D7 /* UISTextInputTraitsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C2C2F9D1D1B00E176D7 /* UISTextInputTraitsExtension.swift */; };
-		CEBD6C5D2F9D1D1B00E176D7 /* ArrayHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C4B2F9D1D1B00E176D7 /* ArrayHelpers.swift */; };
-		CEBD6C5E2F9D1D1B00E176D7 /* UIViewShadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C412F9D1D1B00E176D7 /* UIViewShadow.swift */; };
-		CEBD6C5F2F9D1D1B00E176D7 /* CASLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C212F9D1D1B00E176D7 /* CASLayer.swift */; };
-		CEBD6C602F9D1D1B00E176D7 /* IdiomHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C442F9D1D1B00E176D7 /* IdiomHelpers.swift */; };
-		CEBD6C612F9D1D1B00E176D7 /* UISConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C242F9D1D1B00E176D7 /* UISConstraints.swift */; };
-		CEBD6C622F9D1D1B00E176D7 /* UIViewControllerHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C332F9D1D1B00E176D7 /* UIViewControllerHelpers.swift */; };
-		CEBD6C632F9D1D1B00E176D7 /* UIViewClicking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C392F9D1D1B00E176D7 /* UIViewClicking.swift */; };
-		CEBD6C642F9D1D1B00E176D7 /* UISControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C252F9D1D1B00E176D7 /* UISControl.swift */; };
-		CEBD6C652F9D1D1B00E176D7 /* UIStackViewShadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C1F2F9D1D1B00E176D7 /* UIStackViewShadow.swift */; };
-		CEBD6C662F9D1D1B00E176D7 /* WKSWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C302F9D1D1B00E176D7 /* WKSWebView.swift */; };
-		CEBD6C672F9D1D1B00E176D7 /* UINavigationOrientationSubController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C322F9D1D1B00E176D7 /* UINavigationOrientationSubController.swift */; };
-		CEBD6C682F9D1D1B00E176D7 /* UIStackViewPointSubview.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C1D2F9D1D1B00E176D7 /* UIStackViewPointSubview.swift */; };
-		CEBD6C692F9D1D1B00E176D7 /* UISScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C282F9D1D1B00E176D7 /* UISScrollView.swift */; };
-		CEBD6C6A2F9D1D1B00E176D7 /* UILabelHighlightColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C472F9D1D1B00E176D7 /* UILabelHighlightColor.swift */; };
-		CEBD6C6B2F9D1D1B00E176D7 /* UIImageGif.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C172F9D1D1B00E176D7 /* UIImageGif.swift */; };
-		CEBD6C6C2F9D1D1B00E176D7 /* UIImageHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C182F9D1D1B00E176D7 /* UIImageHelpers.swift */; };
-		CEBD6C6D2F9D1D1B00E176D7 /* UIViewZPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C422F9D1D1B00E176D7 /* UIViewZPosition.swift */; };
-		CEBD6C6E2F9D1D1B00E176D7 /* DateHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C532F9D1D1B00E176D7 /* DateHelpers.swift */; };
-		CEBD6C6F2F9D1D1B00E176D7 /* UISTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C2D2F9D1D1B00E176D7 /* UISTextView.swift */; };
-		CEBD6C702F9D1D1B00E176D7 /* UISBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C222F9D1D1B00E176D7 /* UISBarItem.swift */; };
-		CEBD6C712F9D1D1B00E176D7 /* UISStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C2A2F9D1D1B00E176D7 /* UISStackView.swift */; };
-		CEBD6C722F9D1D1B00E176D7 /* UIViewFindViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C3B2F9D1D1B00E176D7 /* UIViewFindViewController.swift */; };
-		CEBD6C732F9D1D1B00E176D7 /* UIImageViewDarkMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C1A2F9D1D1B00E176D7 /* UIImageViewDarkMode.swift */; };
-		CEBD6C742F9D1D1B00E176D7 /* AsyncHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C4C2F9D1D1B00E176D7 /* AsyncHelpers.swift */; };
-		CEBD6C752F9D1D1B00E176D7 /* CGPathHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C4E2F9D1D1B00E176D7 /* CGPathHelpers.swift */; };
-		CEBD6C762F9D1D1B00E176D7 /* JSONHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C552F9D1D1B00E176D7 /* JSONHelpers.swift */; };
-		CEBD6C772F9D1D1B00E176D7 /* DataSizeHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C522F9D1D1B00E176D7 /* DataSizeHelpers.swift */; };
-		CEBD6C782F9D1D1B00E176D7 /* MeshHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C562F9D1D1B00E176D7 /* MeshHelpers.swift */; };
-		CEBD6C792F9D1D1B00E176D7 /* UISView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C2F2F9D1D1B00E176D7 /* UISView.swift */; };
-		CEBD6C7A2F9D1D1B00E176D7 /* UIViewLoadNib.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C3C2F9D1D1B00E176D7 /* UIViewLoadNib.swift */; };
-		CEBD6C7B2F9D1D1B00E176D7 /* UIViewControllerPresent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C342F9D1D1B00E176D7 /* UIViewControllerPresent.swift */; };
-		CEBD6C7C2F9D1D1B00E176D7 /* UIViewMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C3D2F9D1D1B00E176D7 /* UIViewMask.swift */; };
-		CEBD6C7D2F9D1D1B00E176D7 /* ViewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C152F9D1D1B00E176D7 /* ViewHelpers.swift */; };
-		CEBD6C7E2F9D1D1B00E176D7 /* CGRectHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C4F2F9D1D1B00E176D7 /* CGRectHelpers.swift */; };
-		CEBD6C7F2F9D1D1B00E176D7 /* UISImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C262F9D1D1B00E176D7 /* UISImageView.swift */; };
-		CEBD6C802F9D1D1B00E176D7 /* UISLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C272F9D1D1B00E176D7 /* UISLabel.swift */; };
-		CEBD6C812F9D1D1B00E176D7 /* GlassModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C142F9D1D1B00E176D7 /* GlassModifier.swift */; };
-		CEBD6C822F9D1D1B00E176D7 /* UISButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C232F9D1D1B00E176D7 /* UISButton.swift */; };
-		CEBD6C832F9D1D1B00E176D7 /* UIViewPointSubview.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C402F9D1D1B00E176D7 /* UIViewPointSubview.swift */; };
-		CEBD6C842F9D1D1B00E176D7 /* UIViewEmbed.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C102F9D1D1B00E176D7 /* UIViewEmbed.swift */; };
-		CEBD6C852F9D1D1B00E176D7 /* CGImageHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C4D2F9D1D1B00E176D7 /* CGImageHelpers.swift */; };
-		CEBD6C862F9D1D1B00E176D7 /* UIStackViewSegmentPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C1E2F9D1D1B00E176D7 /* UIStackViewSegmentPage.swift */; };
-		CEBD6C872F9D1D1B00E176D7 /* UIStackViewHighlight.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C1C2F9D1D1B00E176D7 /* UIStackViewHighlight.swift */; };
-		CEBD6C882F9D1D1B00E176D7 /* CIImageHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C502F9D1D1B00E176D7 /* CIImageHelpers.swift */; };
-		CEBD6C892F9D1D1B00E176D7 /* UIViewParallax.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C3E2F9D1D1B00E176D7 /* UIViewParallax.swift */; };
-		CEBD6C8A2F9D1D1B00E176D7 /* GestureHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C132F9D1D1B00E176D7 /* GestureHelpers.swift */; };
-		CEBD6C8B2F9D1D1B00E176D7 /* UISTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C2B2F9D1D1B00E176D7 /* UISTextField.swift */; };
-		CEBD6C8C2F9D1D1B00E176D7 /* UIColorHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C462F9D1D1B00E176D7 /* UIColorHelpers.swift */; };
-		CEBD6C8D2F9D1D1B00E176D7 /* UIViewBorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C382F9D1D1B00E176D7 /* UIViewBorder.swift */; };
-		CEBD6C8E2F9D1D1B00E176D7 /* StringHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C582F9D1D1B00E176D7 /* StringHelpers.swift */; };
-		CEBD6C8F2F9D1D1B00E176D7 /* UIViewBiggerPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C372F9D1D1B00E176D7 /* UIViewBiggerPoint.swift */; };
-		CEBD6C902F9D1D1B00E176D7 /* CVPixelBufferHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C512F9D1D1B00E176D7 /* CVPixelBufferHelpers.swift */; };
-		CEBD6C912F9D1D1B00E176D7 /* UITextFieldPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C492F9D1D1B00E176D7 /* UITextFieldPlaceholder.swift */; };
-		CEBD6C922F9D1D1B00E176D7 /* UISSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C292F9D1D1B00E176D7 /* UISSearchBar.swift */; };
-		CEBD6C932F9D1D1B00E176D7 /* UIViewFindView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C3A2F9D1D1B00E176D7 /* UIViewFindView.swift */; };
-		CEBD6C942F9D1D1B00E176D7 /* UISToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C2E2F9D1D1B00E176D7 /* UISToolBar.swift */; };
-		CEBD6C952F9D1D1B00E176D7 /* UIButtonPro.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C452F9D1D1B00E176D7 /* UIButtonPro.swift */; };
-		CEBD6C962F9D1D1B00E176D7 /* UIViewPointDetect.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C3F2F9D1D1B00E176D7 /* UIViewPointDetect.swift */; };
-		CEBD6C972F9D1D1B00E176D7 /* UIScrollViewPointOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C482F9D1D1B00E176D7 /* UIScrollViewPointOut.swift */; };
-		CEBD6C982F9D1D1B00E176D7 /* FileManagerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C542F9D1D1B00E176D7 /* FileManagerExtension.swift */; };
-		CEBD6C992F9D1D1B00E176D7 /* NotificationHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C572F9D1D1B00E176D7 /* NotificationHelpers.swift */; };
 		CEBD6C9B2F9D1D6A00E176D7 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEBD6C9A2F9D1D6A00E176D7 /* Colors.xcassets */; };
 		CEBD6C9D2F9D1D7C00E176D7 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C9C2F9D1D7C00E176D7 /* Color.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A06B175C88053133C0789ED4 /* Pods-PhotoStitch2.0.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotoStitch2.0.debug.xcconfig"; path = "Target Support Files/Pods-PhotoStitch2.0/Pods-PhotoStitch2.0.debug.xcconfig"; sourceTree = "<group>"; };
 		CE1FDC5E2F9D180400460178 /* PhotoStitch2.0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoStitch2.0.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE1FDC762F9D181000460178 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE1FDC772F9D181000460178 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -122,81 +128,88 @@
 		CE4231AD2FACE79400701039 /* Edit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Edit.swift; sourceTree = "<group>"; };
 		CE4231AF2FACEBA400701039 /* Stitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stitch.swift; sourceTree = "<group>"; };
 		CE4231B12FACEBC500701039 /* WebViewSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewSnapshot.swift; sourceTree = "<group>"; };
-		CE4231B32FACFABC00701039 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		CE4231B52FACFBCE00701039 /* Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loading.swift; sourceTree = "<group>"; };
-		CE4231B72FAD6B5800701039 /* EditItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditItem.swift; sourceTree = "<group>"; };
+		CE8700002FB039E200061801 /* UIImageGif.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageGif.swift; sourceTree = "<group>"; };
+		CE8700012FB039E200061801 /* UIImageHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageHelpers.swift; sourceTree = "<group>"; };
+		CE8700022FB039E200061801 /* UIImageStroke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageStroke.swift; sourceTree = "<group>"; };
+		CE8700032FB039E200061801 /* UIImageViewDarkMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageViewDarkMode.swift; sourceTree = "<group>"; };
+		CE8700052FB039E200061801 /* UIStackViewHighlight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStackViewHighlight.swift; sourceTree = "<group>"; };
+		CE8700062FB039E200061801 /* UIStackViewPointSubview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStackViewPointSubview.swift; sourceTree = "<group>"; };
+		CE8700072FB039E200061801 /* UIStackViewSegmentPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStackViewSegmentPage.swift; sourceTree = "<group>"; };
+		CE8700082FB039E200061801 /* UIStackViewShadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStackViewShadow.swift; sourceTree = "<group>"; };
+		CE87000A2FB039E200061801 /* CASLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CASLayer.swift; sourceTree = "<group>"; };
+		CE87000B2FB039E200061801 /* UISBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISBarItem.swift; sourceTree = "<group>"; };
+		CE87000C2FB039E200061801 /* UISButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISButton.swift; sourceTree = "<group>"; };
+		CE87000D2FB039E200061801 /* UISConstraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISConstraints.swift; sourceTree = "<group>"; };
+		CE87000E2FB039E200061801 /* UISControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISControl.swift; sourceTree = "<group>"; };
+		CE87000F2FB039E200061801 /* UISImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISImageView.swift; sourceTree = "<group>"; };
+		CE8700102FB039E200061801 /* UISLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISLabel.swift; sourceTree = "<group>"; };
+		CE8700112FB039E200061801 /* UISScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISScrollView.swift; sourceTree = "<group>"; };
+		CE8700122FB039E200061801 /* UISSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISSearchBar.swift; sourceTree = "<group>"; };
+		CE8700132FB039E200061801 /* UISStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISStackView.swift; sourceTree = "<group>"; };
+		CE8700142FB039E200061801 /* UISTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISTextField.swift; sourceTree = "<group>"; };
+		CE8700152FB039E200061801 /* UISTextInputTraitsExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISTextInputTraitsExtension.swift; sourceTree = "<group>"; };
+		CE8700162FB039E200061801 /* UISTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISTextView.swift; sourceTree = "<group>"; };
+		CE8700172FB039E200061801 /* UISToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISToolBar.swift; sourceTree = "<group>"; };
+		CE8700182FB039E200061801 /* UISView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISView.swift; sourceTree = "<group>"; };
+		CE8700192FB039E200061801 /* WKSWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKSWebView.swift; sourceTree = "<group>"; };
+		CE87001B2FB039E200061801 /* UINavigationOrientationSubController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationOrientationSubController.swift; sourceTree = "<group>"; };
+		CE87001C2FB039E200061801 /* UIViewControllerHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerHelpers.swift; sourceTree = "<group>"; };
+		CE87001D2FB039E200061801 /* UIViewControllerPresent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerPresent.swift; sourceTree = "<group>"; };
+		CE87001F2FB039E200061801 /* UIView+Constrant+Frame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Constrant+Frame.swift"; sourceTree = "<group>"; };
+		CE8700202FB039E200061801 /* UIViewBiggerPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewBiggerPoint.swift; sourceTree = "<group>"; };
+		CE8700212FB039E200061801 /* UIViewBorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewBorder.swift; sourceTree = "<group>"; };
+		CE8700222FB039E200061801 /* UIViewClicking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewClicking.swift; sourceTree = "<group>"; };
+		CE8700232FB039E200061801 /* UIViewFindView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewFindView.swift; sourceTree = "<group>"; };
+		CE8700242FB039E200061801 /* UIViewFindViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewFindViewController.swift; sourceTree = "<group>"; };
+		CE8700252FB039E200061801 /* UIViewLoadNib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewLoadNib.swift; sourceTree = "<group>"; };
+		CE8700262FB039E200061801 /* UIViewMask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewMask.swift; sourceTree = "<group>"; };
+		CE8700272FB039E200061801 /* UIViewParallax.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewParallax.swift; sourceTree = "<group>"; };
+		CE8700282FB039E200061801 /* UIViewPointDetect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewPointDetect.swift; sourceTree = "<group>"; };
+		CE8700292FB039E200061801 /* UIViewPointSubview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewPointSubview.swift; sourceTree = "<group>"; };
+		CE87002A2FB039E200061801 /* UIViewShadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewShadow.swift; sourceTree = "<group>"; };
+		CE87002B2FB039E200061801 /* UIViewZPosition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewZPosition.swift; sourceTree = "<group>"; };
+		CE87002D2FB039E200061801 /* IdiomHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdiomHelpers.swift; sourceTree = "<group>"; };
+		CE87002E2FB039E200061801 /* UIButtonPro.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonPro.swift; sourceTree = "<group>"; };
+		CE87002F2FB039E200061801 /* UIColorHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorHelpers.swift; sourceTree = "<group>"; };
+		CE8700302FB039E200061801 /* UILabelHighlightColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelHighlightColor.swift; sourceTree = "<group>"; };
+		CE8700312FB039E200061801 /* UIScrollViewPointOut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScrollViewPointOut.swift; sourceTree = "<group>"; };
+		CE8700322FB039E200061801 /* UITextFieldPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldPlaceholder.swift; sourceTree = "<group>"; };
+		CE8700342FB039E200061801 /* ArrayHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayHelpers.swift; sourceTree = "<group>"; };
+		CE8700352FB039E200061801 /* AsyncHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncHelpers.swift; sourceTree = "<group>"; };
+		CE8700362FB039E200061801 /* CGImageHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGImageHelpers.swift; sourceTree = "<group>"; };
+		CE8700372FB039E200061801 /* CGPathHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGPathHelpers.swift; sourceTree = "<group>"; };
+		CE8700382FB039E200061801 /* CGRectHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGRectHelpers.swift; sourceTree = "<group>"; };
+		CE8700392FB039E200061801 /* CIImageHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CIImageHelpers.swift; sourceTree = "<group>"; };
+		CE87003A2FB039E200061801 /* CVPixelBufferHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CVPixelBufferHelpers.swift; sourceTree = "<group>"; };
+		CE87003B2FB039E200061801 /* DataSizeHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSizeHelpers.swift; sourceTree = "<group>"; };
+		CE87003C2FB039E200061801 /* DateHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelpers.swift; sourceTree = "<group>"; };
+		CE87003D2FB039E200061801 /* FileManagerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerExtension.swift; sourceTree = "<group>"; };
+		CE87003E2FB039E200061801 /* JSONHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONHelpers.swift; sourceTree = "<group>"; };
+		CE87003F2FB039E200061801 /* MeshHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeshHelpers.swift; sourceTree = "<group>"; };
+		CE8700402FB039E200061801 /* NotificationHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHelpers.swift; sourceTree = "<group>"; };
+		CE8700412FB039E200061801 /* OptionalHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalHelpers.swift; sourceTree = "<group>"; };
+		CE8700422FB039E200061801 /* StringHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringHelpers.swift; sourceTree = "<group>"; };
+		CE8700432FB039E200061801 /* URLSessionHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionHelpers.swift; sourceTree = "<group>"; };
+		CE87FFEC2FB0223800061801 /* OpenCVWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenCVWrapper.swift; sourceTree = "<group>"; };
+		CE87FFED2FB0223800061801 /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
+		CE87FFEE2FB0223800061801 /* OpenCVWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenCVWrapper.h; sourceTree = "<group>"; };
+		CE87FFEF2FB0223800061801 /* OpenCVWrapper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = OpenCVWrapper.mm; sourceTree = "<group>"; };
+		CE87FFF72FB0387800061801 /* Pipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pipeline.swift; sourceTree = "<group>"; };
+		CE87FFF92FB039E200061801 /* UIViewEmbed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewEmbed.swift; sourceTree = "<group>"; };
+		CE87FFFC2FB039E200061801 /* GestureHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureHelpers.swift; sourceTree = "<group>"; };
+		CE87FFFD2FB039E200061801 /* GlassModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassModifier.swift; sourceTree = "<group>"; };
+		CE87FFFE2FB039E200061801 /* ViewHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewHelpers.swift; sourceTree = "<group>"; };
 		CEBD6BE82F9D1B1200E176D7 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		CEBD6BEB2F9D1CC400E176D7 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		CEBD6BF92F9D1CC400E176D7 /* Icons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Icons.xcassets; sourceTree = "<group>"; };
 		CEBD6BFA2F9D1CC400E176D7 /* Materials.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Materials.xcassets; sourceTree = "<group>"; };
 		CEBD6BFD2F9D1CC400E176D7 /* Geometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geometry.swift; sourceTree = "<group>"; };
 		CEBD6BFE2F9D1CC400E176D7 /* Updater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Updater.swift; sourceTree = "<group>"; };
-		CEBD6C102F9D1D1B00E176D7 /* UIViewEmbed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewEmbed.swift; sourceTree = "<group>"; };
-		CEBD6C132F9D1D1B00E176D7 /* GestureHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureHelpers.swift; sourceTree = "<group>"; };
-		CEBD6C142F9D1D1B00E176D7 /* GlassModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassModifier.swift; sourceTree = "<group>"; };
-		CEBD6C152F9D1D1B00E176D7 /* ViewHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewHelpers.swift; sourceTree = "<group>"; };
-		CEBD6C172F9D1D1B00E176D7 /* UIImageGif.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageGif.swift; sourceTree = "<group>"; };
-		CEBD6C182F9D1D1B00E176D7 /* UIImageHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageHelpers.swift; sourceTree = "<group>"; };
-		CEBD6C192F9D1D1B00E176D7 /* UIImageStroke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageStroke.swift; sourceTree = "<group>"; };
-		CEBD6C1A2F9D1D1B00E176D7 /* UIImageViewDarkMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageViewDarkMode.swift; sourceTree = "<group>"; };
-		CEBD6C1C2F9D1D1B00E176D7 /* UIStackViewHighlight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStackViewHighlight.swift; sourceTree = "<group>"; };
-		CEBD6C1D2F9D1D1B00E176D7 /* UIStackViewPointSubview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStackViewPointSubview.swift; sourceTree = "<group>"; };
-		CEBD6C1E2F9D1D1B00E176D7 /* UIStackViewSegmentPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStackViewSegmentPage.swift; sourceTree = "<group>"; };
-		CEBD6C1F2F9D1D1B00E176D7 /* UIStackViewShadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStackViewShadow.swift; sourceTree = "<group>"; };
-		CEBD6C212F9D1D1B00E176D7 /* CASLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CASLayer.swift; sourceTree = "<group>"; };
-		CEBD6C222F9D1D1B00E176D7 /* UISBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISBarItem.swift; sourceTree = "<group>"; };
-		CEBD6C232F9D1D1B00E176D7 /* UISButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISButton.swift; sourceTree = "<group>"; };
-		CEBD6C242F9D1D1B00E176D7 /* UISConstraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISConstraints.swift; sourceTree = "<group>"; };
-		CEBD6C252F9D1D1B00E176D7 /* UISControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISControl.swift; sourceTree = "<group>"; };
-		CEBD6C262F9D1D1B00E176D7 /* UISImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISImageView.swift; sourceTree = "<group>"; };
-		CEBD6C272F9D1D1B00E176D7 /* UISLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISLabel.swift; sourceTree = "<group>"; };
-		CEBD6C282F9D1D1B00E176D7 /* UISScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISScrollView.swift; sourceTree = "<group>"; };
-		CEBD6C292F9D1D1B00E176D7 /* UISSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISSearchBar.swift; sourceTree = "<group>"; };
-		CEBD6C2A2F9D1D1B00E176D7 /* UISStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISStackView.swift; sourceTree = "<group>"; };
-		CEBD6C2B2F9D1D1B00E176D7 /* UISTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISTextField.swift; sourceTree = "<group>"; };
-		CEBD6C2C2F9D1D1B00E176D7 /* UISTextInputTraitsExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISTextInputTraitsExtension.swift; sourceTree = "<group>"; };
-		CEBD6C2D2F9D1D1B00E176D7 /* UISTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISTextView.swift; sourceTree = "<group>"; };
-		CEBD6C2E2F9D1D1B00E176D7 /* UISToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISToolBar.swift; sourceTree = "<group>"; };
-		CEBD6C2F2F9D1D1B00E176D7 /* UISView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISView.swift; sourceTree = "<group>"; };
-		CEBD6C302F9D1D1B00E176D7 /* WKSWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKSWebView.swift; sourceTree = "<group>"; };
-		CEBD6C322F9D1D1B00E176D7 /* UINavigationOrientationSubController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationOrientationSubController.swift; sourceTree = "<group>"; };
-		CEBD6C332F9D1D1B00E176D7 /* UIViewControllerHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerHelpers.swift; sourceTree = "<group>"; };
-		CEBD6C342F9D1D1B00E176D7 /* UIViewControllerPresent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerPresent.swift; sourceTree = "<group>"; };
-		CEBD6C362F9D1D1B00E176D7 /* UIView+Constrant+Frame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Constrant+Frame.swift"; sourceTree = "<group>"; };
-		CEBD6C372F9D1D1B00E176D7 /* UIViewBiggerPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewBiggerPoint.swift; sourceTree = "<group>"; };
-		CEBD6C382F9D1D1B00E176D7 /* UIViewBorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewBorder.swift; sourceTree = "<group>"; };
-		CEBD6C392F9D1D1B00E176D7 /* UIViewClicking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewClicking.swift; sourceTree = "<group>"; };
-		CEBD6C3A2F9D1D1B00E176D7 /* UIViewFindView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewFindView.swift; sourceTree = "<group>"; };
-		CEBD6C3B2F9D1D1B00E176D7 /* UIViewFindViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewFindViewController.swift; sourceTree = "<group>"; };
-		CEBD6C3C2F9D1D1B00E176D7 /* UIViewLoadNib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewLoadNib.swift; sourceTree = "<group>"; };
-		CEBD6C3D2F9D1D1B00E176D7 /* UIViewMask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewMask.swift; sourceTree = "<group>"; };
-		CEBD6C3E2F9D1D1B00E176D7 /* UIViewParallax.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewParallax.swift; sourceTree = "<group>"; };
-		CEBD6C3F2F9D1D1B00E176D7 /* UIViewPointDetect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewPointDetect.swift; sourceTree = "<group>"; };
-		CEBD6C402F9D1D1B00E176D7 /* UIViewPointSubview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewPointSubview.swift; sourceTree = "<group>"; };
-		CEBD6C412F9D1D1B00E176D7 /* UIViewShadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewShadow.swift; sourceTree = "<group>"; };
-		CEBD6C422F9D1D1B00E176D7 /* UIViewZPosition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewZPosition.swift; sourceTree = "<group>"; };
-		CEBD6C442F9D1D1B00E176D7 /* IdiomHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdiomHelpers.swift; sourceTree = "<group>"; };
-		CEBD6C452F9D1D1B00E176D7 /* UIButtonPro.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonPro.swift; sourceTree = "<group>"; };
-		CEBD6C462F9D1D1B00E176D7 /* UIColorHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorHelpers.swift; sourceTree = "<group>"; };
-		CEBD6C472F9D1D1B00E176D7 /* UILabelHighlightColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelHighlightColor.swift; sourceTree = "<group>"; };
-		CEBD6C482F9D1D1B00E176D7 /* UIScrollViewPointOut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScrollViewPointOut.swift; sourceTree = "<group>"; };
-		CEBD6C492F9D1D1B00E176D7 /* UITextFieldPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldPlaceholder.swift; sourceTree = "<group>"; };
-		CEBD6C4B2F9D1D1B00E176D7 /* ArrayHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayHelpers.swift; sourceTree = "<group>"; };
-		CEBD6C4C2F9D1D1B00E176D7 /* AsyncHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncHelpers.swift; sourceTree = "<group>"; };
-		CEBD6C4D2F9D1D1B00E176D7 /* CGImageHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGImageHelpers.swift; sourceTree = "<group>"; };
-		CEBD6C4E2F9D1D1B00E176D7 /* CGPathHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGPathHelpers.swift; sourceTree = "<group>"; };
-		CEBD6C4F2F9D1D1B00E176D7 /* CGRectHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGRectHelpers.swift; sourceTree = "<group>"; };
-		CEBD6C502F9D1D1B00E176D7 /* CIImageHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CIImageHelpers.swift; sourceTree = "<group>"; };
-		CEBD6C512F9D1D1B00E176D7 /* CVPixelBufferHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CVPixelBufferHelpers.swift; sourceTree = "<group>"; };
-		CEBD6C522F9D1D1B00E176D7 /* DataSizeHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSizeHelpers.swift; sourceTree = "<group>"; };
-		CEBD6C532F9D1D1B00E176D7 /* DateHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelpers.swift; sourceTree = "<group>"; };
-		CEBD6C542F9D1D1B00E176D7 /* FileManagerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerExtension.swift; sourceTree = "<group>"; };
-		CEBD6C552F9D1D1B00E176D7 /* JSONHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONHelpers.swift; sourceTree = "<group>"; };
-		CEBD6C562F9D1D1B00E176D7 /* MeshHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeshHelpers.swift; sourceTree = "<group>"; };
-		CEBD6C572F9D1D1B00E176D7 /* NotificationHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHelpers.swift; sourceTree = "<group>"; };
-		CEBD6C582F9D1D1B00E176D7 /* StringHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringHelpers.swift; sourceTree = "<group>"; };
 		CEBD6C9A2F9D1D6A00E176D7 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		CEBD6C9C2F9D1D7C00E176D7 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		D4AAEC8C621ECAB52E001FBA /* Pods_PhotoStitch2_0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PhotoStitch2_0.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D9BB7334FDF3F5D98FBC647E /* Pods-PhotoStitch2.0.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotoStitch2.0.release.xcconfig"; path = "Target Support Files/Pods-PhotoStitch2.0/Pods-PhotoStitch2.0.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -205,18 +218,29 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE4231A02FAB46A900701039 /* PhotosUI.framework in Frameworks */,
+				8283F3DCF15DFE99BB0325B0 /* Pods_PhotoStitch2_0.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6C7FCB7654A1878DB20D6ADA /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				A06B175C88053133C0789ED4 /* Pods-PhotoStitch2.0.debug.xcconfig */,
+				D9BB7334FDF3F5D98FBC647E /* Pods-PhotoStitch2.0.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		CE1FDC552F9D180400460178 = {
 			isa = PBXGroup;
 			children = (
 				CE1FDC7F2F9D181000460178 /* PhotoStitch2.0 */,
 				CE42319E2FAB46A900701039 /* Frameworks */,
 				CE1FDC5F2F9D180400460178 /* Products */,
+				6C7FCB7654A1878DB20D6ADA /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -236,9 +260,9 @@
 				CE1FDC7C2F9D181000460178 /* Main.storyboard */,
 				CE1FDC7E2F9D181000460178 /* Main.swift */,
 				CEBD6C0F2F9D1D0100E176D7 /* Module */,
-				CEBD6C592F9D1D1B00E176D7 /* Helpers */,
-				CEBD6BEC2F9D1CC400E176D7 /* Config */,
+				CE8700442FB039E200061801 /* Helpers */,
 				CEBD6BFF2F9D1CC400E176D7 /* Package */,
+				CEBD6BEC2F9D1CC400E176D7 /* Config */,
 				CE4231A12FAB55B500701039 /* Bonus */,
 				CEBD6BE72F9D1B0A00E176D7 /* Home */,
 				CE4231AA2FACE75200701039 /* Edit */,
@@ -256,6 +280,7 @@
 			isa = PBXGroup;
 			children = (
 				CE42319F2FAB46A900701039 /* PhotosUI.framework */,
+				D4AAEC8C621ECAB52E001FBA /* Pods_PhotoStitch2_0.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -273,9 +298,164 @@
 			isa = PBXGroup;
 			children = (
 				CE4231AD2FACE79400701039 /* Edit.swift */,
-				CE4231B72FAD6B5800701039 /* EditItem.swift */,
 			);
 			path = Edit;
+			sourceTree = "<group>";
+		};
+		CE8700042FB039E200061801 /* UIImageHelpers */ = {
+			isa = PBXGroup;
+			children = (
+				CE8700002FB039E200061801 /* UIImageGif.swift */,
+				CE8700012FB039E200061801 /* UIImageHelpers.swift */,
+				CE8700022FB039E200061801 /* UIImageStroke.swift */,
+				CE8700032FB039E200061801 /* UIImageViewDarkMode.swift */,
+			);
+			path = UIImageHelpers;
+			sourceTree = "<group>";
+		};
+		CE8700092FB039E200061801 /* UIStackViewHelpers */ = {
+			isa = PBXGroup;
+			children = (
+				CE8700052FB039E200061801 /* UIStackViewHighlight.swift */,
+				CE8700062FB039E200061801 /* UIStackViewPointSubview.swift */,
+				CE8700072FB039E200061801 /* UIStackViewSegmentPage.swift */,
+				CE8700082FB039E200061801 /* UIStackViewShadow.swift */,
+			);
+			path = UIStackViewHelpers;
+			sourceTree = "<group>";
+		};
+		CE87001A2FB039E200061801 /* UISwift */ = {
+			isa = PBXGroup;
+			children = (
+				CE87000A2FB039E200061801 /* CASLayer.swift */,
+				CE87000B2FB039E200061801 /* UISBarItem.swift */,
+				CE87000C2FB039E200061801 /* UISButton.swift */,
+				CE87000D2FB039E200061801 /* UISConstraints.swift */,
+				CE87000E2FB039E200061801 /* UISControl.swift */,
+				CE87000F2FB039E200061801 /* UISImageView.swift */,
+				CE8700102FB039E200061801 /* UISLabel.swift */,
+				CE8700112FB039E200061801 /* UISScrollView.swift */,
+				CE8700122FB039E200061801 /* UISSearchBar.swift */,
+				CE8700132FB039E200061801 /* UISStackView.swift */,
+				CE8700142FB039E200061801 /* UISTextField.swift */,
+				CE8700152FB039E200061801 /* UISTextInputTraitsExtension.swift */,
+				CE8700162FB039E200061801 /* UISTextView.swift */,
+				CE8700172FB039E200061801 /* UISToolBar.swift */,
+				CE8700182FB039E200061801 /* UISView.swift */,
+				CE8700192FB039E200061801 /* WKSWebView.swift */,
+			);
+			path = UISwift;
+			sourceTree = "<group>";
+		};
+		CE87001E2FB039E200061801 /* UIViewControllerHelpers */ = {
+			isa = PBXGroup;
+			children = (
+				CE87001B2FB039E200061801 /* UINavigationOrientationSubController.swift */,
+				CE87001C2FB039E200061801 /* UIViewControllerHelpers.swift */,
+				CE87001D2FB039E200061801 /* UIViewControllerPresent.swift */,
+			);
+			path = UIViewControllerHelpers;
+			sourceTree = "<group>";
+		};
+		CE87002C2FB039E200061801 /* UIViewHelpers */ = {
+			isa = PBXGroup;
+			children = (
+				CE87001F2FB039E200061801 /* UIView+Constrant+Frame.swift */,
+				CE8700202FB039E200061801 /* UIViewBiggerPoint.swift */,
+				CE8700212FB039E200061801 /* UIViewBorder.swift */,
+				CE8700222FB039E200061801 /* UIViewClicking.swift */,
+				CE8700232FB039E200061801 /* UIViewFindView.swift */,
+				CE8700242FB039E200061801 /* UIViewFindViewController.swift */,
+				CE8700252FB039E200061801 /* UIViewLoadNib.swift */,
+				CE8700262FB039E200061801 /* UIViewMask.swift */,
+				CE8700272FB039E200061801 /* UIViewParallax.swift */,
+				CE8700282FB039E200061801 /* UIViewPointDetect.swift */,
+				CE8700292FB039E200061801 /* UIViewPointSubview.swift */,
+				CE87002A2FB039E200061801 /* UIViewShadow.swift */,
+				CE87002B2FB039E200061801 /* UIViewZPosition.swift */,
+			);
+			path = UIViewHelpers;
+			sourceTree = "<group>";
+		};
+		CE8700332FB039E200061801 /* UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				CE8700042FB039E200061801 /* UIImageHelpers */,
+				CE8700092FB039E200061801 /* UIStackViewHelpers */,
+				CE87001A2FB039E200061801 /* UISwift */,
+				CE87001E2FB039E200061801 /* UIViewControllerHelpers */,
+				CE87002C2FB039E200061801 /* UIViewHelpers */,
+				CE87002D2FB039E200061801 /* IdiomHelpers.swift */,
+				CE87002E2FB039E200061801 /* UIButtonPro.swift */,
+				CE87002F2FB039E200061801 /* UIColorHelpers.swift */,
+				CE8700302FB039E200061801 /* UILabelHighlightColor.swift */,
+				CE8700312FB039E200061801 /* UIScrollViewPointOut.swift */,
+				CE8700322FB039E200061801 /* UITextFieldPlaceholder.swift */,
+			);
+			path = UIKit;
+			sourceTree = "<group>";
+		};
+		CE8700442FB039E200061801 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				CE87FFFB2FB039E200061801 /* Both */,
+				CE87FFFF2FB039E200061801 /* SwiftUI */,
+				CE8700332FB039E200061801 /* UIKit */,
+				CE8700342FB039E200061801 /* ArrayHelpers.swift */,
+				CE8700352FB039E200061801 /* AsyncHelpers.swift */,
+				CE8700362FB039E200061801 /* CGImageHelpers.swift */,
+				CE8700372FB039E200061801 /* CGPathHelpers.swift */,
+				CE8700382FB039E200061801 /* CGRectHelpers.swift */,
+				CE8700392FB039E200061801 /* CIImageHelpers.swift */,
+				CE87003A2FB039E200061801 /* CVPixelBufferHelpers.swift */,
+				CE87003B2FB039E200061801 /* DataSizeHelpers.swift */,
+				CE87003C2FB039E200061801 /* DateHelpers.swift */,
+				CE87003D2FB039E200061801 /* FileManagerExtension.swift */,
+				CE87003E2FB039E200061801 /* JSONHelpers.swift */,
+				CE87003F2FB039E200061801 /* MeshHelpers.swift */,
+				CE8700402FB039E200061801 /* NotificationHelpers.swift */,
+				CE8700412FB039E200061801 /* OptionalHelpers.swift */,
+				CE8700422FB039E200061801 /* StringHelpers.swift */,
+				CE8700432FB039E200061801 /* URLSessionHelpers.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		CE87FFF02FB0223800061801 /* OpenCV */ = {
+			isa = PBXGroup;
+			children = (
+				CE87FFEC2FB0223800061801 /* OpenCVWrapper.swift */,
+				CE87FFED2FB0223800061801 /* Bridging-Header.h */,
+				CE87FFEE2FB0223800061801 /* OpenCVWrapper.h */,
+				CE87FFEF2FB0223800061801 /* OpenCVWrapper.mm */,
+			);
+			path = OpenCV;
+			sourceTree = "<group>";
+		};
+		CE87FFFA2FB039E200061801 /* UIViewHelpers */ = {
+			isa = PBXGroup;
+			children = (
+				CE87FFF92FB039E200061801 /* UIViewEmbed.swift */,
+			);
+			path = UIViewHelpers;
+			sourceTree = "<group>";
+		};
+		CE87FFFB2FB039E200061801 /* Both */ = {
+			isa = PBXGroup;
+			children = (
+				CE87FFFA2FB039E200061801 /* UIViewHelpers */,
+			);
+			path = Both;
+			sourceTree = "<group>";
+		};
+		CE87FFFF2FB039E200061801 /* SwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+				CE87FFFC2FB039E200061801 /* GestureHelpers.swift */,
+				CE87FFFD2FB039E200061801 /* GlassModifier.swift */,
+				CE87FFFE2FB039E200061801 /* ViewHelpers.swift */,
+			);
+			path = SwiftUI;
 			sourceTree = "<group>";
 		};
 		CEBD6BE72F9D1B0A00E176D7 /* Home */ = {
@@ -294,6 +474,7 @@
 			children = (
 				CEBD6BEB2F9D1CC400E176D7 /* Config.swift */,
 				CEBD6C9C2F9D1D7C00E176D7 /* Color.swift */,
+				CE87FFF72FB0387800061801 /* Pipeline.swift */,
 			);
 			path = Config;
 			sourceTree = "<group>";
@@ -306,7 +487,6 @@
 				CE4231902F9E834400701039 /* MainGlass.swift */,
 				CE4231AF2FACEBA400701039 /* Stitch.swift */,
 				CE4231B12FACEBC500701039 /* WebViewSnapshot.swift */,
-				CE4231B32FACFABC00701039 /* Model.swift */,
 			);
 			path = Package;
 			sourceTree = "<group>";
@@ -314,154 +494,12 @@
 		CEBD6C0F2F9D1D0100E176D7 /* Module */ = {
 			isa = PBXGroup;
 			children = (
+				CE87FFF02FB0223800061801 /* OpenCV */,
 				CE4231982FA9773400701039 /* AssetLibrary.swift */,
 				CE4231A62FAB566700701039 /* LazyWFVStack.swift */,
 				CE4231B52FACFBCE00701039 /* Loading.swift */,
 			);
 			path = Module;
-			sourceTree = "<group>";
-		};
-		CEBD6C112F9D1D1B00E176D7 /* UIViewHelpers */ = {
-			isa = PBXGroup;
-			children = (
-				CEBD6C102F9D1D1B00E176D7 /* UIViewEmbed.swift */,
-			);
-			path = UIViewHelpers;
-			sourceTree = "<group>";
-		};
-		CEBD6C122F9D1D1B00E176D7 /* Both */ = {
-			isa = PBXGroup;
-			children = (
-				CEBD6C112F9D1D1B00E176D7 /* UIViewHelpers */,
-			);
-			path = Both;
-			sourceTree = "<group>";
-		};
-		CEBD6C162F9D1D1B00E176D7 /* SwiftUI */ = {
-			isa = PBXGroup;
-			children = (
-				CEBD6C132F9D1D1B00E176D7 /* GestureHelpers.swift */,
-				CEBD6C142F9D1D1B00E176D7 /* GlassModifier.swift */,
-				CEBD6C152F9D1D1B00E176D7 /* ViewHelpers.swift */,
-			);
-			path = SwiftUI;
-			sourceTree = "<group>";
-		};
-		CEBD6C1B2F9D1D1B00E176D7 /* UIImageHelpers */ = {
-			isa = PBXGroup;
-			children = (
-				CEBD6C172F9D1D1B00E176D7 /* UIImageGif.swift */,
-				CEBD6C182F9D1D1B00E176D7 /* UIImageHelpers.swift */,
-				CEBD6C192F9D1D1B00E176D7 /* UIImageStroke.swift */,
-				CEBD6C1A2F9D1D1B00E176D7 /* UIImageViewDarkMode.swift */,
-			);
-			path = UIImageHelpers;
-			sourceTree = "<group>";
-		};
-		CEBD6C202F9D1D1B00E176D7 /* UIStackViewHelpers */ = {
-			isa = PBXGroup;
-			children = (
-				CEBD6C1C2F9D1D1B00E176D7 /* UIStackViewHighlight.swift */,
-				CEBD6C1D2F9D1D1B00E176D7 /* UIStackViewPointSubview.swift */,
-				CEBD6C1E2F9D1D1B00E176D7 /* UIStackViewSegmentPage.swift */,
-				CEBD6C1F2F9D1D1B00E176D7 /* UIStackViewShadow.swift */,
-			);
-			path = UIStackViewHelpers;
-			sourceTree = "<group>";
-		};
-		CEBD6C312F9D1D1B00E176D7 /* UISwift */ = {
-			isa = PBXGroup;
-			children = (
-				CEBD6C212F9D1D1B00E176D7 /* CASLayer.swift */,
-				CEBD6C222F9D1D1B00E176D7 /* UISBarItem.swift */,
-				CEBD6C232F9D1D1B00E176D7 /* UISButton.swift */,
-				CEBD6C242F9D1D1B00E176D7 /* UISConstraints.swift */,
-				CEBD6C252F9D1D1B00E176D7 /* UISControl.swift */,
-				CEBD6C262F9D1D1B00E176D7 /* UISImageView.swift */,
-				CEBD6C272F9D1D1B00E176D7 /* UISLabel.swift */,
-				CEBD6C282F9D1D1B00E176D7 /* UISScrollView.swift */,
-				CEBD6C292F9D1D1B00E176D7 /* UISSearchBar.swift */,
-				CEBD6C2A2F9D1D1B00E176D7 /* UISStackView.swift */,
-				CEBD6C2B2F9D1D1B00E176D7 /* UISTextField.swift */,
-				CEBD6C2C2F9D1D1B00E176D7 /* UISTextInputTraitsExtension.swift */,
-				CEBD6C2D2F9D1D1B00E176D7 /* UISTextView.swift */,
-				CEBD6C2E2F9D1D1B00E176D7 /* UISToolBar.swift */,
-				CEBD6C2F2F9D1D1B00E176D7 /* UISView.swift */,
-				CEBD6C302F9D1D1B00E176D7 /* WKSWebView.swift */,
-			);
-			path = UISwift;
-			sourceTree = "<group>";
-		};
-		CEBD6C352F9D1D1B00E176D7 /* UIViewControllerHelpers */ = {
-			isa = PBXGroup;
-			children = (
-				CEBD6C322F9D1D1B00E176D7 /* UINavigationOrientationSubController.swift */,
-				CEBD6C332F9D1D1B00E176D7 /* UIViewControllerHelpers.swift */,
-				CEBD6C342F9D1D1B00E176D7 /* UIViewControllerPresent.swift */,
-			);
-			path = UIViewControllerHelpers;
-			sourceTree = "<group>";
-		};
-		CEBD6C432F9D1D1B00E176D7 /* UIViewHelpers */ = {
-			isa = PBXGroup;
-			children = (
-				CEBD6C362F9D1D1B00E176D7 /* UIView+Constrant+Frame.swift */,
-				CEBD6C372F9D1D1B00E176D7 /* UIViewBiggerPoint.swift */,
-				CEBD6C382F9D1D1B00E176D7 /* UIViewBorder.swift */,
-				CEBD6C392F9D1D1B00E176D7 /* UIViewClicking.swift */,
-				CEBD6C3A2F9D1D1B00E176D7 /* UIViewFindView.swift */,
-				CEBD6C3B2F9D1D1B00E176D7 /* UIViewFindViewController.swift */,
-				CEBD6C3C2F9D1D1B00E176D7 /* UIViewLoadNib.swift */,
-				CEBD6C3D2F9D1D1B00E176D7 /* UIViewMask.swift */,
-				CEBD6C3E2F9D1D1B00E176D7 /* UIViewParallax.swift */,
-				CEBD6C3F2F9D1D1B00E176D7 /* UIViewPointDetect.swift */,
-				CEBD6C402F9D1D1B00E176D7 /* UIViewPointSubview.swift */,
-				CEBD6C412F9D1D1B00E176D7 /* UIViewShadow.swift */,
-				CEBD6C422F9D1D1B00E176D7 /* UIViewZPosition.swift */,
-			);
-			path = UIViewHelpers;
-			sourceTree = "<group>";
-		};
-		CEBD6C4A2F9D1D1B00E176D7 /* UIKit */ = {
-			isa = PBXGroup;
-			children = (
-				CEBD6C1B2F9D1D1B00E176D7 /* UIImageHelpers */,
-				CEBD6C202F9D1D1B00E176D7 /* UIStackViewHelpers */,
-				CEBD6C312F9D1D1B00E176D7 /* UISwift */,
-				CEBD6C352F9D1D1B00E176D7 /* UIViewControllerHelpers */,
-				CEBD6C432F9D1D1B00E176D7 /* UIViewHelpers */,
-				CEBD6C442F9D1D1B00E176D7 /* IdiomHelpers.swift */,
-				CEBD6C452F9D1D1B00E176D7 /* UIButtonPro.swift */,
-				CEBD6C462F9D1D1B00E176D7 /* UIColorHelpers.swift */,
-				CEBD6C472F9D1D1B00E176D7 /* UILabelHighlightColor.swift */,
-				CEBD6C482F9D1D1B00E176D7 /* UIScrollViewPointOut.swift */,
-				CEBD6C492F9D1D1B00E176D7 /* UITextFieldPlaceholder.swift */,
-			);
-			path = UIKit;
-			sourceTree = "<group>";
-		};
-		CEBD6C592F9D1D1B00E176D7 /* Helpers */ = {
-			isa = PBXGroup;
-			children = (
-				CEBD6C122F9D1D1B00E176D7 /* Both */,
-				CEBD6C162F9D1D1B00E176D7 /* SwiftUI */,
-				CEBD6C4A2F9D1D1B00E176D7 /* UIKit */,
-				CEBD6C4B2F9D1D1B00E176D7 /* ArrayHelpers.swift */,
-				CEBD6C4C2F9D1D1B00E176D7 /* AsyncHelpers.swift */,
-				CEBD6C4D2F9D1D1B00E176D7 /* CGImageHelpers.swift */,
-				CEBD6C4E2F9D1D1B00E176D7 /* CGPathHelpers.swift */,
-				CEBD6C4F2F9D1D1B00E176D7 /* CGRectHelpers.swift */,
-				CEBD6C502F9D1D1B00E176D7 /* CIImageHelpers.swift */,
-				CEBD6C512F9D1D1B00E176D7 /* CVPixelBufferHelpers.swift */,
-				CEBD6C522F9D1D1B00E176D7 /* DataSizeHelpers.swift */,
-				CEBD6C532F9D1D1B00E176D7 /* DateHelpers.swift */,
-				CEBD6C542F9D1D1B00E176D7 /* FileManagerExtension.swift */,
-				CEBD6C552F9D1D1B00E176D7 /* JSONHelpers.swift */,
-				CEBD6C562F9D1D1B00E176D7 /* MeshHelpers.swift */,
-				CEBD6C572F9D1D1B00E176D7 /* NotificationHelpers.swift */,
-				CEBD6C582F9D1D1B00E176D7 /* StringHelpers.swift */,
-			);
-			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -471,6 +509,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CE1FDC712F9D180600460178 /* Build configuration list for PBXNativeTarget "PhotoStitch2.0" */;
 			buildPhases = (
+				D98765037EEA6AD7FEE4E1F4 /* [CP] Check Pods Manifest.lock */,
 				CE1FDC5A2F9D180400460178 /* Sources */,
 				CE1FDC5B2F9D180400460178 /* Frameworks */,
 				CE1FDC5C2F9D180400460178 /* Resources */,
@@ -480,8 +519,6 @@
 			dependencies = (
 			);
 			name = PhotoStitch2.0;
-			packageProductDependencies = (
-			);
 			productName = PhotoStitch2.0;
 			productReference = CE1FDC5E2F9D180400460178 /* PhotoStitch2.0.app */;
 			productType = "com.apple.product-type.application";
@@ -536,87 +573,50 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		D98765037EEA6AD7FEE4E1F4 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PhotoStitch2.0-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		CE1FDC5A2F9D180400460178 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CEBD6C5A2F9D1D1B00E176D7 /* UIView+Constrant+Frame.swift in Sources */,
-				CEBD6C5B2F9D1D1B00E176D7 /* UIImageStroke.swift in Sources */,
-				CEBD6C5C2F9D1D1B00E176D7 /* UISTextInputTraitsExtension.swift in Sources */,
-				CEBD6C5D2F9D1D1B00E176D7 /* ArrayHelpers.swift in Sources */,
-				CEBD6C5E2F9D1D1B00E176D7 /* UIViewShadow.swift in Sources */,
-				CEBD6C5F2F9D1D1B00E176D7 /* CASLayer.swift in Sources */,
-				CEBD6C602F9D1D1B00E176D7 /* IdiomHelpers.swift in Sources */,
-				CEBD6C612F9D1D1B00E176D7 /* UISConstraints.swift in Sources */,
-				CEBD6C622F9D1D1B00E176D7 /* UIViewControllerHelpers.swift in Sources */,
-				CEBD6C632F9D1D1B00E176D7 /* UIViewClicking.swift in Sources */,
-				CEBD6C642F9D1D1B00E176D7 /* UISControl.swift in Sources */,
-				CEBD6C652F9D1D1B00E176D7 /* UIStackViewShadow.swift in Sources */,
-				CEBD6C662F9D1D1B00E176D7 /* WKSWebView.swift in Sources */,
-				CEBD6C672F9D1D1B00E176D7 /* UINavigationOrientationSubController.swift in Sources */,
-				CEBD6C682F9D1D1B00E176D7 /* UIStackViewPointSubview.swift in Sources */,
-				CEBD6C692F9D1D1B00E176D7 /* UISScrollView.swift in Sources */,
-				CEBD6C6A2F9D1D1B00E176D7 /* UILabelHighlightColor.swift in Sources */,
-				CEBD6C6B2F9D1D1B00E176D7 /* UIImageGif.swift in Sources */,
-				CEBD6C6C2F9D1D1B00E176D7 /* UIImageHelpers.swift in Sources */,
-				CEBD6C6D2F9D1D1B00E176D7 /* UIViewZPosition.swift in Sources */,
-				CEBD6C6E2F9D1D1B00E176D7 /* DateHelpers.swift in Sources */,
+				CE87FFF82FB0387C00061801 /* Pipeline.swift in Sources */,
 				CE4231952FA78D5400701039 /* HomeBottom.swift in Sources */,
-				CEBD6C6F2F9D1D1B00E176D7 /* UISTextView.swift in Sources */,
-				CEBD6C702F9D1D1B00E176D7 /* UISBarItem.swift in Sources */,
-				CEBD6C712F9D1D1B00E176D7 /* UISStackView.swift in Sources */,
-				CEBD6C722F9D1D1B00E176D7 /* UIViewFindViewController.swift in Sources */,
 				CE4231912F9E834700701039 /* MainGlass.swift in Sources */,
-				CEBD6C732F9D1D1B00E176D7 /* UIImageViewDarkMode.swift in Sources */,
-				CEBD6C742F9D1D1B00E176D7 /* AsyncHelpers.swift in Sources */,
-				CEBD6C752F9D1D1B00E176D7 /* CGPathHelpers.swift in Sources */,
 				CE4231992FA9773400701039 /* AssetLibrary.swift in Sources */,
-				CEBD6C762F9D1D1B00E176D7 /* JSONHelpers.swift in Sources */,
-				CEBD6C772F9D1D1B00E176D7 /* DataSizeHelpers.swift in Sources */,
-				CEBD6C782F9D1D1B00E176D7 /* MeshHelpers.swift in Sources */,
-				CEBD6C792F9D1D1B00E176D7 /* UISView.swift in Sources */,
-				CEBD6C7A2F9D1D1B00E176D7 /* UIViewLoadNib.swift in Sources */,
-				CEBD6C7B2F9D1D1B00E176D7 /* UIViewControllerPresent.swift in Sources */,
-				CEBD6C7C2F9D1D1B00E176D7 /* UIViewMask.swift in Sources */,
 				CE4231B02FACEBA400701039 /* Stitch.swift in Sources */,
-				CEBD6C7D2F9D1D1B00E176D7 /* ViewHelpers.swift in Sources */,
-				CEBD6C7E2F9D1D1B00E176D7 /* CGRectHelpers.swift in Sources */,
-				CEBD6C7F2F9D1D1B00E176D7 /* UISImageView.swift in Sources */,
-				CEBD6C802F9D1D1B00E176D7 /* UISLabel.swift in Sources */,
-				CEBD6C812F9D1D1B00E176D7 /* GlassModifier.swift in Sources */,
-				CE4231B82FAD6B5B00701039 /* EditItem.swift in Sources */,
 				CE4231932FA78CF800701039 /* HomeTop.swift in Sources */,
-				CEBD6C822F9D1D1B00E176D7 /* UISButton.swift in Sources */,
 				CE4231B62FACFBCE00701039 /* Loading.swift in Sources */,
-				CEBD6C832F9D1D1B00E176D7 /* UIViewPointSubview.swift in Sources */,
-				CEBD6C842F9D1D1B00E176D7 /* UIViewEmbed.swift in Sources */,
-				CEBD6C852F9D1D1B00E176D7 /* CGImageHelpers.swift in Sources */,
-				CEBD6C862F9D1D1B00E176D7 /* UIStackViewSegmentPage.swift in Sources */,
-				CEBD6C872F9D1D1B00E176D7 /* UIStackViewHighlight.swift in Sources */,
-				CEBD6C882F9D1D1B00E176D7 /* CIImageHelpers.swift in Sources */,
-				CEBD6C892F9D1D1B00E176D7 /* UIViewParallax.swift in Sources */,
-				CEBD6C8A2F9D1D1B00E176D7 /* GestureHelpers.swift in Sources */,
-				CEBD6C8B2F9D1D1B00E176D7 /* UISTextField.swift in Sources */,
+				CE87FFF12FB0223800061801 /* OpenCVWrapper.mm in Sources */,
+				CE87FFF22FB0223800061801 /* OpenCVWrapper.swift in Sources */,
 				CE4231A72FAB566700701039 /* LazyWFVStack.swift in Sources */,
-				CEBD6C8C2F9D1D1B00E176D7 /* UIColorHelpers.swift in Sources */,
 				CE42319B2FA9784300701039 /* HomePhotos.swift in Sources */,
-				CEBD6C8D2F9D1D1B00E176D7 /* UIViewBorder.swift in Sources */,
-				CEBD6C8E2F9D1D1B00E176D7 /* StringHelpers.swift in Sources */,
 				CE4231B22FACEBC500701039 /* WebViewSnapshot.swift in Sources */,
 				CEBD6C9D2F9D1D7C00E176D7 /* Color.swift in Sources */,
-				CEBD6C8F2F9D1D1B00E176D7 /* UIViewBiggerPoint.swift in Sources */,
 				CE4231A32FAB55BF00701039 /* Onboarding.swift in Sources */,
-				CEBD6C902F9D1D1B00E176D7 /* CVPixelBufferHelpers.swift in Sources */,
-				CEBD6C912F9D1D1B00E176D7 /* UITextFieldPlaceholder.swift in Sources */,
-				CEBD6C922F9D1D1B00E176D7 /* UISSearchBar.swift in Sources */,
-				CEBD6C932F9D1D1B00E176D7 /* UIViewFindView.swift in Sources */,
-				CEBD6C942F9D1D1B00E176D7 /* UISToolBar.swift in Sources */,
-				CEBD6C952F9D1D1B00E176D7 /* UIButtonPro.swift in Sources */,
-				CEBD6C962F9D1D1B00E176D7 /* UIViewPointDetect.swift in Sources */,
-				CEBD6C972F9D1D1B00E176D7 /* UIScrollViewPointOut.swift in Sources */,
-				CEBD6C982F9D1D1B00E176D7 /* FileManagerExtension.swift in Sources */,
-				CEBD6C992F9D1D1B00E176D7 /* NotificationHelpers.swift in Sources */,
 				CE1FDC802F9D181000460178 /* AppDelegate.swift in Sources */,
 				CE4231A52FAB562500701039 /* Subscription.swift in Sources */,
 				CE1FDC812F9D181000460178 /* SceneDelegate.swift in Sources */,
@@ -624,6 +624,72 @@
 				CEBD6C012F9D1CC400E176D7 /* Updater.swift in Sources */,
 				CEBD6C022F9D1CC400E176D7 /* Config.swift in Sources */,
 				CEBD6C082F9D1CC400E176D7 /* Geometry.swift in Sources */,
+				CE8700452FB039E200061801 /* UIImageHelpers.swift in Sources */,
+				CE8700462FB039E200061801 /* CVPixelBufferHelpers.swift in Sources */,
+				CE8700472FB039E200061801 /* UIScrollViewPointOut.swift in Sources */,
+				CE8700482FB039E200061801 /* UIButtonPro.swift in Sources */,
+				CE8700492FB039E200061801 /* UIStackViewShadow.swift in Sources */,
+				CE87004A2FB039E200061801 /* ArrayHelpers.swift in Sources */,
+				CE87004B2FB039E200061801 /* OptionalHelpers.swift in Sources */,
+				CE87004C2FB039E200061801 /* DateHelpers.swift in Sources */,
+				CE87004D2FB039E200061801 /* UIViewFindViewController.swift in Sources */,
+				CE87004E2FB039E200061801 /* MeshHelpers.swift in Sources */,
+				CE87004F2FB039E200061801 /* UISControl.swift in Sources */,
+				CE8700502FB039E200061801 /* UIViewMask.swift in Sources */,
+				CE8700512FB039E200061801 /* WKSWebView.swift in Sources */,
+				CE8700522FB039E200061801 /* UISImageView.swift in Sources */,
+				CE8700532FB039E200061801 /* UIStackViewHighlight.swift in Sources */,
+				CE8700542FB039E200061801 /* UIViewPointDetect.swift in Sources */,
+				CE8700552FB039E200061801 /* UISToolBar.swift in Sources */,
+				CE8700562FB039E200061801 /* UIViewShadow.swift in Sources */,
+				CE8700572FB039E200061801 /* UISButton.swift in Sources */,
+				CE8700582FB039E200061801 /* UIImageStroke.swift in Sources */,
+				CE8700592FB039E200061801 /* StringHelpers.swift in Sources */,
+				CE87005A2FB039E200061801 /* UISTextField.swift in Sources */,
+				CE87005B2FB039E200061801 /* UIViewClicking.swift in Sources */,
+				CE87005C2FB039E200061801 /* IdiomHelpers.swift in Sources */,
+				CE87005D2FB039E200061801 /* GlassModifier.swift in Sources */,
+				CE87005E2FB039E200061801 /* UIViewPointSubview.swift in Sources */,
+				CE87005F2FB039E200061801 /* AsyncHelpers.swift in Sources */,
+				CE8700602FB039E200061801 /* UIStackViewPointSubview.swift in Sources */,
+				CE8700612FB039E200061801 /* UIStackViewSegmentPage.swift in Sources */,
+				CE8700622FB039E200061801 /* UIImageViewDarkMode.swift in Sources */,
+				CE8700632FB039E200061801 /* UISTextInputTraitsExtension.swift in Sources */,
+				CE8700642FB039E200061801 /* UIView+Constrant+Frame.swift in Sources */,
+				CE8700652FB039E200061801 /* FileManagerExtension.swift in Sources */,
+				CE8700662FB039E200061801 /* UIViewParallax.swift in Sources */,
+				CE8700672FB039E200061801 /* CGPathHelpers.swift in Sources */,
+				CE8700682FB039E200061801 /* CASLayer.swift in Sources */,
+				CE8700692FB039E200061801 /* UISView.swift in Sources */,
+				CE87006A2FB039E200061801 /* UIViewLoadNib.swift in Sources */,
+				CE87006B2FB039E200061801 /* UISScrollView.swift in Sources */,
+				CE87006C2FB039E200061801 /* UISTextView.swift in Sources */,
+				CE87006D2FB039E200061801 /* UISSearchBar.swift in Sources */,
+				CE87006E2FB039E200061801 /* UIViewZPosition.swift in Sources */,
+				CE87006F2FB039E200061801 /* UILabelHighlightColor.swift in Sources */,
+				CE8700702FB039E200061801 /* UITextFieldPlaceholder.swift in Sources */,
+				CE8700712FB039E200061801 /* ViewHelpers.swift in Sources */,
+				CE8700722FB039E200061801 /* UISBarItem.swift in Sources */,
+				CE8700732FB039E200061801 /* CGRectHelpers.swift in Sources */,
+				CE8700742FB039E200061801 /* UISLabel.swift in Sources */,
+				CE8700752FB039E200061801 /* UISConstraints.swift in Sources */,
+				CE8700762FB039E200061801 /* UIViewControllerPresent.swift in Sources */,
+				CE8700772FB039E200061801 /* UIViewBorder.swift in Sources */,
+				CE8700782FB039E200061801 /* UIViewControllerHelpers.swift in Sources */,
+				CE8700792FB039E200061801 /* UIColorHelpers.swift in Sources */,
+				CE87007A2FB039E200061801 /* JSONHelpers.swift in Sources */,
+				CE87007B2FB039E200061801 /* UINavigationOrientationSubController.swift in Sources */,
+				CE87007C2FB039E200061801 /* UIViewFindView.swift in Sources */,
+				CE87007D2FB039E200061801 /* CGImageHelpers.swift in Sources */,
+				CE87007E2FB039E200061801 /* NotificationHelpers.swift in Sources */,
+				CE87007F2FB039E200061801 /* CIImageHelpers.swift in Sources */,
+				CE8700802FB039E200061801 /* UIViewBiggerPoint.swift in Sources */,
+				CE8700812FB039E200061801 /* UIViewEmbed.swift in Sources */,
+				CE8700822FB039E200061801 /* GestureHelpers.swift in Sources */,
+				CE8700832FB039E200061801 /* UIImageGif.swift in Sources */,
+				CE8700842FB039E200061801 /* DataSizeHelpers.swift in Sources */,
+				CE8700852FB039E200061801 /* URLSessionHelpers.swift in Sources */,
+				CE8700862FB039E200061801 /* UISStackView.swift in Sources */,
 				CE1FDC822F9D181000460178 /* Main.swift in Sources */,
 				CE4231AE2FACE79400701039 /* Edit.swift in Sources */,
 			);
@@ -653,6 +719,7 @@
 /* Begin XCBuildConfiguration section */
 		CE1FDC722F9D180600460178 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A06B175C88053133C0789ED4 /* Pods-PhotoStitch2.0.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -681,6 +748,8 @@
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "PhotoStitch2.0/Module/OpenCV/Bridging-Header.h";
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -689,6 +758,7 @@
 		};
 		CE1FDC732F9D180600460178 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D9BB7334FDF3F5D98FBC647E /* Pods-PhotoStitch2.0.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -717,6 +787,8 @@
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "PhotoStitch2.0/Module/OpenCV/Bridging-Header.h";
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -783,6 +855,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -840,6 +913,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

@@ -8,6 +8,10 @@
 import UIKit
 import Photos
 
+enum ALError: Error {
+    case error(String)
+}
+
 class ALInfo {
     private(set) var assets: [PHAsset]
     private(set) var localizedTitle: String
@@ -32,11 +36,12 @@ class ALInfo {
      - Parameters:
         - index: Index of asset in album
      */
-    func getAsset(at index: Int) -> PHAsset? {
+    func getAsset(at index: Int) throws -> PHAsset {
         if getCount() > index {
             return assets[index]
         }
-        return nil
+        
+        throw ALError.error("No more asset")
     }
     
     /**
@@ -76,36 +81,29 @@ class AssetLibrary {
      
      - Parameters:
         - forceSettings: A Boolean value indicating whether need open settings immediately when user cancel access permission
-        - completion: An action after get permission and fetch data
      
      */
-    func request(forceSettings: Bool = false, completion: ((PHAuthorizationStatus)->Void)? = nil) {
-        DispatchQueue.global(qos: .default).async { [self] in
-            let status = PHPhotoLibrary.authorizationStatus(for: .readWrite)
+    func request(forceSettings: Bool = false) async throws {
+        let status = PHPhotoLibrary.authorizationStatus(for: .readWrite)
+        
+        if status == .notDetermined {
+            await PHPhotoLibrary.requestAuthorization(for: .readWrite)
+            try await request(forceSettings: forceSettings)
             
-            if status == .notDetermined {
-                PHPhotoLibrary.requestAuthorization(for: .readWrite) { [self] status in
-                    request(forceSettings: forceSettings, completion: completion)
-                }
-                return
-            }
-            
-            if status == .denied || status == .restricted {
-                DispatchQueue.main.async {
-                    if forceSettings {
-                        UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!, options: [:], completionHandler: nil)
-                    }
-                    completion?(status)
-                }
-                return
-            }
-            
-            fetchAlbumData()
-            
-            DispatchQueue.main.async {
-                completion?(status)
-            }
+            return
         }
+        
+        if status == .denied || status == .restricted {
+            await MainActor.run {
+                if forceSettings {
+                    UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!, options: [:], completionHandler: nil)
+                }
+            }
+
+            return
+        }
+        
+        fetchAlbumData()
     }
     
     /**
@@ -135,30 +133,32 @@ class AssetLibrary {
         - quality: Expect image quality to export, default is .highQualityFormat
         - resizeMode: Expect mode to export, default is .fast
      */
-    static func getUIImage(from asset: PHAsset, size: CGSize = CGSize(width: -1, height: -1), quality: PHImageRequestOptionsDeliveryMode = .highQualityFormat, resizeMode: PHImageRequestOptionsResizeMode = .fast, completion: ((UIImage)->Void)? = nil) {
-        DispatchQueue.global(qos: .default).async {
-            var size = size
-            if size.width < 0 {
-                size = CGSize(width: CGFloat(asset.pixelWidth), height: CGFloat(asset.pixelHeight))
-            }
-            
-            let manager = PHImageManager.default()
-            let options = PHImageRequestOptions()
-            
-            options.deliveryMode = quality
-            options.resizeMode = resizeMode
-            options.isNetworkAccessAllowed = true
-            
-            manager.requestImage(for: asset, targetSize: size, contentMode: .aspectFill, options: options, resultHandler: {(result, _)->Void in
-                guard let result = result else {
-                    return
-                }
-
-                DispatchQueue.main.async {
-                    completion?(result)
-                }
-            })
+    static func getUIImage(from asset: PHAsset, size: CGSize = CGSize(width: -1, height: -1), quality: PHImageRequestOptionsDeliveryMode = .highQualityFormat, resizeMode: PHImageRequestOptionsResizeMode = .fast) throws -> UIImage {
+        
+        var size = size
+        if size.width < 0 {
+            size = CGSize(width: CGFloat(asset.pixelWidth), height: CGFloat(asset.pixelHeight))
         }
+        
+        let manager = PHImageManager.default()
+        let options = PHImageRequestOptions()
+        
+        options.deliveryMode = quality
+        options.resizeMode = resizeMode
+        options.isNetworkAccessAllowed = true
+        options.isSynchronous = true
+        
+        var image: UIImage?
+
+        manager.requestImage(for: asset, targetSize: size, contentMode: .aspectFill, options: options, resultHandler: { (result, _) -> Void in
+            image = result
+        })
+        
+        guard let image = image else {
+            throw ALError.error("Request image failed")
+        }
+        
+        return image
     }
     
     /**
@@ -166,9 +166,8 @@ class AssetLibrary {
      
      - Parameters:
         - assets: Array of asset need to delete
-        - completion: Handler return boolean declare asset delete success or not
      */
-    static func deleteImage(assets: [PHAsset?], completion: @escaping (Bool)->Void) {
+    static func deleteImage(assets: [PHAsset?]) async throws {
         let locals = assets.map { asset -> String in
             if let asset = asset{
                 return asset.localIdentifier
@@ -177,12 +176,11 @@ class AssetLibrary {
         }.filter { path in
             return path != ""
         }
-        PHPhotoLibrary.shared().performChanges({
+        
+        try await PHPhotoLibrary.shared().performChanges {
             let imageAssetToDelete = PHAsset.fetchAssets(withLocalIdentifiers: locals, options: nil)
             PHAssetChangeRequest.deleteAssets(imageAssetToDelete)
-        }, completionHandler: { success, error in
-            completion(success)
-        })
+        }
     }
     
     /**

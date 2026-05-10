@@ -10,18 +10,18 @@ import Photos
 import PhotosUI
 
 struct HomePhotos: View {
-    @Environment(HomeUpdater.self) var updater: HomeUpdater
+    @Environment(HomeUpdater.self) var homeUpdater: HomeUpdater
     
     var body: some View {
         GeometryReader { geometry in
             let num = ceil((geometry.size.width - 32 + 16) / 160)
             
-            let assets = updater.album?.assets.filter({
-                if updater.photofilter == .images {
+            let assets = homeUpdater.album?.assets.filter({
+                if homeUpdater.photofilter == .images {
                     return $0.mediaType == .image
                 }
                 
-                if updater.photofilter == .videos {
+                if homeUpdater.photofilter == .videos {
                     return $0.mediaType == .video
                 }
                 
@@ -32,28 +32,28 @@ struct HomePhotos: View {
                 if let assets = assets {
                     
                     LazyWFVStack(geometry: geometry, items: assets.map({ asset in
-                        let selected = updater.selecteds.contains(asset)
-                        let index = updater.selecteds.firstIndex(of: asset) ?? 0
+                        let selected = homeUpdater.selecteds.contains(asset)
+                        let index = homeUpdater.selecteds.firstIndex(of: asset) ?? 0
                         
                         return LazyWFVItem(id: asset.localIdentifier, size: CGSize(width: asset.pixelWidth, height: asset.pixelHeight), content: {
                             Button {
                                 if selected {
-                                    updater.selecteds = updater.selecteds.filter({ $0 != asset })
+                                    homeUpdater.selecteds = homeUpdater.selecteds.filter({ $0 != asset })
                                 } else {
-                                    if updater.selecteds.contains(where: { $0.mediaType == .video }),
+                                    if homeUpdater.selecteds.contains(where: { $0.mediaType == .video }),
                                        asset.mediaType == .video {
-                                        updater.warningAlert("Please select only one video!")
+                                        homeUpdater.warningAlert("Please select only one video!")
                                         return
                                     }
                                     
-                                    updater.selecteds.append(asset)
+                                    homeUpdater.selecteds.append(asset)
                                 }
                             } label: {
                                 GeometryReader { geometry in
                                     HomePhoto(asset: asset)
                                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                                         .clipShape(RoundedRectangle(cornerRadius: 16))
-                                        .modifier(MainGlass(shape: RoundedRectangle(cornerRadius: 16), type: .clear, interactive: updater.showMenu == .none))
+                                        .modifier(MainGlass(shape: RoundedRectangle(cornerRadius: 16), type: .clear, interactive: homeUpdater.showMenu == .none))
                                         .modifier(HomePhotoSelection(selection: selected, number: index + 1))
                                 }
                             }
@@ -102,8 +102,8 @@ struct HomePhoto: View {
                 .fill(.ultraThinMaterial)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .onAppear {
-                    AssetLibrary.getUIImage(from: asset, size: CGSize(width: 300, height: 300), quality: .opportunistic, resizeMode: .fast) { image in
-                        self.image = image
+                    Task {
+                        image = try AssetLibrary.getUIImage(from: asset, size: CGSize(width: 300, height: 300), quality: .opportunistic, resizeMode: .fast)
                     }
                 }
         }
@@ -111,7 +111,7 @@ struct HomePhoto: View {
 }
 
 struct HomePhotoSelection: ViewModifier {
-    @Environment(HomeUpdater.self) var updater: HomeUpdater
+    @Environment(HomeUpdater.self) var homeUpdater: HomeUpdater
     
     let selection: Bool
     let number: Int
@@ -136,7 +136,7 @@ struct HomePhotoSelection: ViewModifier {
 
 
 struct HomeNoAccess: ViewModifier {
-    @Environment(HomeUpdater.self) var updater: HomeUpdater
+    @Environment(HomeUpdater.self) var homeUpdater: HomeUpdater
     
     func body(content: Content) -> some View {
         let status = AssetLibrary.getCurrentStatus()
@@ -145,7 +145,7 @@ struct HomeNoAccess: ViewModifier {
             ZStack {
                 content
                 
-                if status == .limited && updater.selecteds.isEmpty {
+                if status == .limited && homeUpdater.selecteds.isEmpty {
                     VStack(spacing: 16) {
                         Spacer()
                         

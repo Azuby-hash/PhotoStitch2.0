@@ -6,21 +6,27 @@
 //
 
 import SwiftUI
+import Combine
 
 struct Edit: View {
-    @Binding var updater: EditUpdater
+    @State var editUpdater = EditUpdater()
+    
+    let setItems: PassthroughSubject<[StitchItem], Never>
     
     var body: some View {
-        
+        ZStack {
+            ScrollView {
+                
+            }
+        }
+        .background(Color._background)
+        .onReceive(setItems) { items in
+            editUpdater.items = items
+            print(items)
+        }
     }
 }
 
 @Observable class EditUpdater {
-    var items: [EditItem]
-    
-    init(images: [UIImage]) throws {
-        items = try images.map({ image in
-            try EditItem(image: image, process: StitchProcess())
-        })
-    }
+    var items: [StitchItem] = []
 }

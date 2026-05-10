@@ -207,10 +207,8 @@ class Stitch {
         return StitchResult(maxKIndex: maxKIndex, maxBefore: maxBefore, maxAfter: maxAfter, confidence: confidence, samePercent: samePercent)
     }
     
-    func stitch(from url: URL, progress: @escaping (CGFloat) -> Void) async throws -> UIImage {
+    func stitch(from asset: AVAsset, progress: @escaping (CGFloat) -> Void) async throws -> StitchItem {
         let date = Date()
-        
-        let asset = AVURLAsset(url: url)
         
         // 1. Chuẩn bị Reader và Output
         guard let track = try await asset.loadTracks(withMediaType: .video).first else {
@@ -246,6 +244,7 @@ class Stitch {
             // Lấy thời gian thực của frame hiện tại
             let presentationTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer)
             let currentTime = CMTimeGetSeconds(presentationTime)
+            let beginStitchAverage = currStitchAverage
             
             // 3. Kiểm tra xem đã đến lúc lấy frame chưa
             autoreleasepool {
@@ -289,12 +288,25 @@ class Stitch {
                             let bonusHeight = Int(abs(newInfo.getCurr().height - currRect.height))
                             
                             if result.maxAfter > result.maxBefore {
+                                if afterProcess.average.count - aPosition < 0 {
+                                    return
+                                }
+                                
                                 currStitchAverage = afterProcess.average.dropLast(afterProcess.average.count - aPosition) + currStitchAverage.dropFirst(aPosition - bonusHeight)
                             } else {
+                                if afterProcess.average.count - aPosition - bonusHeight < 0 {
+                                    return
+                                }
+                                
                                 currStitchAverage = currStitchAverage.dropLast(afterProcess.average.count - aPosition - bonusHeight) + afterProcess.average.dropFirst(aPosition)
                             }
                         } else {
                             newInfo = StitchInfo(data: nil, crop: nil, rect: currRect, translate: transalte)
+                        }
+                        
+                        if Int(newInfo.getCurr().maxY) - afterProcess.average.count < 0 {
+                            currStitchAverage = beginStitchAverage
+                            return
                         }
                         
                         stitchInfosList[stitchInfosList.count - 1].append(newInfo)
@@ -323,6 +335,7 @@ class Stitch {
                 lastExtractedTime = currentTime
             }
             
+            await Task.yield()
             await MainActor.run {
                 progress(sampleBuffer.outputPresentationTimeStamp.seconds / (duration.seconds * 1.2))
             }
@@ -355,8 +368,8 @@ class Stitch {
                 }
             }
             
-            if let fullStitchCI = fullStitchCI, let stitchCG = CICONTEXT.createCGImage(fullStitchCI, from: fullStitchCI.extent) {
-                return UIImage(cgImage: stitchCG)
+            if let fullStitchCI = fullStitchCI, let stitchCG = CICONTEXT.createCGImage(fullStitchCI, from: fullStitchCI.extent), let currProcess = currProcess {
+                return try StitchItem(image: UIImage(cgImage: stitchCG), process: currProcess)
             }
         }
         
@@ -424,7 +437,6 @@ struct StitchProcess: Equatable {
     private(set) var leftAverage: [UInt8] = []
     private(set) var rightAverage: [UInt8] = []
     private(set) var colorIndexes: [Int: [Int]] = [:]
-    private(set) var didSetup: Bool = false
     
     init(rect: CGRect = RECT0011) {
         self.rect = rect
@@ -434,14 +446,10 @@ struct StitchProcess: Equatable {
         self.rect = RECT0011
         self.average = average
         self.colorIndexes = colorIndexes
-        self.didSetup = true
     }
     
-    func setRect(_ rect: CGRect) -> StitchProcess {
-        var process = self
-        process.rect = rect
-        
-        return process
+    mutating func setRect(_ rect: CGRect) {
+        self.rect = rect
     }
     
     func setup(image: CIImage, config: StitchConfig) -> StitchProcess {
@@ -479,7 +487,6 @@ struct StitchProcess: Equatable {
         }
         
         process = process.applyColorIndexes(config: config)
-        process.didSetup = true
         
         return process
     }
@@ -503,5 +510,27 @@ struct StitchProcess: Equatable {
         process.colorIndexes = colorIndexes
         
         return process
+    }
+}
+
+@Observable class StitchItem {
+    var image: Data
+    var clean: Data
+    var process = StitchProcess()
+    
+    init(image: UIImage) throws {
+        guard let ciImage = CIImage(image: image) else {
+            throw MainError.error("Cant convert to ciimage")
+        }
+        
+        self.image = try image.jpegData()
+        self.clean = try image.processClean()
+        self.process = process.setup(image: ciImage, config: Stitch.getConfig(mode: .image))
+    }
+    
+    fileprivate init(image: UIImage, process: StitchProcess) throws {
+        self.image = try image.jpegData()
+        self.clean = try image.processClean()
+        self.process = process
     }
 }

@@ -7,18 +7,19 @@
 
 import SwiftUI
 import Photos
+import Combine
 
 struct HomeBottom: View {
-    @Environment(HomeUpdater.self) var updater
+    @Environment(HomeUpdater.self) var homeUpdater
     
     var body: some View {
         GlassContainer {
-            if updater.showMenu == .filters {
+            if homeUpdater.showMenu == .filters {
                 VStack(spacing: 0) {
                     ForEach(getFilterCase(), id: \.self) { filter in
                         Button {
-                            updater.photofilter = filter
-                            updater.showMenu = .none
+                            homeUpdater.photofilter = filter
+                            homeUpdater.showMenu = .none
                         } label: {
                             HStack(spacing: 12) {
                                 Image(systemName: filter.icon)
@@ -26,7 +27,7 @@ struct HomeBottom: View {
                                 Text(filter.title)
                                 Spacer()
                                 Image(systemName: "checkmark")
-                                    .opacity(updater.photofilter == filter ? 1 : 0)
+                                    .opacity(homeUpdater.photofilter == filter ? 1 : 0)
                             }
                             .foregroundStyle(Color(uiColor: .label))
                             .frame(height: 40)
@@ -37,14 +38,14 @@ struct HomeBottom: View {
                 .padding(.vertical, 8)
                 .frame(maxWidth: 220)
                 .modifier(MainGlass(shape: RoundedRectangle(cornerRadius: 24), type: .clear))
-            } else if updater.selecteds.isEmpty {
+            } else if homeUpdater.selecteds.isEmpty {
                 Button {
-                    updater.showMenu = .filters
+                    homeUpdater.showMenu = .filters
                 } label: {
                     HStack(spacing: 12) {
-                        Image(systemName: updater.photofilter.icon)
+                        Image(systemName: homeUpdater.photofilter.icon)
                             .frame(width: 20)
-                        Text(updater.photofilter.title)
+                        Text(homeUpdater.photofilter.title)
                     }
                     .foregroundStyle(Color(uiColor: .label))
                     .padding(.horizontal, 20)
@@ -66,11 +67,11 @@ struct HomeBottom: View {
         .align(edge: .bottom, constant: 0)
         
         GlassContainer {
-            if updater.showMenu == .web {
+            if homeUpdater.showMenu == .web {
                 
-            } else if updater.selecteds.isEmpty {
+            } else if homeUpdater.selecteds.isEmpty {
                 Button {
-                    updater.showMenu = .web
+                    homeUpdater.showMenu = .web
                 } label: {
                     Image(systemName: "globe")
                         .font(.system(size: 24, weight: .medium))
@@ -80,7 +81,25 @@ struct HomeBottom: View {
                 }
             } else {
                 Button {
-                    
+                    Task {
+                        var items = [StitchItem]()
+                        
+                        for asset in homeUpdater.selecteds {
+                            if asset.mediaType == .image {
+                                items.append(try await Pipeline.assetImageToItem(asset))
+                            } else {
+                                items.append(try await Pipeline.assetVideoToItem(asset) { progress in
+                                    print(progress)
+                                })
+                            }
+                        }
+                        
+                        if homeUpdater.autoStitch {
+                            try await Pipeline.autoStitch(items)
+                        }
+                        
+                        try await homeUpdater.showEdit(items: items)
+                    }
                 } label: {
                     HStack(spacing: 12) {
                         Image(.vertical).frame(width: 20)
@@ -97,10 +116,10 @@ struct HomeBottom: View {
         .align(edge: .bottom, constant: 0)
     }
     
-    func getFilterCase() -> [PhotosFilter] {
+    private func getFilterCase() -> [PhotosFilter] {
         var cases = [PhotosFilter.all]
         
-        if let album = updater.album {
+        if let album = homeUpdater.album {
             if album.assets.contains(where: { $0.mediaType == .image }) {
                 cases.append(.images)
             }

@@ -7,25 +7,26 @@
 
 import SwiftUI
 import Photos
+import Combine
 
 struct Home: View {
-    @State var updater = HomeUpdater()
+    @State var homeUpdater = HomeUpdater()
     
     var body: some View {
         ZStack {
             HomePhotos()
             
-            if updater.showMenu != .none {
+            if homeUpdater.showMenu != .none {
                 Color(uiColor: .label).opacity(0.01).onTapGesture {
-                    updater.showMenu = .none
+                    homeUpdater.showMenu = .none
                 }
             }
             
             HomeTop()
             HomeBottom()
             
-            if !updater.warningText.isEmpty {
-                Text(updater.warningText)
+            if !homeUpdater.warningText.isEmpty {
+                Text(homeUpdater.warningText)
                     .fixedSize(horizontal: false, vertical: true)
                     .font(.system(size: 18, weight: .semibold, design: .rounded))
                     .multilineTextAlignment(.center)
@@ -40,32 +41,43 @@ struct Home: View {
                     .allowsHitTesting(false)
                     .zIndex(1000)
             }
+            
+            if homeUpdater.showEdit {
+                Edit(setItems: homeUpdater.setItems).transition(.move(edge: .leading))
+            }
         }
         .background(Color._background)
         .onAppear(perform: {
-            if !SHOW_ONBOARDING {
-                updater.registerChange()
+            Task {
+                if !SHOW_ONBOARDING {
+                    try await homeUpdater.registerChange()
+                }
             }
         })
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification), perform: { _ in
-            if !SHOW_ONBOARDING {
-                updater.requestLibraryAccess()
+            Task {
+                if !SHOW_ONBOARDING {
+                    try await homeUpdater.requestLibraryAccess()
+                }
             }
         })
-        .environment(updater)
-        .animation(.smooth(duration: ANIM_DURATION), value: updater.warningText)
-        .animation(.smooth(duration: ANIM_DURATION), value: updater.showMenu)
-        .animation(.smooth(duration: ANIM_DURATION), value: updater.selecteds)
-        .animation(.smooth(duration: ANIM_DURATION), value: updater.removeOriginals)
-        .animation(.smooth(duration: ANIM_DURATION), value: updater.autoStitch)
-        .animation(.smooth(duration: ANIM_DURATION), value: updater.autoSelection)
-        .fullScreenCover(isPresented: $updater.showOnboarding, onDismiss: {
-            SHOW_ONBOARDING = false
-            updater.registerChange()
+        .environment(homeUpdater)
+        .animation(.smooth(duration: ANIM_DURATION), value: homeUpdater.warningText)
+        .animation(.smooth(duration: ANIM_DURATION), value: homeUpdater.showEdit)
+        .animation(.smooth(duration: ANIM_DURATION), value: homeUpdater.showMenu)
+        .animation(.smooth(duration: ANIM_DURATION), value: homeUpdater.selecteds)
+        .animation(.smooth(duration: ANIM_DURATION), value: homeUpdater.removeOriginals)
+        .animation(.smooth(duration: ANIM_DURATION), value: homeUpdater.autoStitch)
+        .animation(.smooth(duration: ANIM_DURATION), value: homeUpdater.autoSelection)
+        .fullScreenCover(isPresented: $homeUpdater.showOnboarding, onDismiss: {
+            Task {
+                SHOW_ONBOARDING = false
+                try await homeUpdater.registerChange()
+            }
         }) {
             Onboarding()
         }
-        .fullScreenCover(isPresented: $updater.showSubscription) {
+        .fullScreenCover(isPresented: $homeUpdater.showSubscription) {
             Subscription()
         }
     }
@@ -97,26 +109,34 @@ struct Home: View {
     
     private(set) var warningText = ""
     @ObservationIgnored private var warningTask: Task<Void, Never>?
+    
+    private var showEdit = false
+    @ObservationIgnored var setItems = PassthroughSubject<[StitchItem], Never>()
+    
+    func showEdit(items: [StitchItem]) async throws {
+        showEdit = true
+        
+        try await Task.sleep(for: .seconds(ANIM_DURATION))
+        
+        setItems.send(items)
+    }
 }
 
 extension HomeUpdater: PHPhotoLibraryChangeObserver {
-    func registerChange(completion: (() -> Void)? = nil) {
+    func registerChange() async throws {
         PHPhotoLibrary.shared().register(self)
-        requestLibraryAccess(completion: completion)
+        try await requestLibraryAccess()
     }
     
     func photoLibraryDidChange(_ changeInstance: PHChange) {
-        DispatchQueue.main.async { [self] in
-            requestLibraryAccess()
-        }
+        Task { try await requestLibraryAccess() }
     }
     
-    func requestLibraryAccess(completion: (() -> Void)? = nil) {
+    func requestLibraryAccess() async throws {
         selecteds.removeAll()
         
-        library.request { [self] _ in
-            selectAlbum(library.getAllAlbum().first)
-        }
+        try await library.request()
+        selectAlbum(library.getAllAlbum().first(where: { $0.localizedTitle == ALBUM_SELECT }) ?? library.getAllAlbum().first)
     }
 }
 
@@ -127,6 +147,7 @@ extension HomeUpdater {
     
     func selectAlbum(_ info: ALInfo?) {
         album = info
+        ALBUM_SELECT = info?.localizedTitle
         selecteds.removeAll()
         
         if let info = info {

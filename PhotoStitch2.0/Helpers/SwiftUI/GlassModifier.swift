@@ -106,7 +106,6 @@ struct GlassEmpty: ShapeStyle { }
 
 struct GlassContainer<Content: View>: View {
     @ViewBuilder var content: () -> Content
-    
     var body: some View {
         if #available(iOS 26, *) {
             GlassEffectContainer(content: content)

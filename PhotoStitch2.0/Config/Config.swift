@@ -25,6 +25,9 @@ let LOW_REMOVE: CGFloat = 141
 let HIGH_REMOVE: CGFloat = 156
 let SCROLL_REMOVE: CGFloat = 27
 
+let STITCH_CONFIDENCE: CGFloat = 0.9
+let STITCH_SAME_PERCENT: Int = 90
+
 let CICONTEXT = CIContext()
 
 var SHOW_ONBOARDING: Bool {
@@ -50,6 +53,11 @@ var REMOVE_ORIGINALS: RemoveOriginals {
 var PHOTO_FILTER: PhotosFilter {
     get { PhotosFilter(rawValue: UserDefaults.standard.object(forKey: "d3451715-a5ff-4d37-ad71-bc0a8b17de73") as? Int ?? -1) ?? .all }
     set { UserDefaults.standard.set(newValue.rawValue, forKey: "d3451715-a5ff-4d37-ad71-bc0a8b17de73") }
+}
+
+var ALBUM_SELECT: String? {
+    get { UserDefaults.standard.object(forKey: "1e5684e492d5598b") as? String }
+    set { UserDefaults.standard.set(newValue, forKey: "1e5684e492d5598b") }
 }
 
 enum RemoveOriginals: Int, CaseIterable {
@@ -98,4 +106,26 @@ enum PhotosFilter: Int, CaseIterable {
 
 enum MainError: Error {
     case error(String)
+}
+
+extension UIImage {
+    func jpegData() throws -> Data {
+        return try jpegData(compressionQuality: 0.8).unwrap()
+    }
+    
+    func processClean() throws -> Data {
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = scale
+        let renderer = UIGraphicsImageRenderer(size: size, format: format)
+        let mask = renderer.image { context in
+            context.cgContext.setFillColor(UIColor.black.cgColor)
+            context.cgContext.fill(CGRect(origin: .zero, size: size))
+            context.cgContext.setFillColor(UIColor.white.cgColor)
+            context.cgContext.fill(CGRect(x: size.width - SCROLL_REMOVE, y: 0, width: SCROLL_REMOVE, height: size.height))
+        }
+        
+        let output = OpenCVWrapper.inpaint(image: self, mask: mask, radius: 0.0)
+        
+        return try output.jpegData()
+    }
 }
