@@ -43,7 +43,7 @@ struct Home: View {
             }
             
             if homeUpdater.showEdit {
-                Edit(setItems: homeUpdater.setItems).transition(.move(edge: .leading))
+                Edit(editUpdater: EditUpdater(items: homeUpdater.items, axis: homeUpdater.axis)).transition(.move(edge: .leading))
             }
         }
         .background(Color._background)
@@ -61,7 +61,12 @@ struct Home: View {
                 }
             }
         })
-        .environment(homeUpdater)
+        .onChange(homeUpdater.showEdit, perform: { showEdit in
+            if !showEdit {
+                homeUpdater.items = []
+                homeUpdater.axis = .vertical
+            }
+        })
         .animation(.smooth(duration: ANIM_DURATION), value: homeUpdater.warningText)
         .animation(.smooth(duration: ANIM_DURATION), value: homeUpdater.showEdit)
         .animation(.smooth(duration: ANIM_DURATION), value: homeUpdater.showMenu)
@@ -80,6 +85,7 @@ struct Home: View {
         .fullScreenCover(isPresented: $homeUpdater.showSubscription) {
             Subscription()
         }
+        .environment(homeUpdater)
     }
 }
 
@@ -110,16 +116,9 @@ struct Home: View {
     private(set) var warningText = ""
     @ObservationIgnored private var warningTask: Task<Void, Never>?
     
-    private var showEdit = false
-    @ObservationIgnored var setItems = PassthroughSubject<[StitchItem], Never>()
-    
-    func showEdit(items: [StitchItem]) async throws {
-        showEdit = true
-        
-        try await Task.sleep(for: .seconds(ANIM_DURATION))
-        
-        setItems.send(items)
-    }
+    var showEdit = false
+    @ObservationIgnored var items: [StitchItem] = []
+    @ObservationIgnored var axis: Edge.Set = .vertical
 }
 
 extension HomeUpdater: PHPhotoLibraryChangeObserver {

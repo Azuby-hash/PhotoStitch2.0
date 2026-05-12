@@ -93,6 +93,7 @@
 		CE8700842FB039E200061801 /* DataSizeHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87003B2FB039E200061801 /* DataSizeHelpers.swift */; };
 		CE8700852FB039E200061801 /* URLSessionHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700432FB039E200061801 /* URLSessionHelpers.swift */; };
 		CE8700862FB039E200061801 /* UISStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700132FB039E200061801 /* UISStackView.swift */; };
+		CE8700882FB222C500061801 /* EditContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700872FB222C500061801 /* EditContent.swift */; };
 		CE87FFF12FB0223800061801 /* OpenCVWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = CE87FFEF2FB0223800061801 /* OpenCVWrapper.mm */; };
 		CE87FFF22FB0223800061801 /* OpenCVWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87FFEC2FB0223800061801 /* OpenCVWrapper.swift */; };
 		CE87FFF82FB0387C00061801 /* Pipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87FFF72FB0387800061801 /* Pipeline.swift */; };
@@ -191,6 +192,7 @@
 		CE8700412FB039E200061801 /* OptionalHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalHelpers.swift; sourceTree = "<group>"; };
 		CE8700422FB039E200061801 /* StringHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringHelpers.swift; sourceTree = "<group>"; };
 		CE8700432FB039E200061801 /* URLSessionHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionHelpers.swift; sourceTree = "<group>"; };
+		CE8700872FB222C500061801 /* EditContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditContent.swift; sourceTree = "<group>"; };
 		CE87FFEC2FB0223800061801 /* OpenCVWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenCVWrapper.swift; sourceTree = "<group>"; };
 		CE87FFED2FB0223800061801 /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		CE87FFEE2FB0223800061801 /* OpenCVWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenCVWrapper.h; sourceTree = "<group>"; };
@@ -298,6 +300,7 @@
 			isa = PBXGroup;
 			children = (
 				CE4231AD2FACE79400701039 /* Edit.swift */,
+				CE8700872FB222C500061801 /* EditContent.swift */,
 			);
 			path = Edit;
 			sourceTree = "<group>";
@@ -640,6 +643,7 @@
 				CE8700522FB039E200061801 /* UISImageView.swift in Sources */,
 				CE8700532FB039E200061801 /* UIStackViewHighlight.swift in Sources */,
 				CE8700542FB039E200061801 /* UIViewPointDetect.swift in Sources */,
+				CE8700882FB222C500061801 /* EditContent.swift in Sources */,
 				CE8700552FB039E200061801 /* UISToolBar.swift in Sources */,
 				CE8700562FB039E200061801 /* UIViewShadow.swift in Sources */,
 				CE8700572FB039E200061801 /* UISButton.swift in Sources */,

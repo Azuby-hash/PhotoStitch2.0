@@ -129,3 +129,22 @@ extension UIImage {
         return try output.jpegData()
     }
 }
+
+extension Data {
+    func getThumbnail(originSize: CGSize) throws -> UIImage {
+        let size = (originSize.height > 0 && originSize.width > 0) ? (Swift.max(originSize.width, originSize.height) * 100 / Swift.min(originSize.width, originSize.height)) : 100
+        
+        let options: [CFString: Any] = [
+            kCGImageSourceCreateThumbnailFromImageIfAbsent: true,
+            kCGImageSourceCreateThumbnailWithTransform: true,
+            kCGImageSourceThumbnailMaxPixelSize: size,
+            kCGImageSourceShouldCacheImmediately: true
+        ]
+        
+        guard let source = CGImageSourceCreateWithData(self as CFData, nil),
+              let thumbnail = CGImageSourceCreateThumbnailAtIndex(source, 0, options as CFDictionary)
+        else { throw MainError.error("Can't get thumbnail") }
+        
+        return UIImage(cgImage: thumbnail)
+    }
+}

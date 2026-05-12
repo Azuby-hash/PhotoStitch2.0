@@ -514,6 +514,7 @@ struct StitchProcess: Equatable {
 }
 
 @Observable class StitchItem {
+    let size: CGSize
     var image: Data
     var clean: Data
     var process = StitchProcess()
@@ -523,12 +524,14 @@ struct StitchProcess: Equatable {
             throw MainError.error("Cant convert to ciimage")
         }
         
+        self.size = image.size
         self.image = try image.jpegData()
         self.clean = try image.processClean()
         self.process = process.setup(image: ciImage, config: Stitch.getConfig(mode: .image))
     }
     
     fileprivate init(image: UIImage, process: StitchProcess) throws {
+        self.size = image.size
         self.image = try image.jpegData()
         self.clean = try image.processClean()
         self.process = process

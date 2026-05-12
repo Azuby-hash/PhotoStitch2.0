@@ -98,7 +98,9 @@ struct HomeBottom: View {
                             try await Pipeline.autoStitch(items)
                         }
                         
-                        try await homeUpdater.showEdit(items: items)
+                        homeUpdater.items = items
+                        homeUpdater.axis = .vertical
+                        homeUpdater.showEdit = true
                     }
                 } label: {
                     HStack(spacing: 12) {
