@@ -513,7 +513,8 @@ struct StitchProcess: Equatable {
     }
 }
 
-@Observable class StitchItem {
+@Observable class StitchItem: Identifiable {
+    let id = UUID().uuidString
     let size: CGSize
     var image: Data
     var clean: Data

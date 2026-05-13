@@ -12,7 +12,7 @@ struct EditContent<Content: View>: UIViewRepresentable {
     @Environment(EditUpdater.self) var updater
 
     let edgeInsets: EdgeInsets
-    let content: () -> Content
+    @ViewBuilder let content: () -> Content
     
     func makeUIView(context: Context) -> UIView {
         let view = UIView()
@@ -24,9 +24,9 @@ struct EditContent<Content: View>: UIViewRepresentable {
             .eshowsVerticalScrollIndicator(false)
             .eshowsHorizontalScrollIndicator(false)
         let hosting = UIHostingController(rootView: content())
+        hosting.view.backgroundColor = .clear
         
-        view.eaddSubview(scrollView
-            .eaddSubview(hosting.view, [.leading(0), .trailing(0), .top(0), .bottom(0)]), [.leading(edgeInsets.leading), .trailing(edgeInsets.trailing), .top(edgeInsets.top), .bottom(edgeInsets.bottom)])
+        view.eaddSubview(scrollView.eaddSubview(hosting.view, [.leading(0), .trailing(0), .top(0), .bottom(0)]), [.leading(edgeInsets.leading), .trailing(edgeInsets.trailing), .top(edgeInsets.top), .bottom(edgeInsets.bottom)])
         
         context.coordinator.view = view
         context.coordinator.scrollView = scrollView
@@ -46,7 +46,7 @@ struct EditContent<Content: View>: UIViewRepresentable {
     class Coordinator: NSObject, UIScrollViewDelegate {
         weak var view: UIView?
         weak var scrollView: UIScrollView?
-        weak var hosting: UIHostingController<Content>?
+        var hosting: UIHostingController<Content>?
         
         func viewForZooming(in scrollView: UIScrollView) -> UIView? {
             return hosting?.view

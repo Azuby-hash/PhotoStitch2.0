@@ -43,7 +43,7 @@ struct Home: View {
             }
             
             if homeUpdater.showEdit {
-                Edit(editUpdater: EditUpdater(items: homeUpdater.items, axis: homeUpdater.axis)).transition(.move(edge: .leading))
+                Edit(editUpdater: EditUpdater(items: homeUpdater.items, axis: homeUpdater.axis)).transition(.move(edge: .trailing))
             }
         }
         .background(Color._background)
