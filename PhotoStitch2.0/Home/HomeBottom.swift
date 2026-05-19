@@ -82,25 +82,29 @@ struct HomeBottom: View {
             } else {
                 Button {
                     Task {
-                        var items = [StitchItem]()
-                        
-                        for asset in homeUpdater.selecteds {
-                            if asset.mediaType == .image {
-                                items.append(try await Pipeline.assetImageToItem(asset))
-                            } else {
-                                items.append(try await Pipeline.assetVideoToItem(asset) { progress in
-                                    print(progress)
-                                })
+                        do {
+                            var items = [StitchItem]()
+                            
+                            for asset in homeUpdater.selecteds {
+                                if asset.mediaType == .image {
+                                    items.append(try await Pipeline.assetImageToItem(asset))
+                                } else {
+                                    items.append(try await Pipeline.assetVideoToItem(asset) { progress in
+                                        print(progress)
+                                    })
+                                }
                             }
+                            
+                            if homeUpdater.autoStitch {
+                                try await Pipeline.autoStitch(items)
+                            }
+                            
+                            homeUpdater.items = items
+                            homeUpdater.axis = .vertical
+                            homeUpdater.showEdit = true
+                        } catch {
+                            print(error)
                         }
-                        
-                        if homeUpdater.autoStitch {
-                            try await Pipeline.autoStitch(items)
-                        }
-                        
-                        homeUpdater.items = items
-                        homeUpdater.axis = .vertical
-                        homeUpdater.showEdit = true
                     }
                 } label: {
                     HStack(spacing: 12) {

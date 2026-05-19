@@ -22,24 +22,8 @@ struct Edit: View {
                 let bonusInset = getInset(geometry)
                 let totalInset = EdgeInsets(top: safeAreaInsets.top + bonusInset.top, leading: safeAreaInsets.leading + bonusInset.leading, bottom: safeAreaInsets.bottom + bonusInset.bottom, trailing: safeAreaInsets.trailing + bonusInset.trailing)
                 
-                EditContent(edgeInsets: totalInset) {
-                    EditStack(axis: editUpdater.axis) {
-                        ForEach(editUpdater.items, id: \.id) { item in
-                            EditChild(item: item, clean: editUpdater.clean, axis: editUpdater.axis)
-                                .onGeometryChange(for: CGRect.self) { childGeo in
-                                    return childGeo.frame(in: .named(contentCoordinate))
-                                } action: { newValue in
-                                    childFrames[item.id] = newValue
-                                }
-                                .onDisappear {
-                                    childFrames[item.id] = nil
-                                }
-                        }
-                    }
-                    .frame(width: editUpdater.axis == .vertical ? (geometry.size.width - totalInset.leading - totalInset.trailing) : nil,
-                           height: editUpdater.axis == .horizontal ? (geometry.size.height - totalInset.bottom - totalInset.top) : nil)
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                EditGallery(geometry: geometry, edgeInsets: totalInset)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
             
             GeometryReader { geometry in
@@ -75,23 +59,10 @@ struct Edit: View {
     }
 }
 
-struct EditStack<Content: View>: View {
-    let axis: Edge.Set
-    @ViewBuilder let content: () -> Content
-    
-    var body: some View {
-        if axis == .vertical {
-            VStack(spacing: 0) { content() }
-        } else {
-            HStack(spacing: 0) { content() }
-        }
-    }
-}
-
 struct EditChild: View {
     let item: StitchItem
     let clean: Bool
-    let axis: Edge.Set
+    let axis: NSLayoutConstraint.Axis
     
     var body: some View {
         let viewFrame = item.process.rect * item.size
@@ -113,13 +84,25 @@ struct EditChild: View {
     }
 }
 
+enum EditTab: String, CaseIterable {
+    case stitch = "stitch", control = "stitch.control"
+    case split = "split"
+    case sort = "sort"
+    case none = "none"
+}
+
 @Observable class EditUpdater {
     var items: [StitchItem]
-    var axis: Edge.Set
+    var axis: NSLayoutConstraint.Axis
     var clean: Bool = false
+    var tab = EditTab.none
     
-    init(items: [StitchItem], axis: Edge.Set) {
+    let editGallery = EditGalleryModel()
+    
+    init(items: [StitchItem], axis: NSLayoutConstraint.Axis) {
         self.items = items
         self.axis = axis
+        
+        editGallery.editUpdater = self
     }
 }

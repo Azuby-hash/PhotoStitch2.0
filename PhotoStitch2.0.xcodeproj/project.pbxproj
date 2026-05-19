@@ -93,7 +93,10 @@
 		CE8700842FB039E200061801 /* DataSizeHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87003B2FB039E200061801 /* DataSizeHelpers.swift */; };
 		CE8700852FB039E200061801 /* URLSessionHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700432FB039E200061801 /* URLSessionHelpers.swift */; };
 		CE8700862FB039E200061801 /* UISStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700132FB039E200061801 /* UISStackView.swift */; };
-		CE8700882FB222C500061801 /* EditContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700872FB222C500061801 /* EditContent.swift */; };
+		CE8700882FB222C500061801 /* EditGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700872FB222C500061801 /* EditGallery.swift */; };
+		CE8700912FB6A60000061801 /* EditContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87008E2FB6A60000061801 /* EditContent.swift */; };
+		CE8700942FB6A60000061801 /* EditOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87008D2FB6A60000061801 /* EditOverlay.swift */; };
+		CE8700962FB6A61100061801 /* ForwardScroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700952FB6A61100061801 /* ForwardScroll.swift */; };
 		CE87FFF12FB0223800061801 /* OpenCVWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = CE87FFEF2FB0223800061801 /* OpenCVWrapper.mm */; };
 		CE87FFF22FB0223800061801 /* OpenCVWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87FFEC2FB0223800061801 /* OpenCVWrapper.swift */; };
 		CE87FFF82FB0387C00061801 /* Pipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87FFF72FB0387800061801 /* Pipeline.swift */; };
@@ -192,7 +195,10 @@
 		CE8700412FB039E200061801 /* OptionalHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalHelpers.swift; sourceTree = "<group>"; };
 		CE8700422FB039E200061801 /* StringHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringHelpers.swift; sourceTree = "<group>"; };
 		CE8700432FB039E200061801 /* URLSessionHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionHelpers.swift; sourceTree = "<group>"; };
-		CE8700872FB222C500061801 /* EditContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditContent.swift; sourceTree = "<group>"; };
+		CE8700872FB222C500061801 /* EditGallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGallery.swift; sourceTree = "<group>"; };
+		CE87008D2FB6A60000061801 /* EditOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditOverlay.swift; sourceTree = "<group>"; };
+		CE87008E2FB6A60000061801 /* EditContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditContent.swift; sourceTree = "<group>"; };
+		CE8700952FB6A61100061801 /* ForwardScroll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForwardScroll.swift; sourceTree = "<group>"; };
 		CE87FFEC2FB0223800061801 /* OpenCVWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenCVWrapper.swift; sourceTree = "<group>"; };
 		CE87FFED2FB0223800061801 /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		CE87FFEE2FB0223800061801 /* OpenCVWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenCVWrapper.h; sourceTree = "<group>"; };
@@ -300,7 +306,8 @@
 			isa = PBXGroup;
 			children = (
 				CE4231AD2FACE79400701039 /* Edit.swift */,
-				CE8700872FB222C500061801 /* EditContent.swift */,
+				CE8700872FB222C500061801 /* EditGallery.swift */,
+				CE8700902FB6A60000061801 /* EditAttach */,
 			);
 			path = Edit;
 			sourceTree = "<group>";
@@ -424,6 +431,15 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		CE8700902FB6A60000061801 /* EditAttach */ = {
+			isa = PBXGroup;
+			children = (
+				CE87008D2FB6A60000061801 /* EditOverlay.swift */,
+				CE87008E2FB6A60000061801 /* EditContent.swift */,
+			);
+			path = EditAttach;
+			sourceTree = "<group>";
+		};
 		CE87FFF02FB0223800061801 /* OpenCV */ = {
 			isa = PBXGroup;
 			children = (
@@ -497,6 +513,7 @@
 		CEBD6C0F2F9D1D0100E176D7 /* Module */ = {
 			isa = PBXGroup;
 			children = (
+				CE8700952FB6A61100061801 /* ForwardScroll.swift */,
 				CE87FFF02FB0223800061801 /* OpenCV */,
 				CE4231982FA9773400701039 /* AssetLibrary.swift */,
 				CE4231A62FAB566700701039 /* LazyWFVStack.swift */,
@@ -643,7 +660,7 @@
 				CE8700522FB039E200061801 /* UISImageView.swift in Sources */,
 				CE8700532FB039E200061801 /* UIStackViewHighlight.swift in Sources */,
 				CE8700542FB039E200061801 /* UIViewPointDetect.swift in Sources */,
-				CE8700882FB222C500061801 /* EditContent.swift in Sources */,
+				CE8700882FB222C500061801 /* EditGallery.swift in Sources */,
 				CE8700552FB039E200061801 /* UISToolBar.swift in Sources */,
 				CE8700562FB039E200061801 /* UIViewShadow.swift in Sources */,
 				CE8700572FB039E200061801 /* UISButton.swift in Sources */,
@@ -654,6 +671,8 @@
 				CE87005C2FB039E200061801 /* IdiomHelpers.swift in Sources */,
 				CE87005D2FB039E200061801 /* GlassModifier.swift in Sources */,
 				CE87005E2FB039E200061801 /* UIViewPointSubview.swift in Sources */,
+				CE8700912FB6A60000061801 /* EditContent.swift in Sources */,
+				CE8700942FB6A60000061801 /* EditOverlay.swift in Sources */,
 				CE87005F2FB039E200061801 /* AsyncHelpers.swift in Sources */,
 				CE8700602FB039E200061801 /* UIStackViewPointSubview.swift in Sources */,
 				CE8700612FB039E200061801 /* UIStackViewSegmentPage.swift in Sources */,
@@ -688,6 +707,7 @@
 				CE87007E2FB039E200061801 /* NotificationHelpers.swift in Sources */,
 				CE87007F2FB039E200061801 /* CIImageHelpers.swift in Sources */,
 				CE8700802FB039E200061801 /* UIViewBiggerPoint.swift in Sources */,
+				CE8700962FB6A61100061801 /* ForwardScroll.swift in Sources */,
 				CE8700812FB039E200061801 /* UIViewEmbed.swift in Sources */,
 				CE8700822FB039E200061801 /* GestureHelpers.swift in Sources */,
 				CE8700832FB039E200061801 /* UIImageGif.swift in Sources */,

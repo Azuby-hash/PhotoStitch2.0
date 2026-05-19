@@ -13,8 +13,9 @@ class Pipeline {
      ONLY WORK on vertical, please limit in UI
      */
     static func autoStitch(_ items: [StitchItem]) async throws {
-        guard items.count > 2 else {
-            throw MainError.error("Some items not ready")
+        guard items.count >= 2 else {
+            print("No autostitch needed")
+            return
         }
         
         let date = Date()

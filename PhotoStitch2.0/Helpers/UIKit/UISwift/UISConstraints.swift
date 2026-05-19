@@ -77,11 +77,10 @@ extension NSLayoutConstraint {
     static func activate(_ constraints: [NSLayoutConstraint], compareConstrants: [NSLayoutConstraint]) {
         constraints.forEach { constraint in
             if let activedConstraint = compareConstrants.first(where: { $0.firstAnchor == constraint.firstAnchor && $0.secondAnchor == constraint.secondAnchor }) {
-                activedConstraint.constant = constraint.constant
-                activedConstraint.priority = constraint.priority
-            } else {
-                NSLayoutConstraint.activate([constraint])
+                activedConstraint.isActive = false
             }
+            
+            NSLayoutConstraint.activate([constraint])
         }
     }
 }

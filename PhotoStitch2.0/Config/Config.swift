@@ -27,6 +27,7 @@ let SCROLL_REMOVE: CGFloat = 27
 
 let STITCH_CONFIDENCE: CGFloat = 0.9
 let STITCH_SAME_PERCENT: Int = 90
+let SPLIT_ITEM_SPACING: CGFloat = 24
 
 let CICONTEXT = CIContext()
 

@@ -118,7 +118,7 @@ struct Home: View {
     
     var showEdit = false
     @ObservationIgnored var items: [StitchItem] = []
-    @ObservationIgnored var axis: Edge.Set = .vertical
+    @ObservationIgnored var axis: NSLayoutConstraint.Axis = .vertical
 }
 
 extension HomeUpdater: PHPhotoLibraryChangeObserver {
