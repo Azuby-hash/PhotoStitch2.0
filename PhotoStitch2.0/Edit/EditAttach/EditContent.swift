@@ -6,18 +6,25 @@
 //
 
 import UIKit
+import SwiftUI
 
 class EditContent: UIViewPointSubview {
-    @IBOutlet weak var scroll: ForwardScroll!
-    @IBOutlet weak var stack: UIStackView!
-    
-    func setup() {
-//        attachStitch()
-//        attachSplit()
-//        attachSort()
-    }
+    private(set) weak var editUpdater: EditUpdater?
+    private(set) var context: EditGallery.Context?
 
-    func update() {
+    func setup(editUpdater: EditUpdater, context: EditGallery.Context) {
+        self.editUpdater = editUpdater
+        self.context = context
         
+        setupStitch()
+//        setupSplit()
+//        setupSort()
+    }
+    
+    func update(editUpdater: EditUpdater, context: EditGallery.Context) {
+        self.editUpdater = editUpdater
+        self.context = context
+        
+        updateStitch()
     }
 }

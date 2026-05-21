@@ -7,6 +7,7 @@
 
 import UIKit
 import SwiftUI
+import Combine
 
 /**
  EditGallery
@@ -53,6 +54,11 @@ struct EditGallery: UIViewRepresentable {
         
         editUpdater.editGallery.context = context
         
+        context.coordinator.editContent?.setup(editUpdater: editUpdater, context: context)
+        context.coordinator.editOverlay?.setup(editUpdater: editUpdater, context: context)
+        
+        view.layoutIfNeeded()
+        
         context.coordinator.layoutUpdate()
         
         return view
@@ -60,6 +66,9 @@ struct EditGallery: UIViewRepresentable {
     
     func updateUIView(_ uiView: UIView, context: Context) {
         editUpdater.editGallery.context = context
+        
+        context.coordinator.editContent?.update(editUpdater: editUpdater, context: context)
+        context.coordinator.editOverlay?.update(editUpdater: editUpdater, context: context)
         
         uiView.layoutIfNeeded()
         
@@ -88,13 +97,11 @@ struct EditGallery: UIViewRepresentable {
         }
         
         func scrollViewDidZoom(_ scrollView: UIScrollView) {
-            content?.editUpdater.editGallery.zoomScale = scrollView.zoomScale
-            content?.editUpdater.editGallery.contentOffset = scrollView.contentOffset
+            content?.editUpdater.editGallery.scrollViewUpdate.send()
         }
         
         func scrollViewDidScroll(_ scrollView: UIScrollView) {
-            content?.editUpdater.editGallery.zoomScale = scrollView.zoomScale
-            content?.editUpdater.editGallery.contentOffset = scrollView.contentOffset
+            content?.editUpdater.editGallery.scrollViewUpdate.send()
         }
         
         func layoutUpdate() {
@@ -202,8 +209,7 @@ struct EditGallery: UIViewRepresentable {
     @ObservationIgnored weak var editUpdater: EditUpdater?
     @ObservationIgnored var context: EditGallery.Context?
     
-    var zoomScale = CGFloat(1)
-    var contentOffset = CGPoint.zero
+    let scrollViewUpdate = PassthroughSubject<Void, Never>()
     var spaceZeroIndex: Int?
 }
 

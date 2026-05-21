@@ -97,6 +97,8 @@
 		CE8700912FB6A60000061801 /* EditContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87008E2FB6A60000061801 /* EditContent.swift */; };
 		CE8700942FB6A60000061801 /* EditOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87008D2FB6A60000061801 /* EditOverlay.swift */; };
 		CE8700962FB6A61100061801 /* ForwardScroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700952FB6A61100061801 /* ForwardScroll.swift */; };
+		CE8700A32FBC9BF900061801 /* EditStitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700A22FBC9BF900061801 /* EditStitch.swift */; };
+		CE8700A52FBCB5F800061801 /* EditStitchControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700A42FBCB5F800061801 /* EditStitchControl.swift */; };
 		CE87FFF12FB0223800061801 /* OpenCVWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = CE87FFEF2FB0223800061801 /* OpenCVWrapper.mm */; };
 		CE87FFF22FB0223800061801 /* OpenCVWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87FFEC2FB0223800061801 /* OpenCVWrapper.swift */; };
 		CE87FFF82FB0387C00061801 /* Pipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87FFF72FB0387800061801 /* Pipeline.swift */; };
@@ -199,6 +201,8 @@
 		CE87008D2FB6A60000061801 /* EditOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditOverlay.swift; sourceTree = "<group>"; };
 		CE87008E2FB6A60000061801 /* EditContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditContent.swift; sourceTree = "<group>"; };
 		CE8700952FB6A61100061801 /* ForwardScroll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForwardScroll.swift; sourceTree = "<group>"; };
+		CE8700A22FBC9BF900061801 /* EditStitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditStitch.swift; sourceTree = "<group>"; };
+		CE8700A42FBCB5F800061801 /* EditStitchControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditStitchControl.swift; sourceTree = "<group>"; };
 		CE87FFEC2FB0223800061801 /* OpenCVWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenCVWrapper.swift; sourceTree = "<group>"; };
 		CE87FFED2FB0223800061801 /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		CE87FFEE2FB0223800061801 /* OpenCVWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenCVWrapper.h; sourceTree = "<group>"; };
@@ -436,6 +440,8 @@
 			children = (
 				CE87008D2FB6A60000061801 /* EditOverlay.swift */,
 				CE87008E2FB6A60000061801 /* EditContent.swift */,
+				CE8700A22FBC9BF900061801 /* EditStitch.swift */,
+				CE8700A42FBCB5F800061801 /* EditStitchControl.swift */,
 			);
 			path = EditAttach;
 			sourceTree = "<group>";
@@ -659,6 +665,7 @@
 				CE8700512FB039E200061801 /* WKSWebView.swift in Sources */,
 				CE8700522FB039E200061801 /* UISImageView.swift in Sources */,
 				CE8700532FB039E200061801 /* UIStackViewHighlight.swift in Sources */,
+				CE8700A52FBCB5F800061801 /* EditStitchControl.swift in Sources */,
 				CE8700542FB039E200061801 /* UIViewPointDetect.swift in Sources */,
 				CE8700882FB222C500061801 /* EditGallery.swift in Sources */,
 				CE8700552FB039E200061801 /* UISToolBar.swift in Sources */,
@@ -689,6 +696,7 @@
 				CE87006C2FB039E200061801 /* UISTextView.swift in Sources */,
 				CE87006D2FB039E200061801 /* UISSearchBar.swift in Sources */,
 				CE87006E2FB039E200061801 /* UIViewZPosition.swift in Sources */,
+				CE8700A32FBC9BF900061801 /* EditStitch.swift in Sources */,
 				CE87006F2FB039E200061801 /* UILabelHighlightColor.swift in Sources */,
 				CE8700702FB039E200061801 /* UITextFieldPlaceholder.swift in Sources */,
 				CE8700712FB039E200061801 /* ViewHelpers.swift in Sources */,

@@ -6,19 +6,25 @@
 //
 
 import UIKit
+import SwiftUI
 
 class EditOverlay: UIViewPointSubview {
-    weak var scroll: ForwardScroll?
-    weak var stack: UIStackView?
-    var content: EditGallery?
+    private(set) weak var editUpdater: EditUpdater?
+    private(set) var context: EditGallery.Context?
 
-    func setup() {
-//        attachStitch()
-//        attachSplit()
-//        attachSort()
+    func setup(editUpdater: EditUpdater, context: EditGallery.Context) {
+        self.editUpdater = editUpdater
+        self.context = context
+        
+        setupStitch()
+//        setupSplit()
+//        setupSort()
     }
     
-    func update() {
+    func update(editUpdater: EditUpdater, context: EditGallery.Context) {
+        self.editUpdater = editUpdater
+        self.context = context
         
+        updateStitch()
     }
 }
