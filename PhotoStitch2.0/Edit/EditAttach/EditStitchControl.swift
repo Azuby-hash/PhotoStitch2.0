@@ -11,7 +11,7 @@ import Combine
 
 private let DRAG_WIDTH: CGFloat = 24
 private let DRAG_LONG: CGFloat = 32
-private let DRAG_SHORT: CGFloat = 2
+private let DRAG_SHORT: CGFloat = 3
 
 private let DIVIDER_WIDTH: CGFloat = 1.5
 private let ICON_SIZE: CGSize = CGSize(width: 24, height: 24)
@@ -28,6 +28,8 @@ class EditStitchControl: UIViewPointSubview {
     private(set) weak var editUpdater: EditUpdater?
     private(set) var context: EditGallery.Context?
     
+    private var didLoad = false
+    
     private var scrollViewUpdate: AnyCancellable?
     
     private let beforeView = UIView()
@@ -41,7 +43,7 @@ class EditStitchControl: UIViewPointSubview {
         
         beforeView
             .elayerModifier({ layer in
-                layer.cornerRadius = 8
+                layer.cornerRadius = DRAG_WIDTH / 2
                 layer.cornerCurve = .continuous
                 layer.maskedCorners = [.layerMinXMinYCorner, (isVer ? .layerMaxXMinYCorner : .layerMinXMaxYCorner)]
             })
@@ -57,7 +59,7 @@ class EditStitchControl: UIViewPointSubview {
         
         afterView
             .elayerModifier({ layer in
-                layer.cornerRadius = 8
+                layer.cornerRadius = DRAG_WIDTH / 2
                 layer.cornerCurve = .continuous
                 layer.maskedCorners = [(isVer ? .layerMinXMaxYCorner : .layerMaxXMinYCorner), .layerMaxXMaxYCorner]
             })
@@ -77,15 +79,16 @@ class EditStitchControl: UIViewPointSubview {
         scrollViewUpdate = editUpdater.editGallery.scrollViewUpdate.eraseToAnyPublisher().sink { [self] _ in
             contentUpdate(editUpdater: editUpdater, context: context)
         }
-        
-        contentUpdate(editUpdater: editUpdater, context: context)
     }
     
     func update(editUpdater: EditUpdater, context: EditGallery.Context) {
         self.editUpdater = editUpdater
         self.context = context
         
-        
+        if !didLoad {
+            didLoad = true
+            contentUpdate(editUpdater: editUpdater, context: context)
+        }
     }
     
     private func contentUpdate(editUpdater: EditUpdater, context: EditGallery.Context) {

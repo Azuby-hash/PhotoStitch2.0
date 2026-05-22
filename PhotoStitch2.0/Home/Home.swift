@@ -43,7 +43,7 @@ struct Home: View {
             }
             
             if homeUpdater.showEdit {
-                Edit(editUpdater: EditUpdater(items: homeUpdater.items, axis: homeUpdater.axis)).transition(.move(edge: .trailing))
+                Edit(editUpdater: EditUpdater(items: homeUpdater.items, axis: homeUpdater.axis)).transition(.move(edge: .top))
             }
         }
         .background(Color._background)
@@ -102,7 +102,7 @@ struct Home: View {
     
     private(set) var album: ALInfo?
     
-    var selecteds: [PHAsset] = []
+    private(set) var selecteds: [PHAsset] = []
     
     var showMenu = MenuType.none
     var showOnboarding = SHOW_ONBOARDING
@@ -119,6 +119,89 @@ struct Home: View {
     var showEdit = false
     @ObservationIgnored var items: [StitchItem] = []
     @ObservationIgnored var axis: NSLayoutConstraint.Axis = .vertical
+    
+    func select(_ asset: PHAsset) {
+        if selecteds.contains(where: { $0.mediaType == .video }),
+           asset.mediaType == .video {
+            warningAlert("Please select only one video!")
+            return
+        }
+        
+        do {
+            try autoSelection(for: asset)
+        } catch {
+            print(error)
+        }
+    }
+    
+    func deselect(_ asset: PHAsset) {
+        selecteds = selecteds.filter({ $0 != asset })
+    }
+    
+    func deselectAll() {
+        selecteds.removeAll()
+    }
+    
+    func filterAssets() -> [PHAsset]? {
+        return album?.assets.filter({
+            if photofilter == .images {
+                return $0.mediaType == .image
+            }
+            
+            if photofilter == .videos {
+                return $0.mediaType == .video
+            }
+            
+            return true
+        })
+    }
+    
+    private func autoSelection(for asset: PHAsset) throws {
+        guard var currDate = asset.creationDate,
+              let assets = filterAssets(),
+              let firstIndex = assets.firstIndex(of: asset)
+        else { throw MainError.error("No asset") }
+        
+        guard autoSelection, asset.mediaType != .video else {
+            selecteds.append(asset)
+            return
+        }
+
+        let calendar = Calendar.current
+        
+        var currAsset = asset
+        var pendingSelecteds = [currAsset]
+        
+        for (index, asset) in assets.enumerated() {
+            guard let date = asset.creationDate,
+                  index > firstIndex,
+                  asset != currAsset,
+                  asset.mediaType != .video
+            else { continue }
+            
+            if calendar.isDate(currDate, inSameDayAs: date), abs(date.timeIntervalSince(currDate)) < INTERVAL_AUTO, pendingSelecteds.count < 4 {
+                pendingSelecteds.append(asset)
+                currAsset = asset
+                currDate = date
+            } else {
+                break
+            }
+        }
+        
+        pendingSelecteds = pendingSelecteds.sorted(by: {
+            guard let date1 = $0.creationDate,
+                  let date2 = $1.creationDate
+            else { return false }
+            
+            return date1 < date2
+        })
+        
+        for asset in pendingSelecteds {
+            if !selecteds.contains(asset) {
+                selecteds.append(asset)
+            }
+        }
+    }
 }
 
 extension HomeUpdater: PHPhotoLibraryChangeObserver {

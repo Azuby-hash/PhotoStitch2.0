@@ -29,6 +29,8 @@ let STITCH_CONFIDENCE: CGFloat = 0.9
 let STITCH_SAME_PERCENT: Int = 90
 let SPLIT_ITEM_SPACING: CGFloat = 24
 
+let INTERVAL_AUTO: TimeInterval = 500
+
 let CICONTEXT = CIContext()
 
 var SHOW_ONBOARDING: Bool {

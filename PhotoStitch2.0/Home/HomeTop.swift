@@ -78,7 +78,7 @@ struct HomeTop: View {
                 }
             } else {
                 Button {
-                    homeUpdater.selecteds.removeAll()
+                    homeUpdater.deselectAll()
                 } label: {
                     HStack {
                         Text("\(homeUpdater.selecteds.count)")

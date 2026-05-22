@@ -16,17 +16,7 @@ struct HomePhotos: View {
         GeometryReader { geometry in
             let num = ceil((geometry.size.width - 32 + 16) / 160)
             
-            let assets = homeUpdater.album?.assets.filter({
-                if homeUpdater.photofilter == .images {
-                    return $0.mediaType == .image
-                }
-                
-                if homeUpdater.photofilter == .videos {
-                    return $0.mediaType == .video
-                }
-                
-                return true
-            })
+            let assets = homeUpdater.filterAssets()
             
             ScrollView(showsIndicators: false) {
                 if let assets = assets {
@@ -38,15 +28,9 @@ struct HomePhotos: View {
                         return LazyWFVItem(id: asset.localIdentifier, size: CGSize(width: asset.pixelWidth, height: asset.pixelHeight), content: {
                             Button {
                                 if selected {
-                                    homeUpdater.selecteds = homeUpdater.selecteds.filter({ $0 != asset })
+                                    homeUpdater.deselect(asset)
                                 } else {
-                                    if homeUpdater.selecteds.contains(where: { $0.mediaType == .video }),
-                                       asset.mediaType == .video {
-                                        homeUpdater.warningAlert("Please select only one video!")
-                                        return
-                                    }
-                                    
-                                    homeUpdater.selecteds.append(asset)
+                                    homeUpdater.select(asset)
                                 }
                             } label: {
                                 GeometryReader { geometry in

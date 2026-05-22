@@ -54,10 +54,10 @@ struct EditGallery: UIViewRepresentable {
         
         editUpdater.editGallery.context = context
         
+        view.layoutIfNeeded()
+        
         context.coordinator.editContent?.setup(editUpdater: editUpdater, context: context)
         context.coordinator.editOverlay?.setup(editUpdater: editUpdater, context: context)
-        
-        view.layoutIfNeeded()
         
         context.coordinator.layoutUpdate()
         
@@ -66,11 +66,11 @@ struct EditGallery: UIViewRepresentable {
     
     func updateUIView(_ uiView: UIView, context: Context) {
         editUpdater.editGallery.context = context
+
+        uiView.layoutIfNeeded()
         
         context.coordinator.editContent?.update(editUpdater: editUpdater, context: context)
         context.coordinator.editOverlay?.update(editUpdater: editUpdater, context: context)
-        
-        uiView.layoutIfNeeded()
         
         context.coordinator.layoutUpdate()
     }
