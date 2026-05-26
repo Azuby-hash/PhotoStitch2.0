@@ -29,6 +29,19 @@ class UIButtonPro: UIButton {
         }
     }
     
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        let configuration = configuration
+        self.configuration = configuration ?? .filled()
+        
+        updateUI()
+        
+        if #available(iOS 17.0, *) {
+            registerForTraitChanges([UITraitUserInterfaceStyle.self], target: self, action: #selector(traitCollectionDidChange))
+        }
+    }
+    
     init() {
         super.init(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
         

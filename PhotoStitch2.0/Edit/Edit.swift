@@ -98,11 +98,10 @@ enum EditTab: String, CaseIterable {
     var tab = EditTab.none
     
     let editGallery = EditGalleryModel()
+    let editStitch = EditStitchModel()
     
     init(items: [StitchItem], axis: NSLayoutConstraint.Axis) {
         self.items = items
         self.axis = axis
-        
-        editGallery.editUpdater = self
     }
 }

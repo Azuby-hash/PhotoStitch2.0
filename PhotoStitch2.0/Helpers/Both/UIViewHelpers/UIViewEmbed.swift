@@ -8,9 +8,7 @@
 import SwiftUI
 import UIKit
 
-protocol ViewEmbedProtocol: View {
-    static func makeContentController() -> UIHostingController<Self>
-}
+fileprivate let EMBED_SCALE: CGFloat = 1.5
 
 /**
  Create class A like this then u can use this in storyboard or xib
@@ -18,10 +16,6 @@ protocol ViewEmbedProtocol: View {
  struct B: ViewEmbedProtocol {
      var body: some View {
          <Make your content>
-     }
-     
-     static func makeContentController() -> UIHostingController<B> {
-         return UIHostingController(rootView: B())
      }
  }
  
@@ -32,39 +26,43 @@ protocol ViewEmbedProtocol: View {
  
  - Important: Remember to use **dismiss()** if u remove this view but not its parent UIViewController
  */
-class ViewEmbed<Content: ViewEmbedProtocol>: UIView {
-    private var didLoad = false
-    
-    private var contentController: UIHostingController<Content>?
-    
-    override func draw(_ rect: CGRect) {
-        super.draw(rect)
-        
-        if didLoad { return }
-        didLoad = true
-        
-        contentController = Content.makeContentController()
+func viewEmbed<Content: View>(@ViewBuilder content: () -> Content) -> UIView {
+    let view = ViewEmbedView<Content>()
 
-        if let vc = __findViewController() {
-            contentController?.embed(to: self, in: vc)
-        }
-    }
+    let hosting = UIHostingController(rootView: ViewEmbedContent(content: content()))
+    view.addSubview(hosting.view)
+    hosting.view.backgroundColor = .clear
     
-    func dismiss() {
-        contentController?.disEmbed()
-    }
+    view.hosting = hosting
+    
+    return view
 }
 
-fileprivate extension UIView {
-    func __findViewController() -> UIViewController? {
-        if let nextResponder = self.next as? UIViewController {
-            return nextResponder
-        } else if let nextResponder = self.next as? UIView {
-            return nextResponder.__findViewController()
+fileprivate class ViewEmbedView<Content: View>: UIView {
+    var hosting: UIHostingController<ViewEmbedContent<Content>>? // DO NOT ADD WEAK
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        let targetFrame = CGRect(mid: bounds.mid, size: bounds.size * EMBED_SCALE)
+        
+        if hosting?.view.bounds.size == .zero || CATransaction.animationDuration() > 0 {
+            hosting?.view.frame = targetFrame
         } else {
-            return nil
+            hosting?.view.frame = targetFrame
         }
     }
 }
 
-
+fileprivate struct ViewEmbedContent<Content: View>: View {
+    let content: Content
+    
+    var body: some View {
+        GeometryReader { geometry in
+            ZStack {
+                content.frame(width: geometry.size.width / EMBED_SCALE, height: geometry.size.height / EMBED_SCALE)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+    }
+}

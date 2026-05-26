@@ -55,24 +55,29 @@ struct EditGallery: UIViewRepresentable {
         editUpdater.editGallery.context = context
         
         view.layoutIfNeeded()
+
+        context.coordinator.layoutUpdate()
         
         context.coordinator.editContent?.setup(editUpdater: editUpdater, context: context)
         context.coordinator.editOverlay?.setup(editUpdater: editUpdater, context: context)
-        
-        context.coordinator.layoutUpdate()
         
         return view
     }
     
     func updateUIView(_ uiView: UIView, context: Context) {
         editUpdater.editGallery.context = context
+        
+        context.coordinator.stackView?.layer.shadowColor = ._blackVert
+        context.coordinator.stackView?.layer.shadowOffset = .zero
+        context.coordinator.stackView?.layer.shadowOpacity = 0.2
+        context.coordinator.stackView?.layer.shadowRadius = 40
 
         uiView.layoutIfNeeded()
+
+        context.coordinator.layoutUpdate()
         
         context.coordinator.editContent?.update(editUpdater: editUpdater, context: context)
         context.coordinator.editOverlay?.update(editUpdater: editUpdater, context: context)
-        
-        context.coordinator.layoutUpdate()
     }
     
     func makeCoordinator() -> Coordinator {
@@ -94,6 +99,14 @@ struct EditGallery: UIViewRepresentable {
         
         func viewForZooming(in scrollView: UIScrollView) -> UIView? {
             return scrollContent
+        }
+        
+        func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
+            content?.editUpdater.editGallery.onZoom = true
+        }
+        
+        func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
+            content?.editUpdater.editGallery.onZoom = false
         }
         
         func scrollViewDidZoom(_ scrollView: UIScrollView) {
@@ -206,10 +219,10 @@ struct EditGallery: UIViewRepresentable {
 }
 
 @Observable class EditGalleryModel {
-    @ObservationIgnored weak var editUpdater: EditUpdater?
     @ObservationIgnored var context: EditGallery.Context?
     
     let scrollViewUpdate = PassthroughSubject<Void, Never>()
+    var onZoom = false
     var spaceZeroIndex: Int?
 }
 

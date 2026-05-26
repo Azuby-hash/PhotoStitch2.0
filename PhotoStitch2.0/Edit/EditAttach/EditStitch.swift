@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 extension EditOverlay {
     func setupStitch() {
@@ -32,4 +33,10 @@ extension EditContent {
     func updateStitch() {
 
     }
+}
+
+@Observable class EditStitchModel {
+    @ObservationIgnored var context: EditGallery.Context?
+    
+    var selectItem: StitchItem?
 }
