@@ -38,10 +38,10 @@ struct EditGallery: UIViewRepresentable {
         
         view.eaddSubview(scrollView
                 .eaddSubview(scrollContent
-                    .eaddSubview(stackView, [.centerX(0), .centerY(0), .width(0, 900), .height(0, 900)])
+                    .eaddSubview(stackView, [.centerX(0, 900), .centerY(0, 900), .width(0, 900), .height(0, 900)])
                     .eaddSubview(editContent, [.centerX(0), .centerY(0)]),
                 [.leading(0), .trailing(0), .top(0), .bottom(0)]),
-            [.leading(edgeInsets.leading), .trailing(edgeInsets.trailing),.top(edgeInsets.top), .bottom(edgeInsets.bottom)])
+            [.leading(edgeInsets.leading), .trailing(edgeInsets.trailing), .top(edgeInsets.top), .bottom(edgeInsets.bottom)])
             .eaddSubview(editOverlay, [.leading(0), .trailing(0), .top(0), .bottom(0)])
         
         context.coordinator.content = self
@@ -178,14 +178,6 @@ struct EditGallery: UIViewRepresentable {
                 
                 stack.axis = editUpdater.axis
                 stack.layoutIfNeeded()
-                
-                print(stack.frame)
-                
-                view?.layoutIfNeeded()
-                
-//                if cEdit.getTab() != .control && cStitch.getStitchEdge() == .none {
-                    scrollContent?.eselfConstraints([.width(stack.bounds.width), .height(stack.bounds.height)])
-//                }
                 
                 view?.layoutIfNeeded()
                 

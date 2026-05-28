@@ -109,8 +109,7 @@ class EditStitchControl: TouchView {
         
         insertSubview(midDragView, at: 0)
         
-        setGestureMappings(zip([beforeView], [dragBefore]))
-//        setGestureMappings(zip([beforeView, afterView, midDragView], [dragBefore, dragAfter, dragMid]))
+        setGestureMappings(zip([beforeView, afterView, midDragView], [dragBefore, dragAfter, dragMid]))
         
         scrollViewUpdate = editUpdater.editGallery.scrollViewUpdate.eraseToAnyPublisher().sink { [self] _ in
             contentUpdate(editUpdater: editUpdater, context: context)
@@ -473,7 +472,7 @@ extension EditStitchControl {
     
         if let begin = beginNorFrameBefores {
             UIView.performWithoutAnimation {
-                processDrag(g: g, index: -1, isMid: false, begin: begin)
+                dragCalculate(g: g, index: -1, isMid: false, begin: begin)
             }
         }
         
@@ -520,7 +519,7 @@ extension EditStitchControl {
         
         if let begin = beginNorFrameAfters {
             UIView.performWithoutAnimation {
-                processDrag(g: g, index: stackView.arrangedSubviews.count - 1, isMid: false, begin: begin)
+                dragCalculate(g: g, index: stackView.arrangedSubviews.count - 1, isMid: false, begin: begin)
             }
         }
         
@@ -574,7 +573,7 @@ extension EditStitchControl {
         }
         
         UIView.performWithoutAnimation {
-            processDrag(g: g, index: stitchIndex, isMid: true, begin: editUpdater.editStitch.frames)
+            dragCalculate(g: g, index: stitchIndex, isMid: true, begin: editUpdater.editStitch.frames)
         }
         
         if g.state == .ended || g.state == .cancelled {
@@ -582,7 +581,7 @@ extension EditStitchControl {
         }
     }
     
-    private func processDrag(g: TouchGesture, index: Int, isMid: Bool, begin: [(item: StitchItem, rect: CGRect)]) {
+    private func dragCalculate(g: TouchGesture, index: Int, isMid: Bool, begin: [(item: StitchItem, rect: CGRect)]) {
         guard let stackView = context?.coordinator.stackView,
               let editItems = stackView.arrangedSubviews as? [EditItem],
               let editStitch = editUpdater?.editStitch
