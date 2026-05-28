@@ -38,7 +38,7 @@ struct EditGallery: UIViewRepresentable {
         
         view.eaddSubview(scrollView
                 .eaddSubview(scrollContent
-                    .eaddSubview(stackView, [.centerX(0), .centerY(0)])
+                    .eaddSubview(stackView, [.centerX(0), .centerY(0), .width(0, 900), .height(0, 900)])
                     .eaddSubview(editContent, [.centerX(0), .centerY(0)]),
                 [.leading(0), .trailing(0), .top(0), .bottom(0)]),
             [.leading(edgeInsets.leading), .trailing(edgeInsets.trailing),.top(edgeInsets.top), .bottom(edgeInsets.bottom)])
@@ -95,8 +95,6 @@ struct EditGallery: UIViewRepresentable {
         weak var editContent: EditContent?
         weak var editOverlay: EditOverlay?
         
-        var items: [StitchItem] = []
-        
         func viewForZooming(in scrollView: UIScrollView) -> UIView? {
             return scrollContent
         }
@@ -131,7 +129,7 @@ struct EditGallery: UIViewRepresentable {
             }
             
             let newSegements = editUpdater.items
-            let oldSegements = items
+            let oldSegements = (stack.arrangedSubviews as? [EditItem])?.map({ $0.item }) ?? []
             
             UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [.allowUserInteraction, .curveEaseInOut]) { [self] in
 
@@ -140,21 +138,18 @@ struct EditGallery: UIViewRepresentable {
 
                     item.item = segment
                     item.editUpdater = editUpdater
-                    item.setSize(calculateSize(for: segment))
+                    
+                    if let segment = segment {
+                        item.setSize(calculateSize(for: segment))
+                    }
+                    
                     item.setContent()
                     stack.insertArrangedSubview(item, at: index)
                     stack.layoutIfNeeded()
-                    
-                    items.insert(segment, at: index)
-                } remove: { [self] index in
+                } remove: { index in
                     stack.arrangedSubviews[index].removeFromSuperview()
-                    
-                    items.remove(at: index)
-                } move: { [self] (from, to) in
+                } move: { (from, to) in
                     stack.insertArrangedSubview(stack.arrangedSubviews[from], at: to)
-                    
-                    let item = items.remove(at: from)
-                    items.insert(item, at: to)
                 }
                 
                 view?.layoutIfNeeded()
@@ -180,9 +175,11 @@ struct EditGallery: UIViewRepresentable {
                         stack.setCustomSpacing(spacingZeroIndex == index ? 0 : SPLIT_ITEM_SPACING, after: view)
                     }
                 }
-
+                
                 stack.axis = editUpdater.axis
                 stack.layoutIfNeeded()
+                
+                print(stack.frame)
                 
                 view?.layoutIfNeeded()
                 
@@ -242,9 +239,13 @@ class EditItem: UIView {
     
     private var data: Data?
     
-    private let imageView = UIImageView().econtentMode(.scaleAspectFill)
+    let imageView = UIImageView().econtentMode(.scaleAspectFill)
     
     func setSize(_ size: CGSize) {
+        translatesAutoresizingMaskIntoConstraints = false
+        backgroundColor = .systemBackground
+        clipsToBounds = true
+        
         eselfConstraints([.width(size.width), .height(size.height)])
         layoutIfNeeded()
     }

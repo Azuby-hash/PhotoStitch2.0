@@ -8,6 +8,7 @@
 import UIKit
 import SwiftUI
 import Combine
+import AVFoundation
 
 private let DRAG_WIDTH: CGFloat = 24
 private let DRAG_LONG: CGFloat = 32
@@ -24,7 +25,13 @@ enum EditStitchControlMode {
     case contentDrag
 }
 
-class EditStitchControl: UIViewPointSubview {
+enum EditStitchDrag {
+    case before
+    case after
+    case none
+}
+
+class EditStitchControl: TouchView {
     private(set) weak var editUpdater: EditUpdater?
     private(set) var context: EditGallery.Context?
     
@@ -33,12 +40,32 @@ class EditStitchControl: UIViewPointSubview {
     private var scrollViewUpdate: AnyCancellable?
     
     private let beforeView = UIView()
+    private let midDragView = UIView()
     private let afterView = UIView()
     private var stitchViews = [EditStitchViews]()
     
     private let midArrowConfiguration = UIImage.SymbolConfiguration(font: .systemFont(ofSize: 24, weight: .bold))
     private let otherConfiguration = UIImage.SymbolConfiguration(font: .systemFont(ofSize: 16, weight: .bold))
+    
+    private var beginNorFrameBefores: [(item: StitchItem, rect: CGRect)]?
+    private var beginNorFrameAfters: [(item: StitchItem, rect: CGRect)]?
+    private var beginNorFrameMids: [(item: StitchItem, rect: CGRect)]?
+    private var dragFrom = EditStitchDrag.before
 
+    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+//        guard cEdit.getState() == .editing && cEdit.getTab() == .stitch else {
+//            return false
+//        }
+        
+        for view in stitchViews.map({ $0.button }) {
+            if view.convert(view.bounds, to: self).contains(point) {
+                return true
+            }
+        }
+        
+        return false
+    }
+    
     func setup(editUpdater: EditUpdater, context: EditGallery.Context) {
         self.editUpdater = editUpdater
         self.context = context
@@ -80,6 +107,11 @@ class EditStitchControl: UIViewPointSubview {
         addSubview(beforeView)
         addSubview(afterView)
         
+        insertSubview(midDragView, at: 0)
+        
+        setGestureMappings(zip([beforeView], [dragBefore]))
+//        setGestureMappings(zip([beforeView, afterView, midDragView], [dragBefore, dragAfter, dragMid]))
+        
         scrollViewUpdate = editUpdater.editGallery.scrollViewUpdate.eraseToAnyPublisher().sink { [self] _ in
             contentUpdate(editUpdater: editUpdater, context: context)
         }
@@ -97,9 +129,12 @@ class EditStitchControl: UIViewPointSubview {
     private func contentUpdate(editUpdater: EditUpdater, context: EditGallery.Context) {
         let isVer = editUpdater.axis == .vertical
         
-        guard let stack = context.coordinator.stackView else { return }
+        guard let stack = context.coordinator.stackView, let items = stack.arrangedSubviews as? [EditItem], !items.isEmpty else { return }
         
         let rect = stack.convert(stack.bounds, to: self)
+        
+        midDragView.frame = stack.convert(stack.bounds, to: self)
+//        midDragView.isUserInteractionEnabled = cEdit.getTab() == .stitch && cEdit.getState() == .editing && cEdit.getStitchIndex() != nil
         
         beforeView.frame.size = CGSize(width: isVer ? rect.width : DRAG_WIDTH, height: !isVer ? rect.height : DRAG_WIDTH)
         beforeView.frame.origin = CGPoint(x: !isVer ? rect.minX - DRAG_WIDTH : rect.minX, y: isVer ? rect.minY - DRAG_WIDTH : rect.minY)
@@ -109,7 +144,7 @@ class EditStitchControl: UIViewPointSubview {
         afterView.frame.origin = CGPoint(x: !isVer ? rect.maxX : rect.minX, y: isVer ? rect.maxY : rect.minY)
         afterView.layoutIfNeeded()
         
-        let newItems = Array(context.coordinator.items.dropLast())
+        let newItems = Array(items.dropLast()).compactMap({ $0.item })
         
         let oldItems = stitchViews.map { $0.item }
 
@@ -133,17 +168,17 @@ class EditStitchControl: UIViewPointSubview {
             view.button.setContentColor(._white)
             view.button.setImage(UIImage(systemName: selected?.item == view.item ? "lock.open.fill" : "lock.fill", withConfiguration: otherConfiguration), for: .normal)
             
-//            UIView.performWithoutAnimation {
-//                if beginNorFrameFirsts == nil && beginNorFrameAfters == nil {
-//                    if let selected = selected, selected.button != button {
-//                        divider.alpha = selected.button.center.length(to: button.center) < buttonSize * 2 ? 0 : 1
-//                        button.alpha = selected.button.center.length(to: button.center) < buttonSize * 2 ? 0 : 1
-//                    } else {
-//                        divider.alpha = 1
-//                        button.alpha = 1
-//                    }
-//                }
-//            }
+            UIView.performWithoutAnimation {
+                if beginNorFrameBefores == nil && beginNorFrameAfters == nil {
+                    if let selected = selected, selected.item != view.item {
+                        view.divider.alpha = selected.button.center.length(to: view.button.center) < BUTTON_SIZE * 2 ? 0 : 1
+                        view.button.alpha = selected.button.center.length(to: view.button.center) < BUTTON_SIZE * 2 ? 0 : 1
+                    } else {
+                        view.divider.alpha = 1
+                        view.button.alpha = 1
+                    }
+                }
+            }
             
             view.gradientB.frame = isVer ? CGRect(x: frame.minX, y: frame.maxY - 114, width: frame.width, height: 114) : CGRect(x: frame.maxX - 80, y: frame.minY, width: 80, height: frame.height)
             view.gradientB.alpha = selected?.item == view.item ? 1 : 0
@@ -173,7 +208,7 @@ class EditStitchControl: UIViewPointSubview {
         }
         
         stitchViews.forEach { view in
-            guard let index = context.coordinator.items.firstIndex(of: view.item),
+            guard let index = (stack.arrangedSubviews as? [EditItem])?.firstIndex(where: { $0.item == view.item }),
                   index > 0,
                   view.item != editUpdater.editStitch.selectItem
             else { return }
@@ -182,23 +217,21 @@ class EditStitchControl: UIViewPointSubview {
             let afterLength = isVer ? (1 - view.item.process.rect.maxY) : (1 - view.item.process.rect.maxX)
             let beforeDragger = stitchViews[index - 1]
             
-//            UIView.performWithoutAnimation {
-//                if beginNorFrameFirsts == nil && beginNorFrameAfters == nil && beforeDragger.stitch.center.length(to: view.stitch.center) < BUTTON_SIZE * 2 {
-//                    if beforeLength > afterLength {
-//                        if view.stitch.alpha > 0.5 && selected?.item != view.item {
-//                            view.divider.alpha = 0
-//                            view.stitch.alpha = 0
-//                            view.done.alpha = 0
-//                        }
-//                    } else {
-//                        if view.stitch.alpha > 0.5 && selected?.item != view.item {
-//                            view.divider.alpha = 0
-//                            view.stitch.alpha = 0
-//                            view.done.alpha = 0
-//                        }
-//                    }
-//                }
-//            }
+            UIView.performWithoutAnimation {
+                if beginNorFrameBefores == nil && beginNorFrameAfters == nil && beforeDragger.button.center.length(to: view.button.center) < BUTTON_SIZE * 2 {
+                    if beforeLength > afterLength {
+                        if view.button.alpha > 0.5 && selected?.item != view.item {
+                            view.divider.alpha = 0
+                            view.button.alpha = 0
+                        }
+                    } else {
+                        if view.button.alpha > 0.5 && selected?.item != view.item {
+                            view.divider.alpha = 0
+                            view.button.alpha = 0
+                        }
+                    }
+                }
+            }
         }
     }
     
@@ -279,7 +312,7 @@ class EditStitchControl: UIViewPointSubview {
     
     private func itemView(from item: StitchItem, context: EditGallery.Context) -> UIView? {
         guard let stack = context.coordinator.stackView,
-              let index = context.coordinator.items.firstIndex(of: item),
+              let index = (stack.arrangedSubviews as? [EditItem])?.firstIndex(where: { $0.item == item }),
               stack.arrangedSubviews.indices.contains(index)
         else { return nil }
         
@@ -294,9 +327,9 @@ class EditStitchControl: UIViewPointSubview {
               let stackView = context.coordinator.stackView,
               let scrollContent = context.coordinator.scrollContent,
               let scrollView = context.coordinator.scrollView,
-              let itemView = itemView(from: stitchView.item, context: context)
-//              beginNorFrameFirsts == nil,
-//              beginNorFrameAfters == nil
+              let itemView = itemView(from: stitchView.item, context: context),
+              beginNorFrameBefores == nil,
+              beginNorFrameAfters == nil
         else { return }
         
         
@@ -311,7 +344,7 @@ class EditStitchControl: UIViewPointSubview {
                 let contentOffset = scrollView.contentOffset
                 let storedPadding = isVer ? stackView.convert(stackView.bounds, to: scrollContent).minY : stackView.convert(stackView.bounds, to: scrollContent).minX
                 
-                editUpdater?.editStitch.selectItem = nil
+                editUpdater?.editStitch.setSelectItem(nil)
                 
                 context.coordinator.view?.layoutIfNeeded()
                 
@@ -340,23 +373,23 @@ class EditStitchControl: UIViewPointSubview {
             let totalHeight = isVer ? (stackDim + topLeadingPadding + bottomTrailingPadding) : stackView.frame.height
 
             if scrollContent.constraints.contains(where: { ($0.firstAnchor == scrollContent.widthAnchor || $0.firstAnchor == scrollContent.heightAnchor) && $0.secondAnchor == nil }) {
-//                cEdit.setStitchConstraints([
-//                    scrollContent.widthAnchor.constraint(equalToConstant: scrollContent.bounds.width),
-//                    scrollContent.heightAnchor.constraint(equalToConstant: scrollContent.bounds.height),
-//                    
-//                    itemView.bottomAnchor.constraint(equalTo: scrollContent.topAnchor, constant: itemFrame.maxY),
-//                    itemView.trailingAnchor.constraint(equalTo: scrollContent.leadingAnchor, constant: itemFrame.maxX)
-//                ])
+                editUpdater?.editStitch.setConstraints([
+                    scrollContent.widthAnchor.constraint(equalToConstant: scrollContent.bounds.width),
+                    scrollContent.heightAnchor.constraint(equalToConstant: scrollContent.bounds.height),
+                    
+                    itemView.bottomAnchor.constraint(equalTo: scrollContent.topAnchor, constant: itemFrame.maxY),
+                    itemView.trailingAnchor.constraint(equalTo: scrollContent.leadingAnchor, constant: itemFrame.maxX)
+                ])
                 
                 context.coordinator.view?.layoutIfNeeded()
             } else {
-//                cEdit.setStitchConstraints([
-//                    scrollContent.widthAnchor.constraint(equalToConstant: totalWidth),
-//                    scrollContent.heightAnchor.constraint(equalToConstant: totalHeight),
-//                    
-//                    itemView.bottomAnchor.constraint(equalTo: scrollContent.topAnchor, constant: itemView.frame.maxY + (isVer ? topLeadingPadding : 0)),
-//                    itemView.trailingAnchor.constraint(equalTo: scrollContent.leadingAnchor, constant: itemView.frame.maxX + (isVer ? 0 : topLeadingPadding))
-//                ])
+                editUpdater?.editStitch.setConstraints([
+                    scrollContent.widthAnchor.constraint(equalToConstant: totalWidth),
+                    scrollContent.heightAnchor.constraint(equalToConstant: totalHeight),
+                    
+                    itemView.bottomAnchor.constraint(equalTo: scrollContent.topAnchor, constant: itemView.frame.maxY + (isVer ? topLeadingPadding : 0)),
+                    itemView.trailingAnchor.constraint(equalTo: scrollContent.leadingAnchor, constant: itemView.frame.maxX + (isVer ? 0 : topLeadingPadding))
+                ])
                 
                 context.coordinator.view?.layoutIfNeeded()
             }
@@ -367,7 +400,7 @@ class EditStitchControl: UIViewPointSubview {
             
             scrollView.setContentOffset(CGPoint(x: offX, y: offY), animated: true)
             
-            editUpdater?.editStitch.selectItem = stitchView.item
+            editUpdater?.editStitch.setSelectItem(stitchView.item)
         }
     }
     
@@ -381,6 +414,293 @@ class EditStitchControl: UIViewPointSubview {
             x: min(max(targetOffset.x, minOffsetX), maxOffsetX),
             y: min(max(targetOffset.y, minOffsetY), maxOffsetY)
         )
+    }
+}
+
+extension EditStitchControl: ForwardScrollProtocol {
+    func passInteration(at point: CGPoint) -> Bool {
+//        guard cEdit.getState() == .editing && cEdit.getTab() == .stitch else {
+//            return false
+//        }
+        
+        for view in [beforeView, afterView, midDragView] {
+            if view.convert(view.bounds, to: self).contains(point) || getCurrentTouch()?.view == view {
+                if view == midDragView && editUpdater?.editStitch.selectItem == nil {
+                    return false
+                }
+                
+                return true
+            }
+        }
+        
+        return false
+    }
+}
+
+extension EditStitchControl {
+    private func dragBefore(g: TouchGesture) {
+        if g.state == .ended || g.state == .cancelled {
+            UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
+                stitchViews.forEach({ $0.show(true) })
+            }
+        }
+        
+        guard let scrollContent = context?.coordinator.scrollContent,
+              let stackView = context?.coordinator.stackView
+        else { return }
+        
+        if g.state == .began {
+            beginNorFrameBefores = context?.coordinator.content?.editUpdater.items.map({ ($0, $0.process.rect) })
+            
+            let scrollContentBounds = scrollContent.bounds
+            
+            editUpdater?.editStitch.setSelectItem(nil)
+            
+            editUpdater?.editStitch.setConstraints([
+                scrollContent.widthAnchor.constraint(equalToConstant: scrollContentBounds.width),
+                scrollContent.heightAnchor.constraint(equalToConstant: scrollContentBounds.height),
+                stackView.bottomAnchor.constraint(equalTo: scrollContent.bottomAnchor),
+                stackView.trailingAnchor.constraint(equalTo: scrollContent.trailingAnchor),
+            ])
+            
+            UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
+                stitchViews.forEach({ $0.show(false) })
+            }
+            
+            dragFrom = .after
+        }
+        
+    
+        if let begin = beginNorFrameBefores {
+            UIView.performWithoutAnimation {
+                processDrag(g: g, index: -1, isMid: false, begin: begin)
+            }
+        }
+        
+        if g.state == .ended || g.state == .cancelled {
+            if editUpdater?.editStitch.selectItem == nil {
+                editUpdater?.editStitch.setConstraints([])
+            }
+            
+            endDrag()
+        }
+    }
+    
+    private func dragAfter(g: TouchGesture) {
+        if g.state == .ended || g.state == .cancelled {
+            UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
+                stitchViews.forEach({ $0.show(true) })
+            }
+        }
+        
+        guard let scrollContent = context?.coordinator.scrollContent,
+              let stackView = context?.coordinator.stackView
+        else { return }
+        
+        if g.state == .began {
+            beginNorFrameAfters = context?.coordinator.content?.editUpdater.items.map({ ($0, $0.process.rect) })
+            
+            let scrollContentBounds = scrollContent.bounds
+            
+            editUpdater?.editStitch.setSelectItem(nil)
+            
+            editUpdater?.editStitch.setConstraints([
+                scrollContent.widthAnchor.constraint(equalToConstant: scrollContentBounds.width),
+                scrollContent.heightAnchor.constraint(equalToConstant: scrollContentBounds.height),
+                stackView.topAnchor.constraint(equalTo: scrollContent.topAnchor),
+                stackView.leadingAnchor.constraint(equalTo: scrollContent.leadingAnchor),
+            ])
+            
+            UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
+                stitchViews.forEach({ $0.show(false) })
+            }
+            
+            dragFrom = .before
+        }
+        
+        if let begin = beginNorFrameAfters {
+            UIView.performWithoutAnimation {
+                processDrag(g: g, index: stackView.arrangedSubviews.count - 1, isMid: false, begin: begin)
+            }
+        }
+        
+        if g.state == .ended || g.state == .cancelled {
+            if editUpdater?.editStitch.selectItem == nil {
+                editUpdater?.editStitch.setConstraints([])
+            }
+            
+            endDrag()
+        }
+    }
+    
+    private func dragMid(g: TouchGesture) {
+        if g.state == .ended || g.state == .cancelled {
+            UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
+                stitchViews.forEach({ $0.show(true) })
+            }
+        }
+        
+        guard let editUpdater = editUpdater,
+              let stitchItem = editUpdater.editStitch.selectItem,
+              let items = context?.coordinator.content?.editUpdater.items,
+              let stitchIndex = items.firstIndex(of: stitchItem),
+              items.indices.contains(stitchIndex),
+              items.indices.contains(stitchIndex + 1),
+              let stackView = context?.coordinator.stackView,
+              stackView.arrangedSubviews.indices.contains(stitchIndex),
+              stackView.arrangedSubviews.indices.contains(stitchIndex + 1)
+        else { return }
+        
+        if g.state == .began {
+            if stackView.bounds.contains(g.location(in: stackView)) {
+                let isVer = editUpdater.axis == .vertical
+                
+                if isVer {
+                    if stackView.arrangedSubviews[stitchIndex].bounds.maxY > g.location(in: stackView.arrangedSubviews[stitchIndex]).y {
+                        dragFrom = .before
+                    } else {
+                        dragFrom = .after
+                    }
+                } else {
+                    if stackView.arrangedSubviews[stitchIndex].bounds.maxX > g.location(in: stackView.arrangedSubviews[stitchIndex]).x {
+                        dragFrom = .before
+                    } else {
+                        dragFrom = .after
+                    }
+                }
+            }
+            
+            beginNorFrameMids = context?.coordinator.content?.editUpdater.items.map({ ($0, $0.process.rect) })
+        }
+        
+        UIView.performWithoutAnimation {
+            processDrag(g: g, index: stitchIndex, isMid: true, begin: editUpdater.editStitch.frames)
+        }
+        
+        if g.state == .ended || g.state == .cancelled {
+            endDrag()
+        }
+    }
+    
+    private func processDrag(g: TouchGesture, index: Int, isMid: Bool, begin: [(item: StitchItem, rect: CGRect)]) {
+        guard let stackView = context?.coordinator.stackView,
+              let editItems = stackView.arrangedSubviews as? [EditItem],
+              let editStitch = editUpdater?.editStitch
+        else { return }
+
+        let isVer = editUpdater?.axis == .vertical
+        
+        if dragFrom == .before {
+            let translate = isMid ? (editStitch.translateBefore + g.translation(in: stackView)) : (g.translation(in: stackView) * -1)
+            
+            var index = index
+            var tran = isVer ? translate.y : translate.x
+            var changes = [StitchItem: (CGRect, CGFloat)]()
+            var saveTran = CGPoint.zero
+            
+            while index >= 0 && abs(tran) > 0 {
+                guard begin.indices.contains(index) else { break }
+                
+                let (item, rect) = begin[index]
+                let editRect = rect * editItems[index].imageView.bounds.size
+                let maxLength = isVer ? editItems[index].imageView.bounds.height : editItems[index].imageView.bounds.width
+                
+                if tran > 0 {
+                    let reduce = min(tran, isVer ? editRect.height : editRect.width)
+                    tran = tran - reduce
+                    saveTran = saveTran + reduce
+                    changes[item] = (rect, -reduce / maxLength)
+                    index -= 1
+                } else {
+                    let bonus = min(-tran, maxLength - (isVer ? editRect.maxY : editRect.maxX))
+                    tran = tran + bonus
+                    saveTran = saveTran - bonus
+                    changes[item] = (rect, bonus / maxLength)
+                    break
+                }
+            }
+            
+            changes.forEach { (item, info) in
+                let (rect, change) = info
+
+                UIView.performWithoutAnimation {
+                    item.process.setRect(CGRect(origin: rect.origin, maxOrigin: rect.maxOrigin + CGPoint(x: isVer ? 0 : change, y: isVer ? change : 0)))
+                }
+            }
+            
+            if (g.state == .ended || g.state == .cancelled) && isMid {
+                editStitch.setTranslateBefore(saveTran)
+            }
+        }
+        
+        if dragFrom == .after {
+            let translate = isMid ? (editStitch.translateAfter + g.translation(in: stackView)) : (g.translation(in: stackView) * -1)
+            
+            var index = index + 1
+            var tran = isVer ? -translate.y : -translate.x
+            var changes = [StitchItem: (CGRect, CGFloat)]()
+            var saveTran = CGPoint.zero
+
+            while index < editItems.count && abs(tran) > 0 {
+                guard begin.indices.contains(index) else { break }
+                
+                let (item, rect) = begin[index]
+                let editRect = rect * editItems[index].imageView.bounds.size
+                let maxLength = isVer ? editItems[index].imageView.bounds.height : editItems[index].imageView.bounds.width
+                
+                if tran > 0 {
+                    let reduce = min(tran, isVer ? editRect.height : editRect.width)
+                    tran = tran - reduce
+                    saveTran = saveTran + reduce
+                    changes[item] = (rect, -reduce / maxLength)
+                    index += 1
+                } else {
+                    let bonus = min(-tran, isVer ? editRect.minY : editRect.minX)
+                    tran = tran + bonus
+                    saveTran = saveTran - bonus
+                    changes[item] = (rect, bonus / maxLength)
+                    break
+                }
+            }
+            
+            changes.forEach { (item, info) in
+                let (rect, change) = info
+                
+                UIView.performWithoutAnimation {
+                    item.process.setRect(CGRect(origin: rect.origin - CGPoint(x: isVer ? 0 : change, y: isVer ? change : 0), maxOrigin: rect.maxOrigin))
+                }
+            }
+            
+            if (g.state == .ended || g.state == .cancelled) && isMid {
+                editStitch.setTranslateAfter(saveTran * -1)
+            }
+        }
+    }
+    
+    private func endDrag() {
+//        if let begin = beginNorFrameMids {
+//            cEdit.setStitchFramesStep(oldFrames: begin.filter({ $0.rect.width >= MIN_REMOVE && $0.rect.height >= MIN_REMOVE }),
+//                                      newFrames: cEdit.getItems().map({ ($0, $0.getProcess().rect) }).filter({ $0.rect.width >= MIN_REMOVE && $0.rect.height >= MIN_REMOVE }))
+//        } else if let begin = beginNorFrameBefores {
+//            cEdit.setStitchFramesStep(oldFrames: begin.filter({ $0.rect.width >= MIN_REMOVE && $0.rect.height >= MIN_REMOVE }),
+//                                      newFrames: cEdit.getItems().map({ ($0, $0.getProcess().rect) }).filter({ $0.rect.width >= MIN_REMOVE && $0.rect.height >= MIN_REMOVE }))
+//        } else if let begin = beginNorFrameAfters {
+//            cEdit.setStitchFramesStep(oldFrames: begin.filter({ $0.rect.width >= MIN_REMOVE && $0.rect.height >= MIN_REMOVE }),
+//                                      newFrames: cEdit.getItems().map({ ($0, $0.getProcess().rect) }).filter({ $0.rect.width >= MIN_REMOVE && $0.rect.height >= MIN_REMOVE }))
+//        }
+        
+        beginNorFrameBefores = nil
+        beginNorFrameAfters = nil
+        beginNorFrameMids = nil
+        dragFrom = .none
+        
+        UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
+            context?.coordinator.view?.layoutIfNeeded()
+            
+            if let editUpdater = editUpdater, let context = context {
+                contentUpdate(editUpdater: editUpdater, context: context)
+            }
+        }
     }
 }
 
@@ -406,7 +726,7 @@ fileprivate class EditStitchViews {
     }
     
     func show(_ bool: Bool) {
-        for view in [divider, button, gradientB, gradientA] {
+        for view in [divider, button] {
             view.alpha = bool ? 1 : 0
         }
     }

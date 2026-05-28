@@ -27,6 +27,7 @@
 		CE4231B02FACEBA400701039 /* Stitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231AF2FACEBA400701039 /* Stitch.swift */; };
 		CE4231B22FACEBC500701039 /* WebViewSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231B12FACEBC500701039 /* WebViewSnapshot.swift */; };
 		CE4231B62FACFBCE00701039 /* Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231B52FACFBCE00701039 /* Loading.swift */; };
+		CE75164B2FC5E99E002C4625 /* TouchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE75164A2FC5E99E002C4625 /* TouchView.swift */; };
 		CE8700452FB039E200061801 /* UIImageHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700012FB039E200061801 /* UIImageHelpers.swift */; };
 		CE8700462FB039E200061801 /* CVPixelBufferHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87003A2FB039E200061801 /* CVPixelBufferHelpers.swift */; };
 		CE8700472FB039E200061801 /* UIScrollViewPointOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700312FB039E200061801 /* UIScrollViewPointOut.swift */; };
@@ -135,6 +136,7 @@
 		CE4231AF2FACEBA400701039 /* Stitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stitch.swift; sourceTree = "<group>"; };
 		CE4231B12FACEBC500701039 /* WebViewSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewSnapshot.swift; sourceTree = "<group>"; };
 		CE4231B52FACFBCE00701039 /* Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loading.swift; sourceTree = "<group>"; };
+		CE75164A2FC5E99E002C4625 /* TouchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchView.swift; sourceTree = "<group>"; };
 		CE8700002FB039E200061801 /* UIImageGif.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageGif.swift; sourceTree = "<group>"; };
 		CE8700012FB039E200061801 /* UIImageHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageHelpers.swift; sourceTree = "<group>"; };
 		CE8700022FB039E200061801 /* UIImageStroke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageStroke.swift; sourceTree = "<group>"; };
@@ -520,6 +522,7 @@
 			isa = PBXGroup;
 			children = (
 				CE8700952FB6A61100061801 /* ForwardScroll.swift */,
+				CE75164A2FC5E99E002C4625 /* TouchView.swift */,
 				CE87FFF02FB0223800061801 /* OpenCV */,
 				CE4231982FA9773400701039 /* AssetLibrary.swift */,
 				CE4231A62FAB566700701039 /* LazyWFVStack.swift */,
@@ -669,6 +672,7 @@
 				CE8700542FB039E200061801 /* UIViewPointDetect.swift in Sources */,
 				CE8700882FB222C500061801 /* EditGallery.swift in Sources */,
 				CE8700552FB039E200061801 /* UISToolBar.swift in Sources */,
+				CE75164B2FC5E99E002C4625 /* TouchView.swift in Sources */,
 				CE8700562FB039E200061801 /* UIViewShadow.swift in Sources */,
 				CE8700572FB039E200061801 /* UISButton.swift in Sources */,
 				CE8700582FB039E200061801 /* UIImageStroke.swift in Sources */,

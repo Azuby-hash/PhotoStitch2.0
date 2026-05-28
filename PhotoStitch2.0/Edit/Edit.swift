@@ -59,31 +59,6 @@ struct Edit: View {
     }
 }
 
-struct EditChild: View {
-    let item: StitchItem
-    let clean: Bool
-    let axis: NSLayoutConstraint.Axis
-    
-    var body: some View {
-        let viewFrame = item.process.rect * item.size
-        
-        GeometryReader { geometry in
-            let viewSize = item.size.aspectFill(to: geometry.size)
-            let viewOffset = item.process.rect.origin * viewSize
-            
-            if let image = UIImage(data: clean ? item.clean : item.image) {
-                Image(uiImage: image)
-                    .resizable()
-                    .frame(width: viewSize.width, height: viewSize.height)
-                    .offset(x: -viewOffset.x, y: -viewOffset.y)
-            }
-        }
-        .aspectRatio(viewFrame.width / viewFrame.height, contentMode: .fit)
-        .frame(maxWidth: axis == .vertical ? .infinity : nil, maxHeight: axis == .horizontal ? .infinity : nil)
-        .clipped()
-    }
-}
-
 enum EditTab: String, CaseIterable {
     case stitch = "stitch", control = "stitch.control"
     case split = "split"

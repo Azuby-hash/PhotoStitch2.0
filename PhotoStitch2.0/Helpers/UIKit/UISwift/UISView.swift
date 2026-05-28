@@ -42,7 +42,7 @@ extension UIView {
         }
 
         // 2. Activate everything once for better performance
-        NSLayoutConstraint.activate(anchorsToActivate, compareConstrants: self.constraints)
+        NSLayoutConstraint.activate(anchorsToActivate, compareConstrants: self.constraints + (superview?.constraints ?? []))
         
         return self
     }

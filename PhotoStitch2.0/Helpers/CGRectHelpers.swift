@@ -23,6 +23,10 @@ extension CGRect {
         self = CGRect(origin: origin, size: .zero + maxOrigin - origin)
     }
     
+    var maxOrigin: CGPoint {
+        return CGPoint(x: maxX, y: maxY)
+    }
+    
     var mid: CGPoint {
         return CGPoint(x: midX, y: midY)
     }
