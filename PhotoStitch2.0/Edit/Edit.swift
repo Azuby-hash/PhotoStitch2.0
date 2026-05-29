@@ -71,6 +71,7 @@ enum EditTab: String, CaseIterable {
     var axis: NSLayoutConstraint.Axis
     var clean: Bool = false
     var tab = EditTab.none
+    var anim = false
     
     let editGallery = EditGalleryModel()
     let editStitch = EditStitchModel()
@@ -78,5 +79,15 @@ enum EditTab: String, CaseIterable {
     init(items: [StitchItem], axis: NSLayoutConstraint.Axis) {
         self.items = items
         self.axis = axis
+    }
+    
+    func animIfNeeded(perform: @escaping () -> Void) {
+        if anim {
+            perform()
+        } else {
+            UIView.performWithoutAnimation {
+                perform()
+            }
+        }
     }
 }

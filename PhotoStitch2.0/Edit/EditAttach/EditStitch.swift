@@ -12,6 +12,8 @@ extension EditOverlay {
     func setupStitch() {
         guard let editUpdater = editUpdater, let context = context else { return }
         
+        editUpdater.editStitch.context = context
+        
         let stitchControl = EditStitchControl()
         addSubview(stitchControl)
         stitchControl.addConstraintFitBoundsTo(self)
@@ -20,6 +22,8 @@ extension EditOverlay {
 
     func updateStitch() {
         guard let editUpdater = editUpdater, let context = context else { return }
+        
+        editUpdater.editStitch.context = context
         
         subviews.first(type: EditStitchControl.self)?.update(editUpdater: editUpdater, context: context)
         

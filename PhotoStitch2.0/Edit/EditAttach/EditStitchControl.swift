@@ -170,8 +170,8 @@ class EditStitchControl: TouchView {
             UIView.performWithoutAnimation {
                 if beginNorFrameBefores == nil && beginNorFrameAfters == nil {
                     if let selected = selected, selected.item != view.item {
-                        view.divider.alpha = selected.button.center.length(to: view.button.center) < BUTTON_SIZE * 2 ? 0 : 1
-                        view.button.alpha = selected.button.center.length(to: view.button.center) < BUTTON_SIZE * 2 ? 0 : 1
+                        view.divider.alpha = selected.divider.center.length(to: view.divider.center) < BUTTON_SIZE * 2 ? 0 : 1
+                        view.button.alpha = selected.divider.center.length(to: view.divider.center) < BUTTON_SIZE * 2 ? 0 : 1
                     } else {
                         view.divider.alpha = 1
                         view.button.alpha = 1
@@ -217,7 +217,7 @@ class EditStitchControl: TouchView {
             let beforeDragger = stitchViews[index - 1]
             
             UIView.performWithoutAnimation {
-                if beginNorFrameBefores == nil && beginNorFrameAfters == nil && beforeDragger.button.center.length(to: view.button.center) < BUTTON_SIZE * 2 {
+                if beginNorFrameBefores == nil && beginNorFrameAfters == nil && beforeDragger.divider.center.length(to: view.divider.center) < BUTTON_SIZE * 2 {
                     if beforeLength > afterLength {
                         if view.button.alpha > 0.5 && selected?.item != view.item {
                             view.divider.alpha = 0
@@ -449,6 +449,8 @@ extension EditStitchControl {
         else { return }
         
         if g.state == .began {
+            beginDrag()
+            
             beginNorFrameBefores = context?.coordinator.content?.editUpdater.items.map({ ($0, $0.process.rect) })
             
             let scrollContentBounds = scrollContent.bounds
@@ -497,6 +499,8 @@ extension EditStitchControl {
         else { return }
         
         if g.state == .began {
+            beginDrag()
+            
             beginNorFrameAfters = context?.coordinator.content?.editUpdater.items.map({ ($0, $0.process.rect) })
             
             let scrollContentBounds = scrollContent.bounds
@@ -551,6 +555,8 @@ extension EditStitchControl {
         else { return }
         
         if g.state == .began {
+            beginDrag()
+            
             if stackView.bounds.contains(g.location(in: stackView)) {
                 let isVer = editUpdater.axis == .vertical
                 
@@ -622,9 +628,7 @@ extension EditStitchControl {
             changes.forEach { (item, info) in
                 let (rect, change) = info
 
-                UIView.performWithoutAnimation {
-                    item.process.setRect(CGRect(origin: rect.origin, maxOrigin: rect.maxOrigin + CGPoint(x: isVer ? 0 : change, y: isVer ? change : 0)))
-                }
+                item.process.setRect(CGRect(origin: rect.origin, maxOrigin: rect.maxOrigin + CGPoint(x: isVer ? 0 : change, y: isVer ? change : 0)))
             }
             
             if (g.state == .ended || g.state == .cancelled) && isMid {
@@ -665,9 +669,7 @@ extension EditStitchControl {
             changes.forEach { (item, info) in
                 let (rect, change) = info
                 
-                UIView.performWithoutAnimation {
-                    item.process.setRect(CGRect(origin: rect.origin - CGPoint(x: isVer ? 0 : change, y: isVer ? change : 0), maxOrigin: rect.maxOrigin))
-                }
+                item.process.setRect(CGRect(origin: rect.origin - CGPoint(x: isVer ? 0 : change, y: isVer ? change : 0), maxOrigin: rect.maxOrigin))
             }
             
             if (g.state == .ended || g.state == .cancelled) && isMid {
@@ -676,7 +678,13 @@ extension EditStitchControl {
         }
     }
     
+    private func beginDrag() {
+        editUpdater?.anim = false
+    }
+    
     private func endDrag() {
+        editUpdater?.anim = true
+        
 //        if let begin = beginNorFrameMids {
 //            cEdit.setStitchFramesStep(oldFrames: begin.filter({ $0.rect.width >= MIN_REMOVE && $0.rect.height >= MIN_REMOVE }),
 //                                      newFrames: cEdit.getItems().map({ ($0, $0.getProcess().rect) }).filter({ $0.rect.width >= MIN_REMOVE && $0.rect.height >= MIN_REMOVE }))

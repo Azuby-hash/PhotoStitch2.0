@@ -54,12 +54,14 @@ struct EditGallery: UIViewRepresentable {
         
         editUpdater.editGallery.context = context
         
-        view.layoutIfNeeded()
-
-        context.coordinator.layoutUpdate()
-        
-        context.coordinator.editContent?.setup(editUpdater: editUpdater, context: context)
-        context.coordinator.editOverlay?.setup(editUpdater: editUpdater, context: context)
+        editUpdater.animIfNeeded {
+            view.layoutIfNeeded()
+            
+            context.coordinator.layoutUpdate()
+            
+            context.coordinator.editContent?.setup(editUpdater: editUpdater, context: context)
+            context.coordinator.editOverlay?.setup(editUpdater: editUpdater, context: context)
+        }
         
         return view
     }
@@ -72,12 +74,14 @@ struct EditGallery: UIViewRepresentable {
         context.coordinator.stackView?.layer.shadowOpacity = 0.2
         context.coordinator.stackView?.layer.shadowRadius = 40
 
-        uiView.layoutIfNeeded()
-
-        context.coordinator.layoutUpdate()
-        
-        context.coordinator.editContent?.update(editUpdater: editUpdater, context: context)
-        context.coordinator.editOverlay?.update(editUpdater: editUpdater, context: context)
+        editUpdater.animIfNeeded {
+            uiView.layoutIfNeeded()
+            
+            context.coordinator.layoutUpdate()
+            
+            context.coordinator.editContent?.update(editUpdater: editUpdater, context: context)
+            context.coordinator.editOverlay?.update(editUpdater: editUpdater, context: context)
+        }
     }
     
     func makeCoordinator() -> Coordinator {
