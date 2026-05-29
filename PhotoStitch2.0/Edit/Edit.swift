@@ -8,8 +8,6 @@
 import SwiftUI
 import Combine
 
-private let contentCoordinate = "51ab628f2a62a3b3"
-
 struct Edit: View {
     @State var editUpdater: EditUpdater
     
@@ -74,7 +72,6 @@ enum EditTab: String, CaseIterable {
     var anim = false
     
     let editGallery = EditGalleryModel()
-    let editStitch = EditStitchModel()
     
     init(items: [StitchItem], axis: NSLayoutConstraint.Axis) {
         self.items = items

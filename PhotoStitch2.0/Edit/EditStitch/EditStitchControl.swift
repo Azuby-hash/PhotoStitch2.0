@@ -33,6 +33,7 @@ enum EditStitchDrag {
 
 class EditStitchControl: TouchView {
     private(set) weak var editUpdater: EditUpdater?
+    private(set) weak var stitchUpdater: EditStitchUpdater?
     private(set) var context: EditGallery.Context?
     
     private var didLoad = false
@@ -114,6 +115,15 @@ class EditStitchControl: TouchView {
         scrollViewUpdate = editUpdater.editGallery.scrollViewUpdate.eraseToAnyPublisher().sink { [self] _ in
             contentUpdate(editUpdater: editUpdater, context: context)
         }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(receiveObject), name: OBJECT_SEND, object: nil)
+    }
+    
+    @objc private func receiveObject(_ notification: Notification) {
+        guard let stitchUpdater = notification.object as? EditStitchUpdater else { return }
+        
+        self.stitchUpdater = stitchUpdater
+        stitchUpdater.context = context
     }
     
     func update(editUpdater: EditUpdater, context: EditGallery.Context) {
@@ -155,7 +165,7 @@ class EditStitchControl: TouchView {
             stitchViews.insert(remove(at: from), at: to)
         }
         
-        let selected = stitchViews.first(where: { $0.item == editUpdater.editStitch.selectItem })
+        let selected = stitchViews.first(where: { $0.item == stitchUpdater?.selectItem })
         
         stitchViews.forEach { view in
             let frame = itemFrame(from: view.item, context: context)
@@ -209,7 +219,7 @@ class EditStitchControl: TouchView {
         stitchViews.forEach { view in
             guard let index = (stack.arrangedSubviews as? [EditItem])?.firstIndex(where: { $0.item == view.item }),
                   index > 0,
-                  view.item != editUpdater.editStitch.selectItem
+                  view.item != stitchUpdater?.selectItem
             else { return }
             
             let beforeLength = isVer ? view.item.process.rect.minY : view.item.process.rect.minX
@@ -338,12 +348,12 @@ class EditStitchControl: TouchView {
         let visibleSize = scrollView.bounds.inset(by: scrollView.contentInset).size
         let visibleDimUnscaled = (isVer ? visibleSize.height : visibleSize.width) / zoomScale
 
-        if editUpdater?.editStitch.selectItem == stitchView.item {
+        if stitchUpdater?.selectItem == stitchView.item {
             UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
                 let contentOffset = scrollView.contentOffset
                 let storedPadding = isVer ? stackView.convert(stackView.bounds, to: scrollContent).minY : stackView.convert(stackView.bounds, to: scrollContent).minX
                 
-                editUpdater?.editStitch.setSelectItem(nil)
+                stitchUpdater?.setSelectItem(nil)
                 
                 context.coordinator.view?.layoutIfNeeded()
                 
@@ -372,7 +382,7 @@ class EditStitchControl: TouchView {
             let totalHeight = isVer ? (stackDim + topLeadingPadding + bottomTrailingPadding) : stackView.frame.height
 
             if scrollContent.constraints.contains(where: { ($0.firstAnchor == scrollContent.widthAnchor || $0.firstAnchor == scrollContent.heightAnchor) && $0.secondAnchor == nil }) {
-                editUpdater?.editStitch.setConstraints([
+                stitchUpdater?.setConstraints([
                     scrollContent.widthAnchor.constraint(equalToConstant: scrollContent.bounds.width),
                     scrollContent.heightAnchor.constraint(equalToConstant: scrollContent.bounds.height),
                     
@@ -382,7 +392,7 @@ class EditStitchControl: TouchView {
                 
                 context.coordinator.view?.layoutIfNeeded()
             } else {
-                editUpdater?.editStitch.setConstraints([
+                stitchUpdater?.setConstraints([
                     scrollContent.widthAnchor.constraint(equalToConstant: totalWidth),
                     scrollContent.heightAnchor.constraint(equalToConstant: totalHeight),
                     
@@ -399,7 +409,7 @@ class EditStitchControl: TouchView {
             
             scrollView.setContentOffset(CGPoint(x: offX, y: offY), animated: true)
             
-            editUpdater?.editStitch.setSelectItem(stitchView.item)
+            stitchUpdater?.setSelectItem(stitchView.item)
         }
     }
     
@@ -424,7 +434,7 @@ extension EditStitchControl: ForwardScrollProtocol {
         
         for view in [beforeView, afterView, midDragView] {
             if view.convert(view.bounds, to: self).contains(point) || getCurrentTouch()?.view == view {
-                if view == midDragView && editUpdater?.editStitch.selectItem == nil {
+                if view == midDragView && stitchUpdater?.selectItem == nil {
                     return false
                 }
                 
@@ -455,9 +465,9 @@ extension EditStitchControl {
             
             let scrollContentBounds = scrollContent.bounds
             
-            editUpdater?.editStitch.setSelectItem(nil)
+            stitchUpdater?.setSelectItem(nil)
             
-            editUpdater?.editStitch.setConstraints([
+            stitchUpdater?.setConstraints([
                 scrollContent.widthAnchor.constraint(equalToConstant: scrollContentBounds.width),
                 scrollContent.heightAnchor.constraint(equalToConstant: scrollContentBounds.height),
                 stackView.bottomAnchor.constraint(equalTo: scrollContent.bottomAnchor),
@@ -479,8 +489,8 @@ extension EditStitchControl {
         }
         
         if g.state == .ended || g.state == .cancelled {
-            if editUpdater?.editStitch.selectItem == nil {
-                editUpdater?.editStitch.setConstraints([])
+            if stitchUpdater?.selectItem == nil {
+                stitchUpdater?.setConstraints([])
             }
             
             endDrag()
@@ -505,9 +515,9 @@ extension EditStitchControl {
             
             let scrollContentBounds = scrollContent.bounds
             
-            editUpdater?.editStitch.setSelectItem(nil)
+            stitchUpdater?.setSelectItem(nil)
             
-            editUpdater?.editStitch.setConstraints([
+            stitchUpdater?.setConstraints([
                 scrollContent.widthAnchor.constraint(equalToConstant: scrollContentBounds.width),
                 scrollContent.heightAnchor.constraint(equalToConstant: scrollContentBounds.height),
                 stackView.topAnchor.constraint(equalTo: scrollContent.topAnchor),
@@ -528,8 +538,8 @@ extension EditStitchControl {
         }
         
         if g.state == .ended || g.state == .cancelled {
-            if editUpdater?.editStitch.selectItem == nil {
-                editUpdater?.editStitch.setConstraints([])
+            if stitchUpdater?.selectItem == nil {
+                stitchUpdater?.setConstraints([])
             }
             
             endDrag()
@@ -544,7 +554,8 @@ extension EditStitchControl {
         }
         
         guard let editUpdater = editUpdater,
-              let stitchItem = editUpdater.editStitch.selectItem,
+              let stitchUpdater = stitchUpdater,
+              let stitchItem = stitchUpdater.selectItem,
               let items = context?.coordinator.content?.editUpdater.items,
               let stitchIndex = items.firstIndex(of: stitchItem),
               items.indices.contains(stitchIndex),
@@ -579,7 +590,7 @@ extension EditStitchControl {
         }
         
         UIView.performWithoutAnimation {
-            dragCalculate(g: g, index: stitchIndex, isMid: true, begin: editUpdater.editStitch.frames)
+            dragCalculate(g: g, index: stitchIndex, isMid: true, begin: stitchUpdater.frames)
         }
         
         if g.state == .ended || g.state == .cancelled {
@@ -590,7 +601,7 @@ extension EditStitchControl {
     private func dragCalculate(g: TouchGesture, index: Int, isMid: Bool, begin: [(item: StitchItem, rect: CGRect)]) {
         guard let stackView = context?.coordinator.stackView,
               let editItems = stackView.arrangedSubviews as? [EditItem],
-              let editStitch = editUpdater?.editStitch
+              let editStitch = stitchUpdater
         else { return }
 
         let isVer = editUpdater?.axis == .vertical

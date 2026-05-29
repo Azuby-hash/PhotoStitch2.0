@@ -1,48 +1,24 @@
 //
-//  EditStitch.swift
-//  Photo Stitch
+//  EditStitchTool.swift
+//  PhotoStitch2.0
 //
-//  Created by Azuby on 6/24/25.
+//  Created by Azuby on 5/29/26.
 //
 
-import UIKit
 import SwiftUI
 
-extension EditOverlay {
-    func setupStitch() {
-        guard let editUpdater = editUpdater, let context = context else { return }
-        
-        editUpdater.editStitch.context = context
-        
-        let stitchControl = EditStitchControl()
-        addSubview(stitchControl)
-        stitchControl.addConstraintFitBoundsTo(self)
-        stitchControl.setup(editUpdater: editUpdater, context: context)
-    }
-
-    func updateStitch() {
-        guard let editUpdater = editUpdater, let context = context else { return }
-        
-        editUpdater.editStitch.context = context
-        
-        if let view = subviews.first(type: EditStitchControl.self) {
-            view.update(editUpdater: editUpdater, context: context)
-            context.coordinator.scrollView?.passViews.append(view)
-        }
-    }
-}
-
-extension EditContent {
-    func setupStitch() {
-        
-    }
+struct EditStitchTool: View {
+    @State var stitchUpdater = EditStitchUpdater()
     
-    func updateStitch() {
-
+    var body: some View {
+        Color.clear.allowsHitTesting(false)
+            .onAppear {
+                NotificationCenter.default.post(name: OBJECT_SEND, object: stitchUpdater)
+            }
     }
 }
 
-@Observable class EditStitchModel {
+@Observable class EditStitchUpdater {
     @ObservationIgnored var context: EditGallery.Context?
     
     private(set) var selectItem: StitchItem?
@@ -50,6 +26,10 @@ extension EditContent {
     private(set) var frames: [(item: StitchItem, rect: CGRect)] = []
     private(set) var translateBefore: CGPoint = .zero
     private(set) var translateAfter: CGPoint = .zero
+    
+    deinit {
+        constraints.forEach({ $0.isActive = false })
+    }
     
     func setTranslateBefore(_ translate: CGPoint) {
         translateBefore = translate

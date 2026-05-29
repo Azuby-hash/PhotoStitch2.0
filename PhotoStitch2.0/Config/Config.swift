@@ -31,6 +31,7 @@ let STITCH_SAME_PERCENT: Int = 90
 let SPLIT_ITEM_SPACING: CGFloat = 24
 
 let INTERVAL_AUTO: TimeInterval = 500
+let OBJECT_SEND = Notification.Name(UUID().uuidString)
 
 let CICONTEXT = CIContext()
 
