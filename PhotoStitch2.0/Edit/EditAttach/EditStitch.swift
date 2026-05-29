@@ -25,9 +25,8 @@ extension EditOverlay {
         
         editUpdater.editStitch.context = context
         
-        subviews.first(type: EditStitchControl.self)?.update(editUpdater: editUpdater, context: context)
-        
         if let view = subviews.first(type: EditStitchControl.self) {
+            view.update(editUpdater: editUpdater, context: context)
             context.coordinator.scrollView?.passViews.append(view)
         }
     }

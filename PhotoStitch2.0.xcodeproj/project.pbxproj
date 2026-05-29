@@ -28,6 +28,8 @@
 		CE4231B22FACEBC500701039 /* WebViewSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231B12FACEBC500701039 /* WebViewSnapshot.swift */; };
 		CE4231B62FACFBCE00701039 /* Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231B52FACFBCE00701039 /* Loading.swift */; };
 		CE75164B2FC5E99E002C4625 /* TouchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE75164A2FC5E99E002C4625 /* TouchView.swift */; };
+		CE75164D2FC9199A002C4625 /* EditSplit.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE75164C2FC91995002C4625 /* EditSplit.swift */; };
+		CE75164F2FC919E3002C4625 /* EditSplitControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE75164E2FC919DE002C4625 /* EditSplitControl.swift */; };
 		CE8700452FB039E200061801 /* UIImageHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700012FB039E200061801 /* UIImageHelpers.swift */; };
 		CE8700462FB039E200061801 /* CVPixelBufferHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87003A2FB039E200061801 /* CVPixelBufferHelpers.swift */; };
 		CE8700472FB039E200061801 /* UIScrollViewPointOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700312FB039E200061801 /* UIScrollViewPointOut.swift */; };
@@ -137,6 +139,8 @@
 		CE4231B12FACEBC500701039 /* WebViewSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewSnapshot.swift; sourceTree = "<group>"; };
 		CE4231B52FACFBCE00701039 /* Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loading.swift; sourceTree = "<group>"; };
 		CE75164A2FC5E99E002C4625 /* TouchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchView.swift; sourceTree = "<group>"; };
+		CE75164C2FC91995002C4625 /* EditSplit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSplit.swift; sourceTree = "<group>"; };
+		CE75164E2FC919DE002C4625 /* EditSplitControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSplitControl.swift; sourceTree = "<group>"; };
 		CE8700002FB039E200061801 /* UIImageGif.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageGif.swift; sourceTree = "<group>"; };
 		CE8700012FB039E200061801 /* UIImageHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageHelpers.swift; sourceTree = "<group>"; };
 		CE8700022FB039E200061801 /* UIImageStroke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageStroke.swift; sourceTree = "<group>"; };
@@ -444,6 +448,8 @@
 				CE87008E2FB6A60000061801 /* EditContent.swift */,
 				CE8700A22FBC9BF900061801 /* EditStitch.swift */,
 				CE8700A42FBCB5F800061801 /* EditStitchControl.swift */,
+				CE75164C2FC91995002C4625 /* EditSplit.swift */,
+				CE75164E2FC919DE002C4625 /* EditSplitControl.swift */,
 			);
 			path = EditAttach;
 			sourceTree = "<group>";
@@ -684,6 +690,7 @@
 				CE87005E2FB039E200061801 /* UIViewPointSubview.swift in Sources */,
 				CE8700912FB6A60000061801 /* EditContent.swift in Sources */,
 				CE8700942FB6A60000061801 /* EditOverlay.swift in Sources */,
+				CE75164F2FC919E3002C4625 /* EditSplitControl.swift in Sources */,
 				CE87005F2FB039E200061801 /* AsyncHelpers.swift in Sources */,
 				CE8700602FB039E200061801 /* UIStackViewPointSubview.swift in Sources */,
 				CE8700612FB039E200061801 /* UIStackViewSegmentPage.swift in Sources */,
@@ -711,6 +718,7 @@
 				CE8700762FB039E200061801 /* UIViewControllerPresent.swift in Sources */,
 				CE8700772FB039E200061801 /* UIViewBorder.swift in Sources */,
 				CE8700782FB039E200061801 /* UIViewControllerHelpers.swift in Sources */,
+				CE75164D2FC9199A002C4625 /* EditSplit.swift in Sources */,
 				CE8700792FB039E200061801 /* UIColorHelpers.swift in Sources */,
 				CE87007A2FB039E200061801 /* JSONHelpers.swift in Sources */,
 				CE87007B2FB039E200061801 /* UINavigationOrientationSubController.swift in Sources */,
