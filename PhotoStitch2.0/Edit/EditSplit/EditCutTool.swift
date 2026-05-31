@@ -39,16 +39,6 @@ struct EditCutTool: View {
                 .frame(height: 60)
                 .modifier(MainGlass(shape: .capsule, type: .clear))
             }
-            
-            Button {
-                editUpdater.tab = .none
-            } label: {
-                Image(systemName: "checkmark")
-                    .font(.system(size: 22, weight: .bold, design: .rounded))
-                    .foregroundStyle(Color._whiteVert)
-                    .frame(width: 60, height: 60)
-                    .modifier(MainGlass(shape: .capsule, type: .color(._blackVert)))
-            }
         }
         .align(edge: .bottom, constant: 0)
         .onAppear {
