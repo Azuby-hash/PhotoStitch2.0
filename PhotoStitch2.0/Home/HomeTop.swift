@@ -71,7 +71,7 @@ struct HomeTop: View {
                     homeUpdater.showMenu = .settings
                 } label: {
                     Image(systemName: "line.3.horizontal.decrease")
-                        .font(.system(size: 22, weight: .medium))
+                        .font(.system(size: 22, weight: .semibold))
                         .foregroundStyle(Color(uiColor: .label))
                         .frame(width: 44, height: 44)
                         .modifier(MainGlass(shape: .capsule, type: .clear))
@@ -88,6 +88,7 @@ struct HomeTop: View {
                             .background(.ultraThinMaterial)
                             .clipShape(.capsule)
                         Text("Deselect All")
+                            .font(.system(size: 18, weight: .semibold))
                     }
                     .foregroundStyle(Color(uiColor: ._red))
                     .padding(.leading, 6)

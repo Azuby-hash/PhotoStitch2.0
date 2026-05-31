@@ -29,9 +29,10 @@ let MIN_REMOVE: CGFloat = 0.0001
 let STITCH_CONFIDENCE: CGFloat = 0.9
 let STITCH_SAME_PERCENT: Int = 90
 let SPLIT_ITEM_SPACING: CGFloat = 24
+let MAX_SELECTION: Int = 40
+let SECOND_PER_SELECTION: TimeInterval = 5
 
 let INTERVAL_AUTO: TimeInterval = 500
-let OBJECT_SEND = Notification.Name(UUID().uuidString)
 
 let CICONTEXT = CIContext()
 

@@ -47,6 +47,7 @@ struct HomeBottom: View {
                             .frame(width: 20)
                         Text(homeUpdater.photofilter.title)
                     }
+                    .font(.system(size: 18, weight: .semibold))
                     .foregroundStyle(Color(uiColor: .label))
                     .padding(.horizontal, 20)
                     .frame(height: 60)
@@ -74,7 +75,7 @@ struct HomeBottom: View {
                     homeUpdater.showMenu = .web
                 } label: {
                     Image(systemName: "globe")
-                        .font(.system(size: 24, weight: .medium))
+                        .font(.system(size: 24, weight: .semibold))
                         .foregroundStyle(Color(uiColor: .label))
                         .frame(width: 60, height: 60)
                         .modifier(MainGlass(shape: .capsule, type: .clear))
@@ -87,16 +88,16 @@ struct HomeBottom: View {
                             
                             for asset in homeUpdater.selecteds {
                                 if asset.mediaType == .image {
-                                    items.append(try await Pipeline.assetImageToItem(asset))
+                                    items.append(try await PIPELINE.assetImageToItem(asset))
                                 } else {
-                                    items.append(try await Pipeline.assetVideoToItem(asset) { progress in
+                                    items.append(try await PIPELINE.assetVideoToItem(asset) { progress in
                                         print(progress)
                                     })
                                 }
                             }
                             
                             if homeUpdater.autoStitch {
-                                try await Pipeline.autoStitch(items)
+                                try await PIPELINE.autoStitch(items)
                             }
                             
                             homeUpdater.items = items
@@ -110,6 +111,7 @@ struct HomeBottom: View {
                     HStack(spacing: 12) {
                         Image(.vertical).frame(width: 20)
                         Text("Stitch Vertical")
+                            .font(.system(size: 18, weight: .semibold))
                     }
                     .foregroundStyle(Color._white)
                     .padding(.horizontal, 20)

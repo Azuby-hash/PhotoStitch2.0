@@ -33,10 +33,7 @@ enum EditStitchDrag {
 
 class EditStitchControl: TouchView {
     private(set) weak var editUpdater: EditUpdater?
-    private(set) weak var stitchUpdater: EditStitchUpdater?
     private(set) var context: EditGallery.Context?
-    
-    private var didLoad = false
     
     private var scrollViewUpdate: AnyCancellable?
     
@@ -115,15 +112,6 @@ class EditStitchControl: TouchView {
         scrollViewUpdate = editUpdater.editGallery.scrollViewUpdate.eraseToAnyPublisher().sink { [self] _ in
             contentUpdate(editUpdater: editUpdater, context: context)
         }
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(receiveObject), name: OBJECT_SEND, object: nil)
-    }
-    
-    @objc private func receiveObject(_ notification: Notification) {
-        guard let stitchUpdater = notification.object as? EditStitchUpdater else { return }
-        
-        self.stitchUpdater = stitchUpdater
-        stitchUpdater.context = context
     }
     
     func update(editUpdater: EditUpdater, context: EditGallery.Context) {
@@ -137,6 +125,7 @@ class EditStitchControl: TouchView {
     
     private func contentUpdate(editUpdater: EditUpdater, context: EditGallery.Context) {
         let isVer = editUpdater.axis == .vertical
+        let stitchUpdater = editUpdater.stitchUpdater
         
         guard let stack = context.coordinator.stackView, let items = stack.arrangedSubviews as? [EditItem], !items.isEmpty else { return }
         
@@ -331,6 +320,8 @@ class EditStitchControl: TouchView {
     }
     
     @objc private func centerControlEnable(button: UIButton) {
+        let stitchUpdater = editUpdater?.stitchUpdater
+        
         guard let stitchView = stitchViews.first(where: { $0.button == button }),
               let context = context,
               let stackView = context.coordinator.stackView,
@@ -340,7 +331,6 @@ class EditStitchControl: TouchView {
               beginNorFrameBefores == nil,
               beginNorFrameAfters == nil
         else { return }
-        
         
         let zoomScale = scrollView.zoomScale
         let isVer = editUpdater?.axis == .vertical
@@ -428,6 +418,8 @@ class EditStitchControl: TouchView {
 
 extension EditStitchControl: ForwardScrollProtocol {
     func passInteration(at point: CGPoint) -> Bool {
+        let stitchUpdater = editUpdater?.stitchUpdater
+        
 //        guard cEdit.getState() == .editing && cEdit.getTab() == .stitch else {
 //            return false
 //        }
@@ -448,6 +440,8 @@ extension EditStitchControl: ForwardScrollProtocol {
 
 extension EditStitchControl {
     private func dragBefore(g: TouchGesture) {
+        let stitchUpdater = editUpdater?.stitchUpdater
+        
         if g.state == .ended || g.state == .cancelled {
             UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
                 stitchViews.forEach({ $0.show(true) })
@@ -498,6 +492,8 @@ extension EditStitchControl {
     }
     
     private func dragAfter(g: TouchGesture) {
+        let stitchUpdater = editUpdater?.stitchUpdater
+        
         if g.state == .ended || g.state == .cancelled {
             UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
                 stitchViews.forEach({ $0.show(true) })
@@ -554,7 +550,7 @@ extension EditStitchControl {
         }
         
         guard let editUpdater = editUpdater,
-              let stitchUpdater = stitchUpdater,
+              let stitchUpdater = editUpdater.stitchUpdater,
               let stitchItem = stitchUpdater.selectItem,
               let items = context?.coordinator.content?.editUpdater.items,
               let stitchIndex = items.firstIndex(of: stitchItem),
@@ -601,13 +597,13 @@ extension EditStitchControl {
     private func dragCalculate(g: TouchGesture, index: Int, isMid: Bool, begin: [(item: StitchItem, rect: CGRect)]) {
         guard let stackView = context?.coordinator.stackView,
               let editItems = stackView.arrangedSubviews as? [EditItem],
-              let editStitch = stitchUpdater
+              let stitchUpdater = editUpdater?.stitchUpdater
         else { return }
 
         let isVer = editUpdater?.axis == .vertical
         
         if dragFrom == .before {
-            let translate = isMid ? (editStitch.translateBefore + g.translation(in: stackView)) : (g.translation(in: stackView) * -1)
+            let translate = isMid ? (stitchUpdater.translateBefore + g.translation(in: stackView)) : (g.translation(in: stackView) * -1)
             
             var index = index
             var tran = isVer ? translate.y : translate.x
@@ -643,12 +639,12 @@ extension EditStitchControl {
             }
             
             if (g.state == .ended || g.state == .cancelled) && isMid {
-                editStitch.setTranslateBefore(saveTran)
+                stitchUpdater.setTranslateBefore(saveTran)
             }
         }
         
         if dragFrom == .after {
-            let translate = isMid ? (editStitch.translateAfter + g.translation(in: stackView)) : (g.translation(in: stackView) * -1)
+            let translate = isMid ? (stitchUpdater.translateAfter + g.translation(in: stackView)) : (g.translation(in: stackView) * -1)
             
             var index = index + 1
             var tran = isVer ? -translate.y : -translate.x
@@ -684,7 +680,7 @@ extension EditStitchControl {
             }
             
             if (g.state == .ended || g.state == .cancelled) && isMid {
-                editStitch.setTranslateAfter(saveTran * -1)
+                stitchUpdater.setTranslateAfter(saveTran * -1)
             }
         }
     }

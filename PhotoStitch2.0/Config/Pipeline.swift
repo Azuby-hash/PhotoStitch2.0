@@ -8,11 +8,13 @@
 import SwiftUI
 import Photos
 
+let PIPELINE = Pipeline()
+
 class Pipeline {
     /**
      ONLY WORK on vertical, please limit in UI
      */
-    static func autoStitch(_ items: [StitchItem]) async throws {
+    func autoStitch(_ items: [StitchItem]) async throws {
         guard items.count >= 2 else {
             print("No autostitch needed")
             return
@@ -46,11 +48,11 @@ class Pipeline {
         print(date.timeIntervalSinceNow)
     }
     
-    static func assetImageToItem(_ asset: PHAsset) async throws -> StitchItem {
+    func assetImageToItem(_ asset: PHAsset) async throws -> StitchItem {
         return try StitchItem(image: try AssetLibrary.getUIImage(from: asset))
     }
     
-    static func assetVideoToItem(_ asset: PHAsset, progress: @escaping (CGFloat) -> Void) async throws -> StitchItem {
+    func assetVideoToItem(_ asset: PHAsset, progress: @escaping (CGFloat) -> Void) async throws -> StitchItem {
         let video: AVAsset? = await withCheckedContinuation { continuation in
             AssetLibrary.getAVAsset(asset) { result in
                 continuation.resume(returning: result)
@@ -67,7 +69,7 @@ class Pipeline {
     /**
      USE WHEN PICK FROM PHOTOSUI
      */
-    static func fixImageForOpenCV(_ image: UIImage) -> UIImage {
+    func fixImageForOpenCV(_ image: UIImage) -> UIImage {
         let image = image.resize(size: image.size)
 
         guard let ciImage = CIImage(image: image),

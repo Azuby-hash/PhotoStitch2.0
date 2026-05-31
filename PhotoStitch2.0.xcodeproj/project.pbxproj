@@ -29,6 +29,12 @@
 		CE4231B62FACFBCE00701039 /* Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231B52FACFBCE00701039 /* Loading.swift */; };
 		CE75164B2FC5E99E002C4625 /* TouchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE75164A2FC5E99E002C4625 /* TouchView.swift */; };
 		CE7516512FC9A2A4002C4625 /* EditStitchTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7516502FC9A29C002C4625 /* EditStitchTool.swift */; };
+		CE7516552FC9F6F0002C4625 /* EditCutControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7516542FC9F6F0002C4625 /* EditCutControl.swift */; };
+		CE7516572FCA6DFF002C4625 /* EditCutTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7516562FCA6DFA002C4625 /* EditCutTool.swift */; };
+		CE7516592FCA6F36002C4625 /* EditCut.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7516582FCA6F33002C4625 /* EditCut.swift */; };
+		CE75165B2FCB0259002C4625 /* EditTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE75165A2FCB0255002C4625 /* EditTop.swift */; };
+		CE75165D2FCB0714002C4625 /* EditBottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE75165C2FCB0712002C4625 /* EditBottom.swift */; };
+		CE75165F2FCC3415002C4625 /* EdgeModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE75165E2FCC3407002C4625 /* EdgeModifier.swift */; };
 		CE8700452FB039E200061801 /* UIImageHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700012FB039E200061801 /* UIImageHelpers.swift */; };
 		CE8700462FB039E200061801 /* CVPixelBufferHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87003A2FB039E200061801 /* CVPixelBufferHelpers.swift */; };
 		CE8700472FB039E200061801 /* UIScrollViewPointOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700312FB039E200061801 /* UIScrollViewPointOut.swift */; };
@@ -139,6 +145,12 @@
 		CE4231B52FACFBCE00701039 /* Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loading.swift; sourceTree = "<group>"; };
 		CE75164A2FC5E99E002C4625 /* TouchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchView.swift; sourceTree = "<group>"; };
 		CE7516502FC9A29C002C4625 /* EditStitchTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditStitchTool.swift; sourceTree = "<group>"; };
+		CE7516542FC9F6F0002C4625 /* EditCutControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCutControl.swift; sourceTree = "<group>"; };
+		CE7516562FCA6DFA002C4625 /* EditCutTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCutTool.swift; sourceTree = "<group>"; };
+		CE7516582FCA6F33002C4625 /* EditCut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCut.swift; sourceTree = "<group>"; };
+		CE75165A2FCB0255002C4625 /* EditTop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTop.swift; sourceTree = "<group>"; };
+		CE75165C2FCB0712002C4625 /* EditBottom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBottom.swift; sourceTree = "<group>"; };
+		CE75165E2FCC3407002C4625 /* EdgeModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgeModifier.swift; sourceTree = "<group>"; };
 		CE8700002FB039E200061801 /* UIImageGif.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageGif.swift; sourceTree = "<group>"; };
 		CE8700012FB039E200061801 /* UIImageHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageHelpers.swift; sourceTree = "<group>"; };
 		CE8700022FB039E200061801 /* UIImageStroke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageStroke.swift; sourceTree = "<group>"; };
@@ -315,8 +327,11 @@
 			children = (
 				CE4231AD2FACE79400701039 /* Edit.swift */,
 				CE8700872FB222C500061801 /* EditGallery.swift */,
+				CE75165A2FCB0255002C4625 /* EditTop.swift */,
+				CE75165C2FCB0712002C4625 /* EditBottom.swift */,
 				CE8700902FB6A60000061801 /* EditAttach */,
 				CE7516522FC9A57D002C4625 /* EditStitch */,
+				CE7516532FC9F6DF002C4625 /* EditSplit */,
 			);
 			path = Edit;
 			sourceTree = "<group>";
@@ -329,6 +344,16 @@
 				CE8700A42FBCB5F800061801 /* EditStitchControl.swift */,
 			);
 			path = EditStitch;
+			sourceTree = "<group>";
+		};
+		CE7516532FC9F6DF002C4625 /* EditSplit */ = {
+			isa = PBXGroup;
+			children = (
+				CE7516582FCA6F33002C4625 /* EditCut.swift */,
+				CE7516562FCA6DFA002C4625 /* EditCutTool.swift */,
+				CE7516542FC9F6F0002C4625 /* EditCutControl.swift */,
+			);
+			path = EditSplit;
 			sourceTree = "<group>";
 		};
 		CE8700042FB039E200061801 /* UIImageHelpers */ = {
@@ -525,6 +550,7 @@
 				CE4231902F9E834400701039 /* MainGlass.swift */,
 				CE4231AF2FACEBA400701039 /* Stitch.swift */,
 				CE4231B12FACEBC500701039 /* WebViewSnapshot.swift */,
+				CE75165E2FCC3407002C4625 /* EdgeModifier.swift */,
 			);
 			path = Package;
 			sourceTree = "<group>";
@@ -649,10 +675,12 @@
 				CE4231992FA9773400701039 /* AssetLibrary.swift in Sources */,
 				CE4231B02FACEBA400701039 /* Stitch.swift in Sources */,
 				CE4231932FA78CF800701039 /* HomeTop.swift in Sources */,
+				CE7516592FCA6F36002C4625 /* EditCut.swift in Sources */,
 				CE4231B62FACFBCE00701039 /* Loading.swift in Sources */,
 				CE87FFF12FB0223800061801 /* OpenCVWrapper.mm in Sources */,
 				CE87FFF22FB0223800061801 /* OpenCVWrapper.swift in Sources */,
 				CE4231A72FAB566700701039 /* LazyWFVStack.swift in Sources */,
+				CE7516572FCA6DFF002C4625 /* EditCutTool.swift in Sources */,
 				CE42319B2FA9784300701039 /* HomePhotos.swift in Sources */,
 				CE4231B22FACEBC500701039 /* WebViewSnapshot.swift in Sources */,
 				CEBD6C9D2F9D1D7C00E176D7 /* Color.swift in Sources */,
@@ -670,6 +698,7 @@
 				CE8700482FB039E200061801 /* UIButtonPro.swift in Sources */,
 				CE8700492FB039E200061801 /* UIStackViewShadow.swift in Sources */,
 				CE87004A2FB039E200061801 /* ArrayHelpers.swift in Sources */,
+				CE75165F2FCC3415002C4625 /* EdgeModifier.swift in Sources */,
 				CE87004B2FB039E200061801 /* OptionalHelpers.swift in Sources */,
 				CE87004C2FB039E200061801 /* DateHelpers.swift in Sources */,
 				CE87004D2FB039E200061801 /* UIViewFindViewController.swift in Sources */,
@@ -691,6 +720,7 @@
 				CE87005A2FB039E200061801 /* UISTextField.swift in Sources */,
 				CE87005B2FB039E200061801 /* UIViewClicking.swift in Sources */,
 				CE87005C2FB039E200061801 /* IdiomHelpers.swift in Sources */,
+				CE75165D2FCB0714002C4625 /* EditBottom.swift in Sources */,
 				CE87005D2FB039E200061801 /* GlassModifier.swift in Sources */,
 				CE87005E2FB039E200061801 /* UIViewPointSubview.swift in Sources */,
 				CE8700912FB6A60000061801 /* EditContent.swift in Sources */,
@@ -719,8 +749,10 @@
 				CE8700732FB039E200061801 /* CGRectHelpers.swift in Sources */,
 				CE8700742FB039E200061801 /* UISLabel.swift in Sources */,
 				CE8700752FB039E200061801 /* UISConstraints.swift in Sources */,
+				CE7516552FC9F6F0002C4625 /* EditCutControl.swift in Sources */,
 				CE8700762FB039E200061801 /* UIViewControllerPresent.swift in Sources */,
 				CE8700772FB039E200061801 /* UIViewBorder.swift in Sources */,
+				CE75165B2FCB0259002C4625 /* EditTop.swift in Sources */,
 				CE8700782FB039E200061801 /* UIViewControllerHelpers.swift in Sources */,
 				CE8700792FB039E200061801 /* UIColorHelpers.swift in Sources */,
 				CE87007A2FB039E200061801 /* JSONHelpers.swift in Sources */,

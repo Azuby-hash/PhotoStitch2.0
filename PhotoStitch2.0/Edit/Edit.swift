@@ -11,8 +11,6 @@ import Combine
 struct Edit: View {
     @State var editUpdater: EditUpdater
     
-    @State var childFrames: [String: CGRect] = [:]
-    
     var body: some View {
         ZStack {
             GeometryReader { geometry in
@@ -20,23 +18,16 @@ struct Edit: View {
                 let bonusInset = getInset(geometry)
                 let totalInset = EdgeInsets(top: safeAreaInsets.top + bonusInset.top, leading: safeAreaInsets.leading + bonusInset.leading, bottom: safeAreaInsets.bottom + bonusInset.bottom, trailing: safeAreaInsets.trailing + bonusInset.trailing)
                 
-                EditGallery(geometry: geometry, edgeInsets: totalInset)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                EditGallery(geometry: geometry, edgeInsets: totalInset, baseInsets: bonusInset)
+                    .ignoresSafeArea()
+                    .modifier(EdgeModifier(top: 44, bottom: 60))
             }
             
-            GeometryReader { geometry in
-                ForEach(childFrames.map({ $0 }), id: \.key) { (id, frame) in
-                    Rectangle()
-                        .stroke(lineWidth: 10)
-                        .fill(Color.red)
-                        .frame(width: frame.width, height: frame.height)
-                        .offset(.zero + frame.origin)
-                        .ignoresSafeArea()
-                }
-            }
+            EditTop()
+            EditBottom()
         }
-        .coordinateSpace(.named(contentCoordinate))
         .environment(editUpdater)
+        .animation(.smooth(duration: ANIM_DURATION), value: editUpdater.tab)
     }
     
     func getInset(_ geometry: GeometryProxy) -> EdgeInsets {
@@ -57,7 +48,7 @@ struct Edit: View {
 }
 
 enum EditTab: String, CaseIterable {
-    case stitch = "stitch", control = "stitch.control"
+    case stitch = "stitch"
     case split = "split"
     case sort = "sort"
     case none = "none"
@@ -70,11 +61,17 @@ enum EditTab: String, CaseIterable {
     var tab = EditTab.none
     var anim = false
     
+    var stitchUpdater: EditStitchUpdater? = .init() // DO NOT SET NIL HERE OR INSIDE WILL NOT UPDATE
+    var cutUpdater: EditCutUpdater? = .init() // DO NOT SET NIL HERE OR INSIDE WILL NOT UPDATE
+    
     let editGallery = EditGalleryModel()
     
     init(items: [StitchItem], axis: NSLayoutConstraint.Axis) {
         self.items = items
         self.axis = axis
+        
+        self.stitchUpdater = nil
+        self.cutUpdater = nil
     }
     
     func animIfNeeded(perform: @escaping () -> Void) {

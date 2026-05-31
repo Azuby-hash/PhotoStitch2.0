@@ -17,7 +17,7 @@ class EditOverlay: UIViewPointSubview {
         self.context = context
         
         setupStitch()
-//        setupSplit()
+        setupCut()
 //        setupSort()
     }
     

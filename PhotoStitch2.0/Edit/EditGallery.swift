@@ -22,10 +22,11 @@ struct EditGallery: UIViewRepresentable {
 
     let geometry: GeometryProxy
     let edgeInsets: EdgeInsets
+    let baseInsets: EdgeInsets
     
     func makeUIView(context: Context) -> UIView {
         let view = UIView()
-            .eselfConstraints([.width(geometry.size.width), .height(geometry.size.height)])
+            .eselfConstraints([.width(geometry.size.width), .height(geometry.size.height + baseInsets.top + baseInsets.bottom)])
         let scrollView = ForwardScroll()
             .edelegate(context.coordinator)
             .emaximumZoomScale(MAX_ZOOM)
@@ -40,8 +41,8 @@ struct EditGallery: UIViewRepresentable {
                 .eaddSubview(scrollContent
                     .eaddSubview(stackView, [.centerX(0, 900), .centerY(0, 900), .width(0, 900), .height(0, 900)])
                     .eaddSubview(editContent, [.centerX(0), .centerY(0)]),
-                [.leading(0), .trailing(0), .top(0), .bottom(0)]),
-            [.leading(edgeInsets.leading), .trailing(edgeInsets.trailing), .top(edgeInsets.top), .bottom(edgeInsets.bottom)])
+                 [.leading(edgeInsets.leading), .trailing(edgeInsets.trailing), .top(edgeInsets.top + 44 + baseInsets.top), .bottom(edgeInsets.bottom + 60 + baseInsets.bottom)]),
+            [.leading(0), .trailing(0), .top(0), .bottom(0)])
             .eaddSubview(editOverlay, [.leading(0), .trailing(0), .top(0), .bottom(0)])
         
         context.coordinator.content = self
@@ -193,17 +194,19 @@ struct EditGallery: UIViewRepresentable {
         
         private func calculateSize(for item: StitchItem) -> CGSize {
             guard let scroll = scrollView,
-                  let editUpdater = content?.editUpdater
+                  let editUpdater = content?.editUpdater,
+                  let content = content
             else { return .zero }
             
             let size = item.process.rect.size * item.size
+            let bounds = scroll.bounds.inset(by: UIEdgeInsets(top: content.edgeInsets.top, left: content.edgeInsets.leading, bottom: content.edgeInsets.bottom, right: content.edgeInsets.trailing))
             
             if editUpdater.axis == .vertical {
-                return size * (scroll.bounds.width / size.width)
+                return size * (bounds.width / size.width)
             }
             
             if editUpdater.axis == .horizontal {
-                return size * (scroll.bounds.height / size.height)
+                return size * (bounds.height / size.height)
             }
             
             return scroll.bounds.size

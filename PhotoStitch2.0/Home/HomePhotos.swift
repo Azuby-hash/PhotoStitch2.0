@@ -126,7 +126,7 @@ struct HomePhotos: View {
                 }
             }
             .animation(.easeInOut(duration: ANIM_DURATION), value: assets)
-            .modifier(HomePhotosEdge())
+            .modifier(EdgeModifier(top: 44, bottom: 60))
             .modifier(HomeNoAccess())
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
@@ -242,54 +242,6 @@ struct HomeNoAccess: ViewModifier {
                         .modifier(MainGlass(shape: .capsule, type: .color(._primary)))
                     }
                 }
-            }
-        }
-    }
-}
-
-struct HomePhotosEdge: ViewModifier {
-    func body(content: Content) -> some View {
-        if #available(iOS 26.0, *) {
-            content
-                .safeAreaBar(edge: .top) {
-                    Color.white.opacity(0.00001).frame(height: 44)
-                }
-                .safeAreaBar(edge: .bottom) {
-                    Color.white.opacity(0.00001).frame(height: 60)
-                }
-        } else {
-            content.overlay {
-                ZStack {
-                    Rectangle()
-                        .fill(.ultraThinMaterial)
-                        .frame(maxWidth: .infinity, maxHeight: 44 + 44)
-                        .mask(LinearGradient(
-                            gradient: Gradient(stops: [
-                                .init(color: .white, location: 0),
-                                .init(color: .white.opacity(0), location: 1)
-                            ]),
-                            startPoint: .top,
-                            endPoint: .bottom
-                        ))
-                        .align(edge: .top, constant: 0)
-                        .ignoresSafeArea()
-                    
-                    Rectangle()
-                        .fill(.ultraThinMaterial)
-                        .frame(maxWidth: .infinity, maxHeight: 60 + 34)
-                        .mask(LinearGradient(
-                            gradient: Gradient(stops: [
-                                .init(color: .white, location: 0),
-                                .init(color: .white.opacity(0), location: 1)
-                            ]),
-                            startPoint: .bottom,
-                            endPoint: .top
-                        ))
-                        .align(edge: .bottom, constant: 0)
-                        .ignoresSafeArea()
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .ignoresSafeArea()
             }
         }
     }

@@ -16,7 +16,7 @@ struct Onboarding: View {
                 dismiss()
             } label: {
                 Image(systemName: "xmark")
-                    .font(.system(size: 22, weight: .medium))
+                    .font(.system(size: 22, weight: .semibold))
                     .foregroundStyle(Color(uiColor: .label))
                     .frame(width: 44, height: 44)
                     .modifier(MainGlass(shape: .capsule, type: .clear))

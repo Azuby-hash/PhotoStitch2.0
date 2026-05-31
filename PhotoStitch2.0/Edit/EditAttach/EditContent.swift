@@ -17,7 +17,7 @@ class EditContent: UIViewPointSubview {
         self.context = context
         
         setupStitch()
-//        setupSplit()
+        setupCut()
 //        setupSort()
     }
     
