@@ -42,9 +42,14 @@ struct Home: View {
                     .zIndex(1000)
             }
             
-            if homeUpdater.showEdit {
-                Edit(editUpdater: EditUpdater(items: homeUpdater.items, axis: homeUpdater.axis)).transition(.move(edge: .top))
+            ZStack {
+                if homeUpdater.showEdit {
+                    Edit(editUpdater: EditUpdater(items: homeUpdater.items, axis: homeUpdater.axis))
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                }
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(homeUpdater.showEdit ? Color._background.ignoresSafeArea() : Color.clear.ignoresSafeArea())
         }
         .background(Color._background)
         .onAppear(perform: {
@@ -136,6 +141,20 @@ struct Home: View {
     
     func deselect(_ asset: PHAsset) {
         selecteds = selecteds.filter({ $0 != asset })
+    }
+    
+    func setSelect(_ assets: [PHAsset]) {
+        var selecteds = [PHAsset]()
+        
+        assets.forEach { asset in
+            if selecteds.contains(where: { $0.mediaType == .video }), asset.mediaType == .video {
+                return
+            }
+            
+            selecteds.append(asset)
+        }
+        
+        self.selecteds = selecteds
     }
     
     func deselectAll() {

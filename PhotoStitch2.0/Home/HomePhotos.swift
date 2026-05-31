@@ -9,8 +9,28 @@ import SwiftUI
 import Photos
 import PhotosUI
 
+private struct PhotoFrameValue: Equatable {
+    let frame: CGRect
+    let index: Int
+}
+
+private struct PhotoFrameKey: PreferenceKey {
+    static var defaultValue: [String: PhotoFrameValue] = [:]
+    static func reduce(value: inout [String: PhotoFrameValue], nextValue: () -> [String: PhotoFrameValue]) {
+        value.merge(nextValue(), uniquingKeysWith: { $1 })
+    }
+}
+
 struct HomePhotos: View {
     @Environment(HomeUpdater.self) var homeUpdater: HomeUpdater
+
+    @State private var itemFrames: [String: PhotoFrameValue] = [:]
+    @State private var isDragSelecting = false
+    @State private var isCancelled = false
+    @State private var beginSelected = [String]()
+    @State private var startLocation: CGPoint = .zero
+    
+    @GestureState private var isGestureActive = false
     
     var body: some View {
         GeometryReader { geometry in
@@ -21,7 +41,7 @@ struct HomePhotos: View {
             ScrollView(showsIndicators: false) {
                 if let assets = assets {
                     
-                    LazyWFVStack(geometry: geometry, items: assets.map({ asset in
+                    LazyWFVStack(geometry: geometry, items: assets.enumerated().map({ (assetIndex, asset) in
                         let selected = homeUpdater.selecteds.contains(asset)
                         let index = homeUpdater.selecteds.firstIndex(of: asset) ?? 0
                         
@@ -33,12 +53,13 @@ struct HomePhotos: View {
                                     homeUpdater.select(asset)
                                 }
                             } label: {
-                                GeometryReader { geometry in
+                                GeometryReader { geo in
                                     HomePhoto(asset: asset)
                                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                                         .clipShape(RoundedRectangle(cornerRadius: 16))
                                         .modifier(MainGlass(shape: RoundedRectangle(cornerRadius: 16), type: .clear, interactive: homeUpdater.showMenu == .none))
                                         .modifier(HomePhotoSelection(selection: selected, number: index + 1))
+                                        .preference(key: PhotoFrameKey.self, value: [asset.localIdentifier: PhotoFrameValue(frame: geo.frame(in: .global), index: assetIndex)])
                                 }
                             }
                         })
@@ -49,6 +70,60 @@ struct HomePhotos: View {
                     .padding(.vertical, 32)
                 } else {
                     Color.clear
+                }
+            }
+            .scrollDisabled(isDragSelecting)
+            .onPreferenceChange(PhotoFrameKey.self) { frames in
+                itemFrames = frames
+            }
+            .simultaneousGesture(
+                DragGesture(coordinateSpace: .global)
+                    .updating($isGestureActive) { _, state, _ in
+                        state = true
+                    }
+                    .onChanged { value in
+                        guard !isCancelled else { return }
+                        let dx = abs(value.translation.width)
+                        let dy = abs(value.translation.height)
+
+                        if !isDragSelecting {
+                            guard dx > dy, dx > 5 else {
+                                isCancelled = true
+                                return
+                            }
+                            
+                            isDragSelecting = true
+                            startLocation = value.startLocation
+                            beginSelected = homeUpdater.selecteds.map({ $0.localIdentifier })
+                        } else {
+                            guard let firstIndex = itemFrames.first(where: { $0.value.frame.contains(startLocation) })?.value.index else { return }
+                            
+                            let loc = value.location
+                            let selectionRect = CGRect( x: min(startLocation.x, loc.x), y: min(startLocation.y, loc.y), width: abs(loc.x - startLocation.x), height: abs(loc.y - startLocation.y))
+                            
+                            let newIntersectedIDs = itemFrames.filter({ selectionRect.intersects($0.value.frame) }).sorted(by: { abs(firstIndex - $0.value.index) < abs(firstIndex - $1.value.index) }).map { $0.key }
+                            
+                            var selecteds = beginSelected.compactMap({ selected in
+                                homeUpdater.filterAssets()?.first(where: { $0.localIdentifier == selected })
+                            })
+                            
+                            for id in newIntersectedIDs {
+                                guard let asset = homeUpdater.filterAssets()?.first(where: { $0.localIdentifier == id }) else { continue }
+                                selecteds = selecteds.filter({ $0.localIdentifier != asset.localIdentifier })
+
+                                if !beginSelected.contains(asset.localIdentifier) {
+                                    selecteds.append(asset)
+                                }
+                            }
+                            
+                            homeUpdater.setSelect(selecteds)
+                        }
+                    }
+            )
+            .onChange(isGestureActive) { active in
+                if !active {
+                    isDragSelecting = false
+                    isCancelled = false
                 }
             }
             .animation(.easeInOut(duration: ANIM_DURATION), value: assets)

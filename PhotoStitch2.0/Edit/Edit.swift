@@ -36,7 +36,6 @@ struct Edit: View {
             }
         }
         .coordinateSpace(.named(contentCoordinate))
-        .background(Color._background)
         .environment(editUpdater)
     }
     
