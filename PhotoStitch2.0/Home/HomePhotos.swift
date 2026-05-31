@@ -15,8 +15,8 @@ private struct PhotoFrameValue: Equatable {
 }
 
 private struct PhotoFrameKey: PreferenceKey {
-    static var defaultValue: [String: PhotoFrameValue] = [:]
-    static func reduce(value: inout [String: PhotoFrameValue], nextValue: () -> [String: PhotoFrameValue]) {
+    static var defaultValue: [PHAsset: PhotoFrameValue] = [:]
+    static func reduce(value: inout [PHAsset: PhotoFrameValue], nextValue: () -> [PHAsset: PhotoFrameValue]) {
         value.merge(nextValue(), uniquingKeysWith: { $1 })
     }
 }
@@ -24,10 +24,10 @@ private struct PhotoFrameKey: PreferenceKey {
 struct HomePhotos: View {
     @Environment(HomeUpdater.self) var homeUpdater: HomeUpdater
 
-    @State private var itemFrames: [String: PhotoFrameValue] = [:]
+    @State private var itemFrames: [PHAsset: PhotoFrameValue] = [:]
     @State private var isDragSelecting = false
     @State private var isCancelled = false
-    @State private var beginSelected = [String]()
+    @State private var beginSelected = [PHAsset]()
     @State private var startLocation: CGPoint = .zero
     
     @GestureState private var isGestureActive = false
@@ -59,7 +59,7 @@ struct HomePhotos: View {
                                         .clipShape(RoundedRectangle(cornerRadius: 16))
                                         .modifier(MainGlass(shape: RoundedRectangle(cornerRadius: 16), type: .clear, interactive: homeUpdater.showMenu == .none))
                                         .modifier(HomePhotoSelection(selection: selected, number: index + 1))
-                                        .preference(key: PhotoFrameKey.self, value: [asset.localIdentifier: PhotoFrameValue(frame: geo.frame(in: .global), index: assetIndex)])
+                                        .preference(key: PhotoFrameKey.self, value: [asset: PhotoFrameValue(frame: geo.frame(in: .global), index: assetIndex)])
                                 }
                             }
                         })
@@ -94,24 +94,23 @@ struct HomePhotos: View {
                             
                             isDragSelecting = true
                             startLocation = value.startLocation
-                            beginSelected = homeUpdater.selecteds.map({ $0.localIdentifier })
+                            beginSelected = homeUpdater.selecteds
                         } else {
                             guard let firstIndex = itemFrames.first(where: { $0.value.frame.contains(startLocation) })?.value.index else { return }
                             
                             let loc = value.location
                             let selectionRect = CGRect( x: min(startLocation.x, loc.x), y: min(startLocation.y, loc.y), width: abs(loc.x - startLocation.x), height: abs(loc.y - startLocation.y))
                             
-                            let newIntersectedIDs = itemFrames.filter({ selectionRect.intersects($0.value.frame) }).sorted(by: { abs(firstIndex - $0.value.index) < abs(firstIndex - $1.value.index) }).map { $0.key }
+                            let newIntersecteds = itemFrames.filter({ selectionRect.intersects($0.value.frame) }).sorted(by: { abs(firstIndex - $0.value.index) < abs(firstIndex - $1.value.index) }).map { $0.key }.filter({ $0.mediaType == .image })
                             
                             var selecteds = beginSelected.compactMap({ selected in
-                                homeUpdater.filterAssets()?.first(where: { $0.localIdentifier == selected })
+                                homeUpdater.filterAssets()?.first(where: { $0 == selected })
                             })
                             
-                            for id in newIntersectedIDs {
-                                guard let asset = homeUpdater.filterAssets()?.first(where: { $0.localIdentifier == id }) else { continue }
-                                selecteds = selecteds.filter({ $0.localIdentifier != asset.localIdentifier })
+                            for asset in newIntersecteds {
+                                selecteds = selecteds.filter({ $0 != asset })
 
-                                if !beginSelected.contains(asset.localIdentifier) {
+                                if !beginSelected.contains(asset) {
                                     selecteds.append(asset)
                                 }
                             }

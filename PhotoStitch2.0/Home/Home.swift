@@ -128,7 +128,7 @@ struct Home: View {
     func select(_ asset: PHAsset) {
         if selecteds.contains(where: { $0.mediaType == .video }),
            asset.mediaType == .video {
-            warningAlert("Please select only one video!")
+            warningAlert("Only one video can be selected at a time.")
             return
         }
         
@@ -137,6 +137,16 @@ struct Home: View {
         } catch {
             print(error)
         }
+        
+        let lastIsVideo = selecteds.last?.mediaType == .video
+        
+        if handleMaxSelection() {
+            if lastIsVideo {
+                warningAlert("This video exceeds the maximum duration.")
+            } else {
+                warningAlert("Maximum number of items reached.")
+            }
+        }
     }
     
     func deselect(_ asset: PHAsset) {
@@ -144,17 +154,12 @@ struct Home: View {
     }
     
     func setSelect(_ assets: [PHAsset]) {
-        var selecteds = [PHAsset]()
+        let curr = selecteds
+        selecteds = assets
         
-        assets.forEach { asset in
-            if selecteds.contains(where: { $0.mediaType == .video }), asset.mediaType == .video {
-                return
-            }
-            
-            selecteds.append(asset)
+        if handleMaxSelection() {
+            selecteds = curr
         }
-        
-        self.selecteds = selecteds
     }
     
     func deselectAll() {
@@ -173,6 +178,22 @@ struct Home: View {
             
             return true
         })
+    }
+    
+    @discardableResult
+    private func handleMaxSelection() -> Bool {
+        var total = selecteds.reduce(0.0) { sum, asset in
+            asset.mediaType == .video ? (sum + asset.duration / SECOND_PER_SELECTION) : (sum + 1)
+        }
+        
+        let begin = total
+        
+        while total > Double(MAX_SELECTION), !selecteds.isEmpty {
+            let removed = selecteds.removeLast()
+            total -= removed.mediaType == .video ? (removed.duration / SECOND_PER_SELECTION) : 1
+        }
+        
+        return begin != total
     }
     
     private func autoSelection(for asset: PHAsset) throws {
