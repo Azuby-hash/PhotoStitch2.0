@@ -12,18 +12,20 @@ struct EditStitchTool: View {
     
     var body: some View {
         HStack {
-            Button {
-                
-            } label: {
-                HStack {
-                    Image(systemName: "sparkles")
-                    Text("Auto")
+            if editUpdater.axis == .vertical {
+                Button {
+                    
+                } label: {
+                    HStack {
+                        Image(systemName: "sparkles")
+                        Text("Auto")
+                    }
+                    .font(.system(size: 18, weight: .semibold, design: .rounded))
+                    .foregroundStyle(Color.primary)
+                    .padding(.horizontal, 20)
+                    .frame(height: 60)
+                    .modifier(MainGlass(shape: .capsule, type: .clear))
                 }
-                .font(.system(size: 18, weight: .semibold, design: .rounded))
-                .foregroundStyle(Color.primary)
-                .padding(.horizontal, 20)
-                .frame(height: 60)
-                .modifier(MainGlass(shape: .capsule, type: .clear))
             }
             
             Button {
