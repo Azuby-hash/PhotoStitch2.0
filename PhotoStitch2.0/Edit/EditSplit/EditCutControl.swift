@@ -8,11 +8,21 @@
 import UIKit
 import SwiftUI
 
+private let DIVIDER_WIDTH: CGFloat = 1.5
+private let DIVIDER_EXTENT: CGFloat = 16
+private let DIVIDER_DRAG_RANGE: CGFloat = 16
+private let BUTTON_SIZE: CGSize = CGSize(width: 44, height: 44)
+private let BUTTON_SPACING: CGFloat = 32
+
 class EditCutControl: TouchView {
     private(set) weak var editUpdater: EditUpdater?
     private(set) var context: EditGallery.Context?
     
     private let topArrowConfiguration = UIImage.SymbolConfiguration(font: .systemFont(ofSize: 16, weight: .semibold))
+    
+    private var splitBefore: EditSplitSlide?
+    private var splitAfter: EditSplitSlide?
+    private var splitDeletors = [EditSplitDeletorList]()
     
     private var cutNorRect = RECT0011
     private var beginNorRect = RECT0011
@@ -54,6 +64,8 @@ extension EditCutControl: ForwardScrollProtocol {
         self.editUpdater = editUpdater
         self.context = context
         
+        alpha = 0
+        
 //        setGestureMappings(zip([firstDragger, afterDragger, areaView], [dragAction, dragAction, dragAction]))
     }
 
@@ -61,7 +73,9 @@ extension EditCutControl: ForwardScrollProtocol {
         self.editUpdater = editUpdater
         self.context = context
         
-        
+        if alpha < 0.5 {
+            
+        }
     }
     
     private func dragAction(g: TouchGesture) {
@@ -80,31 +94,31 @@ extension EditCutControl: ForwardScrollProtocol {
             beginNorRect = cutNorRect
         }
         
-//        if onDragView == firstDragger {
-//            var newMinX = beginNorRect.minX
-//            var newMinY = beginNorRect.minY
-//            
-//            if isVer {
-//                newMinY = min(beginNorRect.minY + translate.y, beginNorRect.maxY - minWidth / stackFrame.height)
-//            } else {
-//                newMinX = min(beginNorRect.minX + translate.x, beginNorRect.maxX - minWidth / stackFrame.width)
-//            }
-//            
-//            cutNorRect = CGRect(x: newMinX, y: newMinY, width: beginNorRect.maxX - newMinX, height: beginNorRect.maxY - newMinY).limit0011()
-//        }
-//        
-//        if onDragView == afterDragger {
-//            var newMaxX = beginNorRect.maxX
-//            var newMaxY = beginNorRect.maxY
-//            
-//            if isVer {
-//                newMaxY = max(beginNorRect.maxY + translate.y, beginNorRect.minY + minWidth / stackFrame.height)
-//            } else {
-//                newMaxX = max(beginNorRect.maxX + translate.x, beginNorRect.minX + minWidth / stackFrame.width)
-//            }
-//            
-//            cutNorRect = CGRect(x: beginNorRect.minX, y: beginNorRect.minY, width: newMaxX - beginNorRect.minX, height: newMaxY - beginNorRect.minY).limit0011()
-//        }
+        if onDragView == beforeDragger {
+            var newMinX = beginNorRect.minX
+            var newMinY = beginNorRect.minY
+            
+            if isVer {
+                newMinY = min(beginNorRect.minY + translate.y, beginNorRect.maxY - minWidth / stackFrame.height)
+            } else {
+                newMinX = min(beginNorRect.minX + translate.x, beginNorRect.maxX - minWidth / stackFrame.width)
+            }
+            
+            cutNorRect = CGRect(x: newMinX, y: newMinY, width: beginNorRect.maxX - newMinX, height: beginNorRect.maxY - newMinY).limit0011()
+        }
+        
+        if onDragView == afterDragger {
+            var newMaxX = beginNorRect.maxX
+            var newMaxY = beginNorRect.maxY
+            
+            if isVer {
+                newMaxY = max(beginNorRect.maxY + translate.y, beginNorRect.minY + minWidth / stackFrame.height)
+            } else {
+                newMaxX = max(beginNorRect.maxX + translate.x, beginNorRect.minX + minWidth / stackFrame.width)
+            }
+            
+            cutNorRect = CGRect(x: beginNorRect.minX, y: beginNorRect.minY, width: newMaxX - beginNorRect.minX, height: newMaxY - beginNorRect.minY).limit0011()
+        }
 
         if g.state == .ended || g.state == .cancelled {
             onDragView = nil
@@ -160,5 +174,47 @@ extension EditCutControl: ForwardScrollProtocol {
 //            
 //            cEdit.applyCutStep(oldCuts: oldCuts, newCuts: newCuts)
 //        }
+    }
+}
+
+class EditSplitDeletorList {
+    let deletors: [EditSplitDeletor]
+    
+    init(deletors: [EditSplitDeletor]) {
+        self.deletors = deletors
+    }
+}
+
+class EditSplitDeletor {
+    let min: UIView
+    let max: UIView
+    let area: UIView
+    let button: UIButtonPro
+    
+    init(min: UIView, max: UIView, area: UIView, button: UIButtonPro) {
+        self.min = min
+        self.max = max
+        self.area = area
+        self.button = button
+    }
+}
+
+class EditSplitSlide {
+    let divider: EditSplitDivider
+    let button: UIButtonPro
+    
+    init(divider: EditSplitDivider, button: UIButtonPro) {
+        self.divider = divider
+        self.button = button
+    }
+}
+
+class EditSplitDivider: UIView {
+    override final class var layerClass: AnyClass {
+        return CAShapeLayer.self
+    }
+
+    override var layer: CAShapeLayer {
+        return super.layer as! CAShapeLayer
     }
 }
