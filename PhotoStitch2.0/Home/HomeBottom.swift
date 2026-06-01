@@ -22,11 +22,11 @@ struct HomeBottom: View {
                             homeUpdater.showMenu = .none
                         } label: {
                             HStack(spacing: 12) {
-                                Image(systemName: filter.icon)
+                                Image(filter.icon)
                                     .frame(width: 20)
                                 Text(filter.title)
                                 Spacer()
-                                Image(systemName: "checkmark")
+                                Image("checkmark")
                                     .opacity(homeUpdater.photofilter == filter ? 1 : 0)
                             }
                             .foregroundStyle(Color(uiColor: .label))
@@ -43,7 +43,7 @@ struct HomeBottom: View {
                     homeUpdater.showMenu = .filters
                 } label: {
                     HStack(spacing: 12) {
-                        Image(systemName: homeUpdater.photofilter.icon)
+                        Image(homeUpdater.photofilter.icon)
                             .frame(width: 20)
                         Text(homeUpdater.photofilter.title)
                     }
@@ -74,7 +74,7 @@ struct HomeBottom: View {
                 Button {
                     homeUpdater.showMenu = .web
                 } label: {
-                    Image(systemName: "globe")
+                    Image("globe")
                         .font(.system(size: 24, weight: .semibold))
                         .foregroundStyle(Color(uiColor: .label))
                         .frame(width: 60, height: 60)

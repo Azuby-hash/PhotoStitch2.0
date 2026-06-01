@@ -19,7 +19,7 @@ struct EditBottom: View {
                             editUpdater.tab = .stitch
                         } label: {
                             HStack {
-                                Image(systemName: "rectangle.arrowtriangle.2.inward")
+                                Image("rectangle.arrowtriangle.2.inward")
                                 Text("Edit")
                             }
                             .font(.system(size: 18, weight: .semibold, design: .rounded))
@@ -33,7 +33,7 @@ struct EditBottom: View {
                             editUpdater.tab = .sort
                         } label: {
                             HStack {
-                                Image(systemName: "square.stack.3d.up.fill")
+                                Image("square.stack.3d.up.fill")
                                 Text("Sort")
                             }
                             .font(.system(size: 18, weight: .semibold, design: .rounded))
@@ -59,7 +59,7 @@ struct EditBottom: View {
                         Button {
                             editUpdater.tab = .none
                         } label: {
-                            Image(systemName: "checkmark")
+                            Image("checkmark")
                                 .font(.system(size: 22, weight: .bold, design: .rounded))
                                 .foregroundStyle(Color._whiteVert)
                                 .frame(width: 60, height: 60)

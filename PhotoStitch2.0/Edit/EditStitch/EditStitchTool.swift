@@ -17,7 +17,7 @@ struct EditStitchTool: View {
                     
                 } label: {
                     HStack {
-                        Image(systemName: "sparkles")
+                        Image("rectangle.arrowtriangle.inward.badge.sparkles")
                         Text("Auto")
                     }
                     .font(.system(size: 18, weight: .semibold, design: .rounded))
@@ -32,7 +32,7 @@ struct EditStitchTool: View {
                 editUpdater.tab = .split
             } label: {
                 HStack {
-                    Image(systemName: "scissors")
+                    Image("scissors")
                     Text("Split")
                 }
                 .font(.system(size: 18, weight: .semibold, design: .rounded))

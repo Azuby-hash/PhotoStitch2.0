@@ -22,7 +22,7 @@ struct HomeTop: View {
                             HStack(spacing: 12) {
                                 Text(album.getName())
                                 Spacer()
-                                Image(systemName: "checkmark")
+                                Image("checkmark")
                                     .opacity(homeUpdater.album?.getName() == album.getName() ? 1 : 0)
                             }
                             .foregroundStyle(Color(uiColor: .label))
@@ -42,7 +42,7 @@ struct HomeTop: View {
                         HStack {
                             Text(homeUpdater.album?.getName() ?? "Screenshots")
                                 .font(.system(size: 26, weight: .bold, design: .rounded))
-                            Image(systemName: "arrowtriangle.down.fill")
+                            Image("arrowtriangle.down.fill")
                                 .resizable()
                                 .frame(width: 10, height: 7)
                                 .modifier(GlassModifier(shape: .capsule))
@@ -70,7 +70,7 @@ struct HomeTop: View {
                 Button {
                     homeUpdater.showMenu = .settings
                 } label: {
-                    Image(systemName: "line.3.horizontal.decrease")
+                    Image("line.3.horizontal.decrease")
                         .font(.system(size: 22, weight: .semibold))
                         .foregroundStyle(Color(uiColor: .label))
                         .frame(width: 44, height: 44)
@@ -120,12 +120,12 @@ struct HomeMenu: View {
                 homeUpdater.autoSelection.toggle()
             } label: {
                 HStack(spacing: 12) {
-                    Image(systemName: "app.badge.checkmark.fill")
+                    Image("app.badge.checkmark.fill")
                         .frame(width: 20)
                     Text("Auto Selection")
                         .font(.system(size: 16, weight: .regular))
                     Spacer()
-                    Image(systemName: "checkmark")
+                    Image("checkmark")
                         .opacity(homeUpdater.autoSelection ? 1 : 0)
                 }
                 .foregroundStyle(Color(uiColor: .label))
@@ -136,13 +136,13 @@ struct HomeMenu: View {
                 homeUpdater.autoStitch.toggle()
             } label: {
                 HStack(spacing: 12) {
-                    Image(systemName: "arrowtriangle.right.and.line.vertical.and.arrowtriangle.left.fill")
+                    Image("arrowtriangle.right.and.line.vertical.and.arrowtriangle.left.fill")
                         .rotationEffect(.radians(.pi / 2))
                         .frame(width: 20)
                     Text("Auto Stitch at startup")
                         .font(.system(size: 16, weight: .regular))
                     Spacer()
-                    Image(systemName: "checkmark")
+                    Image("checkmark")
                         .opacity(homeUpdater.autoStitch ? 1 : 0)
                 }
                 .foregroundStyle(Color(uiColor: .label))
@@ -156,7 +156,7 @@ struct HomeMenu: View {
                 homeUpdater.removeOriginals = RemoveOriginals(rawValue: rawValue) ?? homeUpdater.removeOriginals
             } label: {
                 HStack(spacing: 12) {
-                    Image(systemName: "archivebox.fill")
+                    Image("archivebox.fill")
                         .frame(width: 20)
                     Text("Remove Originals")
                         .font(.system(size: 16, weight: .regular))
@@ -187,12 +187,12 @@ struct HomeMenu: View {
                 UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!, options: [:], completionHandler: nil)
             } label: {
                 HStack(spacing: 12) {
-                    Image(systemName: "gear")
+                    Image("gear")
                         .frame(width: 20)
                     Text("Access Settings")
                         .font(.system(size: 16, weight: .regular))
                     Spacer()
-                    Image(systemName: "chevron.right")
+                    Image("chevron.right")
                         .foregroundStyle(Color(uiColor: .tertiaryLabel))
                 }
                 .foregroundStyle(Color(uiColor: .label))
@@ -206,12 +206,12 @@ struct HomeMenu: View {
                 }
             } label: {
                 HStack(spacing: 12) {
-                    Image(systemName: "ellipsis.bubble.fill")
+                    Image("ellipsis.bubble.fill")
                         .frame(width: 20)
                     Text("Write a feedback")
                         .font(.system(size: 16, weight: .regular))
                     Spacer()
-                    Image(systemName: "chevron.right")
+                    Image("chevron.right")
                         .foregroundStyle(Color(uiColor: .tertiaryLabel))
                 }
                 .foregroundStyle(Color(uiColor: .label))
@@ -224,12 +224,12 @@ struct HomeMenu: View {
                 }
             } label: {
                 HStack(spacing: 12) {
-                    Image(systemName: "arrowshape.turn.up.forward.circle.fill")
+                    Image("arrowshape.turn.up.forward.circle.fill")
                         .frame(width: 20)
                     Text("Share this app")
                         .font(.system(size: 16, weight: .regular))
                     Spacer()
-                    Image(systemName: "chevron.right")
+                    Image("chevron.right")
                         .foregroundStyle(Color(uiColor: .tertiaryLabel))
                 }
                 .foregroundStyle(Color(uiColor: .label))
@@ -249,12 +249,12 @@ struct HomeMenu: View {
                 }
             } label: {
                 HStack(spacing: 12) {
-                    Image(systemName: "list.clipboard.fill")
+                    Image("list.clipboard.fill")
                         .frame(width: 20)
                     Text("Term of Service")
                         .font(.system(size: 16, weight: .regular))
                     Spacer()
-                    Image(systemName: "chevron.right")
+                    Image("chevron.right")
                         .foregroundStyle(Color(uiColor: .tertiaryLabel))
                 }
                 .foregroundStyle(Color(uiColor: .label))
@@ -267,12 +267,12 @@ struct HomeMenu: View {
                 }
             } label: {
                 HStack(spacing: 12) {
-                    Image(systemName: "lock.shield.fill")
+                    Image("lock.shield.fill")
                         .frame(width: 20)
                     Text("Privacy Policy")
                         .font(.system(size: 16, weight: .regular))
                     Spacer()
-                    Image(systemName: "chevron.right")
+                    Image("chevron.right")
                         .foregroundStyle(Color(uiColor: .tertiaryLabel))
                 }
                 .foregroundStyle(Color(uiColor: .label))

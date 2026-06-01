@@ -104,7 +104,7 @@ enum PhotosFilter: Int, CaseIterable {
     var icon: String {
         switch(self) {
         case .images: return "photo.on.rectangle.angled"
-        case .videos: return "video.fill"
+        case .videos: return "play.rectangle.fill"
         case .all: return "photo.stack"
         }
     }

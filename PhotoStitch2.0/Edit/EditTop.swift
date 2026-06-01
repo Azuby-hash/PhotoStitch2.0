@@ -16,7 +16,7 @@ struct EditTop: View {
             Button {
                 homeUpdater.showEdit = false
             } label: {
-                Image(systemName: "chevron.left")
+                Image("chevron.left")
                     .font(.system(size: 18, weight: .semibold, design: .rounded))
                     .foregroundStyle(Color.primary)
                     .frame(width: 44, height: 44)
@@ -29,7 +29,7 @@ struct EditTop: View {
                 Button {
                     
                 } label: {
-                    Image(systemName: "arrow.uturn.backward")
+                    Image("arrow.uturn.backward")
                         .font(.system(size: 18, weight: .semibold, design: .rounded))
                         .foregroundStyle(Color.primary)
                         .frame(width: 44, height: 44)
@@ -38,7 +38,7 @@ struct EditTop: View {
                 Button {
                     
                 } label: {
-                    Image(systemName: "arrow.uturn.forward")
+                    Image("arrow.uturn.forward")
                         .font(.system(size: 18, weight: .semibold, design: .rounded))
                         .foregroundStyle(Color.primary)
                         .frame(width: 44, height: 44)
@@ -49,7 +49,7 @@ struct EditTop: View {
             Button {
                 
             } label: {
-                Image(systemName: "arrow.down.to.line")
+                Image("arrow.down.to.line")
                     .font(.system(size: 18, weight: .semibold, design: .rounded))
                     .foregroundStyle(Color.white)
                     .frame(width: 44, height: 44)

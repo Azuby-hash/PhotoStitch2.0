@@ -16,7 +16,7 @@ struct EditCutTool: View {
                 
             } label: {
                 HStack {
-                    Image(systemName: "sparkles")
+                    Image("rectangle.grid.1x2.fill.badge.ellipsis")
                     Text("Actions")
                 }
                 .font(.system(size: 18, weight: .semibold, design: .rounded))
@@ -30,7 +30,7 @@ struct EditCutTool: View {
                 editUpdater.tab = .stitch
             } label: {
                 HStack {
-                    Image(systemName: "rectangle.arrowtriangle.2.inward")
+                    Image("rectangle.arrowtriangle.2.inward")
                     Text("Stitch")
                 }
                 .font(.system(size: 18, weight: .semibold, design: .rounded))

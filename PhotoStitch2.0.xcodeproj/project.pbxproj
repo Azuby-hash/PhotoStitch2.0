@@ -35,6 +35,7 @@
 		CE75165B2FCB0259002C4625 /* EditTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE75165A2FCB0255002C4625 /* EditTop.swift */; };
 		CE75165D2FCB0714002C4625 /* EditBottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE75165C2FCB0712002C4625 /* EditBottom.swift */; };
 		CE75165F2FCC3415002C4625 /* EdgeModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE75165E2FCC3407002C4625 /* EdgeModifier.swift */; };
+		CE7516612FCDCA84002C4625 /* Symbols.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE7516602FCDCA84002C4625 /* Symbols.xcassets */; };
 		CE8700452FB039E200061801 /* UIImageHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700012FB039E200061801 /* UIImageHelpers.swift */; };
 		CE8700462FB039E200061801 /* CVPixelBufferHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87003A2FB039E200061801 /* CVPixelBufferHelpers.swift */; };
 		CE8700472FB039E200061801 /* UIScrollViewPointOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700312FB039E200061801 /* UIScrollViewPointOut.swift */; };
@@ -151,6 +152,7 @@
 		CE75165A2FCB0255002C4625 /* EditTop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTop.swift; sourceTree = "<group>"; };
 		CE75165C2FCB0712002C4625 /* EditBottom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBottom.swift; sourceTree = "<group>"; };
 		CE75165E2FCC3407002C4625 /* EdgeModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgeModifier.swift; sourceTree = "<group>"; };
+		CE7516602FCDCA84002C4625 /* Symbols.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Symbols.xcassets; sourceTree = "<group>"; };
 		CE8700002FB039E200061801 /* UIImageGif.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageGif.swift; sourceTree = "<group>"; };
 		CE8700012FB039E200061801 /* UIImageHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageHelpers.swift; sourceTree = "<group>"; };
 		CE8700022FB039E200061801 /* UIImageStroke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageStroke.swift; sourceTree = "<group>"; };
@@ -297,6 +299,7 @@
 				CE1FDC782F9D181000460178 /* Info.plist */,
 				CE1FDC772F9D181000460178 /* Assets.xcassets */,
 				CEBD6BF92F9D1CC400E176D7 /* Icons.xcassets */,
+				CE7516602FCDCA84002C4625 /* Symbols.xcassets */,
 				CEBD6C9A2F9D1D6A00E176D7 /* Colors.xcassets */,
 				CEBD6BFA2F9D1CC400E176D7 /* Materials.xcassets */,
 				CE1FDC7A2F9D181000460178 /* LaunchScreen.storyboard */,
@@ -628,6 +631,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE7516612FCDCA84002C4625 /* Symbols.xcassets in Resources */,
 				CE1FDC832F9D181000460178 /* Assets.xcassets in Resources */,
 				CEBD6C0B2F9D1CC400E176D7 /* Icons.xcassets in Resources */,
 				CEBD6C0D2F9D1CC400E176D7 /* Materials.xcassets in Resources */,

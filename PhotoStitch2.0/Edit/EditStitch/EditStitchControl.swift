@@ -164,7 +164,7 @@ class EditStitchControl: TouchView {
             view.button.frame = selected?.item == view.item ? doneFrame(isVer: isVer, frame: frame) : stitchFrame(isVer: isVer, frame: frame)
             view.button.setBackgroundColor(._primary)
             view.button.setContentColor(._white)
-            view.button.setImage(UIImage(systemName: selected?.item == view.item ? "lock.open.fill" : "lock.fill", withConfiguration: otherConfiguration), for: .normal)
+            view.button.setImage(UIImage(named: selected?.item == view.item ? "lock.open.fill" : "lock.fill", in: .main, with: otherConfiguration), for: .normal)
             
             UIView.performWithoutAnimation {
                 if beginNorFrameBefores == nil && beginNorFrameAfters == nil {
@@ -186,7 +186,7 @@ class EditStitchControl: TouchView {
                 layer.shadowOpacity = 0.5
                 layer.shadowRadius = 10
             }.esubviewsModifier { subviews in
-                subviews.first(type: EditStitchArrow.self)?.subviews.first(type: UIImageView.self)?.image = UIImage(systemName: "chevron.\(isVer ? "down" : "right").2", withConfiguration: midArrowConfiguration)
+                subviews.first(type: EditStitchArrow.self)?.subviews.first(type: UIImageView.self)?.image = UIImage(named: "chevron.\(isVer ? "down" : "right").2", in: .main, with: midArrowConfiguration)
                 subviews.first(type: EditStitchArrow.self)?.esetOffset(isVer ? .init(x: 0, y: 15) : .init(x: 15, y: 0))
             }
             view.gradientB.layoutIfNeeded()
@@ -199,7 +199,7 @@ class EditStitchControl: TouchView {
                 layer.shadowOpacity = 0.5
                 layer.shadowRadius = 10
             }.esubviewsModifier { subviews in
-                subviews.first(type: EditStitchArrow.self)?.subviews.first(type: UIImageView.self)?.image = UIImage(systemName: "chevron.\(isVer ? "up" : "left").2", withConfiguration: midArrowConfiguration)
+                subviews.first(type: EditStitchArrow.self)?.subviews.first(type: UIImageView.self)?.image = UIImage(named: "chevron.\(isVer ? "up" : "left").2", in: .main, with: midArrowConfiguration)
                 subviews.first(type: EditStitchArrow.self)?.esetOffset(isVer ? .init(x: 0, y: -15) : .init(x: -15, y: 0))
             }
             view.gradientA.layoutIfNeeded()
