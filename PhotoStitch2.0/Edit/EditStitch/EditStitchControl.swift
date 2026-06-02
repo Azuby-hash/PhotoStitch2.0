@@ -457,7 +457,7 @@ extension EditStitchControl {
         if g.state == .began {
             beginDrag()
             
-            beginNorFrameBefores = context?.coordinator.content?.editUpdater.items.map({ ($0, $0.process.rect) })
+            beginNorFrameBefores = editUpdater?.items.map({ ($0, $0.process.rect) })
             
             let scrollContentBounds = scrollContent.bounds
             
@@ -509,7 +509,7 @@ extension EditStitchControl {
         if g.state == .began {
             beginDrag()
             
-            beginNorFrameAfters = context?.coordinator.content?.editUpdater.items.map({ ($0, $0.process.rect) })
+            beginNorFrameAfters = editUpdater?.items.map({ ($0, $0.process.rect) })
             
             let scrollContentBounds = scrollContent.bounds
             
@@ -584,7 +584,7 @@ extension EditStitchControl {
                 }
             }
             
-            beginNorFrameMids = context?.coordinator.content?.editUpdater.items.map({ ($0, $0.process.rect) })
+            beginNorFrameMids = editUpdater.items.map({ ($0, $0.process.rect) })
         }
         
         UIView.performWithoutAnimation {
@@ -601,7 +601,7 @@ extension EditStitchControl {
               let editItems = stackView.arrangedSubviews as? [EditItem],
               let stitchUpdater = editUpdater?.stitchUpdater
         else { return }
-
+        
         let isVer = editUpdater?.axis == .vertical
         
         if dragFrom == .before {

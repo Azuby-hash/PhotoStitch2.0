@@ -45,6 +45,7 @@ struct EditStitchTool: View {
         .align(edge: .bottom, constant: 0)
         .onAppear {
             editUpdater.stitchUpdater = EditStitchUpdater()
+            editUpdater.stitchUpdater?.context = editUpdater.editGallery.context
         }
         .onDisappear {
             editUpdater.stitchUpdater = nil
@@ -74,25 +75,25 @@ struct EditStitchTool: View {
     }
     
     func setSelectItem(_ item: StitchItem?) {
-//        context?.coordinator.content?.editUpdater.items.forEach { item in
-//            if item.process.rect.height < MIN_REMOVE || item.process.rect.width < MIN_REMOVE {
-//                context?.coordinator.content?.editUpdater.items = context?.coordinator.content?.editUpdater.items.filter({ $0 != item }) ?? []
-//            }
-//        }
+        context?.coordinator.content?.editUpdater.items.forEach { item in
+            if item.process.rect.height < MIN_REMOVE || item.process.rect.width < MIN_REMOVE {
+                context?.coordinator.content?.editUpdater.items = context?.coordinator.content?.editUpdater.items.filter({ $0 != item }) ?? []
+            }
+        }
         
         selectItem = item
         
-//        if item == nil {
-//            removeStitchConstraints()
-//            
-//            frames = []
-//            translateBefore = .zero
-//            translateAfter = .zero
-//        } else {
-//            frames = context?.coordinator.content?.editUpdater.items.map({ ($0, $0.process.rect) }) ?? []
-//            translateBefore = .zero
-//            translateAfter = .zero
-//        }
+        if item == nil {
+            removeStitchConstraints()
+            
+            frames = []
+            translateBefore = .zero
+            translateAfter = .zero
+        } else {
+            frames = context?.coordinator.content?.editUpdater.items.map({ ($0, $0.process.rect) }) ?? []
+            translateBefore = .zero
+            translateAfter = .zero
+        }
     }
     
     func setConstraints(_ constraints: [NSLayoutConstraint]) {

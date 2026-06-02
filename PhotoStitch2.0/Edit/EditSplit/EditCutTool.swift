@@ -43,6 +43,7 @@ struct EditCutTool: View {
         .align(edge: .bottom, constant: 0)
         .onAppear {
             editUpdater.cutUpdater = EditCutUpdater()
+            editUpdater.cutUpdater?.context = editUpdater.editGallery.context
         }
         .onDisappear {
             editUpdater.cutUpdater = nil
