@@ -66,6 +66,11 @@ var ALBUM_SELECT: String? {
     set { UserDefaults.standard.set(newValue, forKey: "1e5684e492d5598b") }
 }
 
+var SPLIT_MODE: SplitMode {
+    get { SplitMode(rawValue: UserDefaults.standard.object(forKey: "c7f4216524e1df5c") as? Int ?? -1) ?? .pair }
+    set { UserDefaults.standard.set(newValue.rawValue, forKey: "c7f4216524e1df5c") }
+}
+
 enum RemoveOriginals: Int, CaseIterable {
     case never
     case ask
@@ -108,6 +113,11 @@ enum PhotosFilter: Int, CaseIterable {
         case .all: return "photo.stack"
         }
     }
+}
+
+enum SplitMode: Int {
+    case single
+    case pair
 }
 
 enum MainError: Error {

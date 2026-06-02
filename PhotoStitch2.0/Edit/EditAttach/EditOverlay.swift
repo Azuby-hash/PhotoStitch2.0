@@ -26,5 +26,6 @@ class EditOverlay: UIViewPointSubview {
         self.context = context
         
         updateStitch()
+        updateCut()
     }
 }

@@ -54,9 +54,15 @@ struct EditCutTool: View {
     @ObservationIgnored var context: EditGallery.Context?
     
     private(set) var constraints: [NSLayoutConstraint] = []
+    private(set) var mode: SplitMode = SPLIT_MODE
     
     deinit {
         constraints.forEach({ $0.isActive = false })
+    }
+    
+    func setMode(_ mode: SplitMode) {
+        self.mode = mode
+        SPLIT_MODE = mode
     }
     
     func setConstraints(_ constraints: [NSLayoutConstraint]) {

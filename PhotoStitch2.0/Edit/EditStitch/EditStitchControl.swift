@@ -51,9 +51,9 @@ class EditStitchControl: TouchView {
     private var dragFrom = EditStitchDrag.before
 
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-//        guard cEdit.getState() == .editing && cEdit.getTab() == .stitch else {
-//            return false
-//        }
+        guard editUpdater?.tab == .stitch else {
+            return false
+        }
         
         for view in stitchViews.map({ $0.button }) {
             if view.convert(view.bounds, to: self).contains(point) {
@@ -121,6 +121,8 @@ class EditStitchControl: TouchView {
         if !editUpdater.editGallery.onZoom {
             contentUpdate(editUpdater: editUpdater, context: context)
         }
+        
+        alpha = editUpdater.tab == .stitch ? 1 : 0
     }
     
     private func contentUpdate(editUpdater: EditUpdater, context: EditGallery.Context) {
@@ -420,9 +422,9 @@ extension EditStitchControl: ForwardScrollProtocol {
     func passInteration(at point: CGPoint) -> Bool {
         let stitchUpdater = editUpdater?.stitchUpdater
         
-//        guard cEdit.getState() == .editing && cEdit.getTab() == .stitch else {
-//            return false
-//        }
+        guard editUpdater?.tab == .stitch else {
+            return false
+        }
         
         for view in [beforeView, afterView, midDragView] {
             if view.convert(view.bounds, to: self).contains(point) || getCurrentTouch()?.view == view {

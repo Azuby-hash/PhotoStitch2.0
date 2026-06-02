@@ -172,11 +172,11 @@ struct EditGallery: UIViewRepresentable {
                     view.setSize(calculateSize(for: item))
                     view.setContent()
                     
-                    if editUpdater.tab == .stitch {
+                    if editUpdater.tab == .stitch || editUpdater.tab == .split {
                         stack.setCustomSpacing(0, after: view)
                     }
                     
-                    if editUpdater.tab == .split || editUpdater.tab == .sort {
+                    if editUpdater.tab == .sort {
                         stack.setCustomSpacing(spacingZeroIndex == index ? 0 : SPLIT_ITEM_SPACING, after: view)
                     }
                 }

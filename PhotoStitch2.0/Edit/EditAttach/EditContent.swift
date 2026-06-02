@@ -26,5 +26,6 @@ class EditContent: UIViewPointSubview {
         self.context = context
         
         updateStitch()
+        updateCut()
     }
 }
