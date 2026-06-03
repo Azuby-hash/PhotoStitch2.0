@@ -26,7 +26,7 @@ struct EditGallery: UIViewRepresentable {
     
     func makeUIView(context: Context) -> UIView {
         let view = UIView()
-            .eselfConstraints([.width(geometry.size.width), .height(geometry.size.height + baseInsets.top + baseInsets.bottom)])
+            .eselfConstraints([.width(geometry.size.width), .height(geometry.size.height)])
         let scrollView = ForwardScroll()
             .edelegate(context.coordinator)
             .emaximumZoomScale(MAX_ZOOM)
@@ -41,8 +41,8 @@ struct EditGallery: UIViewRepresentable {
                 .eaddSubview(scrollContent
                     .eaddSubview(stackView, [.centerX(0, 900), .centerY(0, 900), .width(0, 900), .height(0, 900)])
                     .eaddSubview(editContent, [.centerX(0), .centerY(0)]),
-                 [.leading(edgeInsets.leading), .trailing(edgeInsets.trailing), .top(edgeInsets.top + 44 + baseInsets.top), .bottom(edgeInsets.bottom + 60 + baseInsets.bottom)]),
-            [.leading(0), .trailing(0), .top(0), .bottom(0)])
+                [.leading(0), .trailing(0), .top(0), .bottom(0)]),
+            [.leading(edgeInsets.leading), .trailing(edgeInsets.trailing), .top(edgeInsets.top), .bottom(edgeInsets.bottom)])
             .eaddSubview(editOverlay, [.leading(0), .trailing(0), .top(0), .bottom(0)])
         
         context.coordinator.content = self
@@ -172,11 +172,11 @@ struct EditGallery: UIViewRepresentable {
                     view.setSize(calculateSize(for: item))
                     view.setContent()
                     
-                    if editUpdater.tab == .stitch || editUpdater.tab == .split {
+                    if editUpdater.tab == .stitch {
                         stack.setCustomSpacing(0, after: view)
                     }
                     
-                    if editUpdater.tab == .sort {
+                    if editUpdater.tab == .split || editUpdater.tab == .sort {
                         stack.setCustomSpacing(spacingZeroIndex == index ? 0 : SPLIT_ITEM_SPACING, after: view)
                     }
                 }
@@ -194,19 +194,17 @@ struct EditGallery: UIViewRepresentable {
         
         private func calculateSize(for item: StitchItem) -> CGSize {
             guard let scroll = scrollView,
-                  let editUpdater = content?.editUpdater,
-                  let content = content
+                  let editUpdater = content?.editUpdater
             else { return .zero }
             
             let size = item.process.rect.size * item.size
-            let bounds = scroll.bounds.inset(by: UIEdgeInsets(top: content.edgeInsets.top, left: content.edgeInsets.leading, bottom: content.edgeInsets.bottom, right: content.edgeInsets.trailing))
             
             if editUpdater.axis == .vertical {
-                return size * (bounds.width / size.width)
+                return size * (scroll.bounds.width / size.width)
             }
             
             if editUpdater.axis == .horizontal {
-                return size * (bounds.height / size.height)
+                return size * (scroll.bounds.height / size.height)
             }
             
             return scroll.bounds.size

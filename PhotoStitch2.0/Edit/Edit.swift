@@ -19,8 +19,8 @@ struct Edit: View {
                 let totalInset = EdgeInsets(top: safeAreaInsets.top + bonusInset.top, leading: safeAreaInsets.leading + bonusInset.leading, bottom: safeAreaInsets.bottom + bonusInset.bottom, trailing: safeAreaInsets.trailing + bonusInset.trailing)
                 
                 EditGallery(geometry: geometry, edgeInsets: totalInset, baseInsets: bonusInset)
-                    .ignoresSafeArea()
-                    .modifier(EdgeModifier(top: 44, bottom: 60))
+//                    .ignoresSafeArea()
+//                    .modifier(EdgeModifier(top: 44, bottom: 60))
             }
             
             EditTop()
