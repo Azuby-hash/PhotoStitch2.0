@@ -14,13 +14,13 @@ struct Edit: View {
     var body: some View {
         ZStack {
             GeometryReader { geometry in
-                let safeAreaInsets = IOS26 ? geometry.safeAreaInsets : EdgeInsets()
-                let bonusInset = getInset(geometry)
-                let totalInset = EdgeInsets(top: safeAreaInsets.top + bonusInset.top, leading: safeAreaInsets.leading + bonusInset.leading, bottom: safeAreaInsets.bottom + bonusInset.bottom, trailing: safeAreaInsets.trailing + bonusInset.trailing)
+                let safeAreaInsets = geometry.safeAreaInsets
+                let bonusInset = getInset(geometry.size)
+                let totalInset = EdgeInsets(top: safeAreaInsets.top + bonusInset.top + 44, leading: safeAreaInsets.leading + bonusInset.leading, bottom: safeAreaInsets.bottom + bonusInset.bottom + 60, trailing: safeAreaInsets.trailing + bonusInset.trailing)
                 
-                EditGallery(geometry: geometry, edgeInsets: totalInset, baseInsets: bonusInset)
-//                    .ignoresSafeArea()
-//                    .modifier(EdgeModifier(top: 44, bottom: 60))
+                EditGallery(edgeInsets: totalInset, baseInsets: bonusInset)
+                    .ignoresSafeArea()
+                    .modifier(EdgeModifier(top: 44, bottom: 60))
             }
             
             EditTop()
@@ -30,15 +30,15 @@ struct Edit: View {
         .animation(.smooth(duration: ANIM_DURATION), value: editUpdater.tab)
     }
     
-    func getInset(_ geometry: GeometryProxy) -> EdgeInsets {
-        var hozInset = editUpdater.axis == .vertical ? geometry.size.width * 0.2 : 48
-        var topInset = editUpdater.axis == .horizontal ? geometry.size.height * 0.1 : 48
-        var bottomInset = editUpdater.axis == .horizontal ? geometry.size.height * 0.2 : 48
+    func getInset(_ size: CGSize) -> EdgeInsets {
+        var hozInset = editUpdater.axis == .vertical ? size.width * 0.2 : 48
+        var topInset = editUpdater.axis == .horizontal ? size.height * 0.1 : 48
+        var bottomInset = editUpdater.axis == .horizontal ? size.height * 0.2 : 48
         
         if isIpad {
-            hozInset = editUpdater.axis == .vertical ? geometry.size.width * 0.3 : 48
-            topInset = editUpdater.axis == .horizontal ? geometry.size.height * 0.2 : 48
-            bottomInset = editUpdater.axis == .horizontal ? geometry.size.height * 0.3 : 48
+            hozInset = editUpdater.axis == .vertical ? size.width * 0.3 : 48
+            topInset = editUpdater.axis == .horizontal ? size.height * 0.2 : 48
+            bottomInset = editUpdater.axis == .horizontal ? size.height * 0.3 : 48
         }
         
         let edgeInsets = EdgeInsets(top: topInset, leading: hozInset, bottom: bottomInset, trailing: hozInset)

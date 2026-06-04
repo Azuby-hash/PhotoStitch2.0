@@ -15,10 +15,14 @@ struct EdgeModifier: ViewModifier {
         if #available(iOS 26.0, *) {
             content
                 .safeAreaBar(edge: .top) {
-                    Color.white.opacity(0.00001).frame(height: top)
+                    Button { } label: {
+                        ZStack { }.frame(width: 10, height: top).background(Color.white.opacity(0.0001))
+                    }
                 }
                 .safeAreaBar(edge: .bottom) {
-                    Color.white.opacity(0.00001).frame(height: bottom)
+                    Button { } label: {
+                        ZStack { }.frame(width: 10, height: bottom).background(Color.white.opacity(0.0001))
+                    }
                 }
         } else {
             content.overlay {

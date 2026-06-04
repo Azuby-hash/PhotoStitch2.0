@@ -20,18 +20,17 @@ import Combine
 struct EditGallery: UIViewRepresentable {
     @Environment(EditUpdater.self) var editUpdater
 
-    let geometry: GeometryProxy
     let edgeInsets: EdgeInsets
     let baseInsets: EdgeInsets
     
-    func makeUIView(context: Context) -> UIView {
-        let view = UIView()
-            .eselfConstraints([.width(geometry.size.width), .height(geometry.size.height)])
+    func makeUIView(context: Context) -> UIViewContent {
+        let view = UIViewContent()
         let scrollView = ForwardScroll()
             .edelegate(context.coordinator)
             .emaximumZoomScale(MAX_ZOOM)
             .ebackgroundColor(.clear)
             .eclipsToBounds(false)
+            .econtentInset(edgeInsets.toUI())
         let scrollContent = UIViewPointSubview()
         let stackView = UIStackView()
         let editContent = EditContent()
@@ -41,8 +40,8 @@ struct EditGallery: UIViewRepresentable {
                 .eaddSubview(scrollContent
                     .eaddSubview(stackView, [.centerX(0, 900), .centerY(0, 900), .width(0, 900), .height(0, 900)])
                     .eaddSubview(editContent, [.centerX(0), .centerY(0)]),
-                [.leading(0), .trailing(0), .top(0), .bottom(0)]),
-            [.leading(edgeInsets.leading), .trailing(edgeInsets.trailing), .top(edgeInsets.top), .bottom(edgeInsets.bottom)])
+                 [.leading(0), .trailing(0), .top(0), .bottom(0)]),
+            [.leading(0), .trailing(0), .top(0), .bottom(0)])
             .eaddSubview(editOverlay, [.leading(0), .trailing(0), .top(0), .bottom(0)])
         
         context.coordinator.content = self
@@ -55,7 +54,12 @@ struct EditGallery: UIViewRepresentable {
         
         editUpdater.editGallery.context = context
         
+        view.content = self
+        view.context = context
+        
         editUpdater.animIfNeeded {
+            if view.bounds.size.wxh() < 1 { return }
+            
             view.layoutIfNeeded()
             
             context.coordinator.layoutUpdate()
@@ -67,15 +71,22 @@ struct EditGallery: UIViewRepresentable {
         return view
     }
     
-    func updateUIView(_ uiView: UIView, context: Context) {
+    func updateUIView(_ uiView: UIViewContent, context: Context) {
         editUpdater.editGallery.context = context
         
         context.coordinator.stackView?.layer.shadowColor = ._blackVert
         context.coordinator.stackView?.layer.shadowOffset = .zero
         context.coordinator.stackView?.layer.shadowOpacity = 0.2
         context.coordinator.stackView?.layer.shadowRadius = 40
+        
+        context.coordinator.scrollView?.econtentInset(edgeInsets.toUI())
+        
+        uiView.content = self
+        uiView.context = context
 
         editUpdater.animIfNeeded {
+            if uiView.bounds.size.wxh() < 1 { return }
+            
             uiView.layoutIfNeeded()
             
             context.coordinator.layoutUpdate()
@@ -194,20 +205,47 @@ struct EditGallery: UIViewRepresentable {
         
         private func calculateSize(for item: StitchItem) -> CGSize {
             guard let scroll = scrollView,
-                  let editUpdater = content?.editUpdater
+                  let content = content
             else { return .zero }
             
+            let editUpdater = content.editUpdater
+            
             let size = item.process.rect.size * item.size
+            let bounds = scroll.bounds.size - CGSize(width: content.edgeInsets.leading + content.edgeInsets.trailing, height: content.edgeInsets.top + content.edgeInsets.bottom)
             
             if editUpdater.axis == .vertical {
-                return size * (scroll.bounds.width / size.width)
+                return size * (bounds.width / size.width)
             }
             
             if editUpdater.axis == .horizontal {
-                return size * (scroll.bounds.height / size.height)
+                return size * (bounds.height / size.height)
             }
             
-            return scroll.bounds.size
+            return bounds
+        }
+    }
+    
+    class UIViewContent: UIView {
+        var content: EditGallery?
+        var context: Context?
+        
+        override func layoutSubviews() {
+            super.layoutSubviews()
+            
+            if bounds.size.wxh() < 1 { return }
+            
+            guard let editUpdater = content?.editUpdater,
+                  let context = context
+            else { return }
+            
+            editUpdater.animIfNeeded { [self] in
+                layoutIfNeeded()
+                
+                context.coordinator.layoutUpdate()
+                
+                context.coordinator.editContent?.update(editUpdater: editUpdater, context: context)
+                context.coordinator.editOverlay?.update(editUpdater: editUpdater, context: context)
+            }
         }
     }
 }
@@ -277,5 +315,11 @@ class EditItem: UIView {
         imageView.eselfConstraints([.width(imageSize.width), .height(imageSize.height)])
         eaddSubview(imageView, [.leading(imagePosi.x), .top(imagePosi.y)])
         layoutIfNeeded()
+    }
+}
+
+extension EdgeInsets {
+    func toUI() -> UIEdgeInsets {
+        UIEdgeInsets(top: top, left: leading, bottom: bottom, right: trailing)
     }
 }

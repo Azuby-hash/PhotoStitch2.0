@@ -42,7 +42,9 @@ extension UIView {
         }
 
         // 2. Activate everything once for better performance
-        NSLayoutConstraint.activate(anchorsToActivate, compareConstrants: self.constraints + (superview?.constraints ?? []))
+        // Note: width/height self-constraints always live on self.constraints, never on the superview.
+        // Including superview?.constraints risks accessing constraints whose firstItem is a deallocated view (e.g. removed UIStackView arranged subviews), causing bad access.
+        NSLayoutConstraint.activate(anchorsToActivate, compareConstrants: self.constraints)
         
         return self
     }
