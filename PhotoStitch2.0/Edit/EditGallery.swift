@@ -58,11 +58,7 @@ struct EditGallery: UIViewRepresentable {
         view.context = context
         
         editUpdater.animIfNeeded {
-            if view.bounds.size.wxh() < 1 { return }
-            
             view.layoutIfNeeded()
-            
-            context.coordinator.layoutUpdate()
             
             context.coordinator.editContent?.setup(editUpdater: editUpdater, context: context)
             context.coordinator.editOverlay?.setup(editUpdater: editUpdater, context: context)

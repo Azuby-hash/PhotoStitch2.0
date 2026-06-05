@@ -70,8 +70,12 @@ extension EditCutControl: ForwardScrollProtocol {
         let isVer = editUpdater.axis == .vertical
         
         eaddSubview(splitArea
-            .eaddSubview(splitBefore, [.top(0), .leading(0), isVer ? .trailing(0) : .bottom(0)])
-            .eaddSubview(splitAfter, [.bottom(0), .trailing(0), isVer ? .leading(0) : .top(0)]))
+            .eaddSubview(splitBefore
+                .eselfConstraints([isVer ? .height(40) : .width(40)]),
+            [.top(-20), .leading(0), isVer ? .trailing(0) : .bottom(0)])
+            .eaddSubview(splitAfter
+                .eselfConstraints([isVer ? .height(40) : .width(40)]),
+            [.bottom(0), .trailing(0), isVer ? .leading(0) : .top(0)]))
         
         eaddSubview(splitButton
             .setContentColor(.white)
@@ -119,6 +123,8 @@ extension EditCutControl: ForwardScrollProtocol {
         
         let cutRect = cutNorRect * stackFrame.size + stackFrame.origin
         
+        splitBefore.layer.fillColor = ._red
+        splitAfter.layer.fillColor = ._red
         splitArea.backgroundColor = editUpdater.cutUpdater?.mode == .pair ? ._red.withAlphaComponent(0.2) : .clear
         splitArea.frame = isVer ? CGRect(x: stackFrame.minX, y: cutRect.minY, width: stackFrame.width, height: cutRect.height) : CGRect(x: cutRect.minX, y: stackFrame.minY, width: cutRect.width, height: stackFrame.height)
         splitButton.transform = .identity
@@ -256,5 +262,26 @@ class EditSplitDivider: UIView {
 
     override var layer: CAShapeLayer {
         return super.layer as! CAShapeLayer
+    }
+    
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        
+        update()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        update()
+    }
+    
+    private func update() {
+        let isVer = bounds.width > bounds.height
+        
+        layer.path = UIBezierPath()
+            .emove(to: CGPoint(x: isVer ? 0 : bounds.midY, y: isVer ? bounds.midX : 0))
+            .eaddLine(to: CGPoint(x: isVer ? bounds.maxX : bounds.midY, y: isVer ? bounds.midX : bounds.maxY))
+            .cgPath.copy(dashingWithPhase: 0, lengths: [5, 10]).copy(strokingWithWidth: 3, lineCap: .round, lineJoin: .round, miterLimit: .pi)
     }
 }

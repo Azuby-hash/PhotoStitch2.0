@@ -27,6 +27,7 @@
 		CE4231B02FACEBA400701039 /* Stitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231AF2FACEBA400701039 /* Stitch.swift */; };
 		CE4231B22FACEBC500701039 /* WebViewSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231B12FACEBC500701039 /* WebViewSnapshot.swift */; };
 		CE4231B62FACFBCE00701039 /* Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231B52FACFBCE00701039 /* Loading.swift */; };
+		CE4262632FD25220002916A4 /* UIBezierPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4262622FD25214002916A4 /* UIBezierPath.swift */; };
 		CE75164B2FC5E99E002C4625 /* TouchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE75164A2FC5E99E002C4625 /* TouchView.swift */; };
 		CE7516512FC9A2A4002C4625 /* EditStitchTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7516502FC9A29C002C4625 /* EditStitchTool.swift */; };
 		CE7516552FC9F6F0002C4625 /* EditCutControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7516542FC9F6F0002C4625 /* EditCutControl.swift */; };
@@ -144,6 +145,7 @@
 		CE4231AF2FACEBA400701039 /* Stitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stitch.swift; sourceTree = "<group>"; };
 		CE4231B12FACEBC500701039 /* WebViewSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewSnapshot.swift; sourceTree = "<group>"; };
 		CE4231B52FACFBCE00701039 /* Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loading.swift; sourceTree = "<group>"; };
+		CE4262622FD25214002916A4 /* UIBezierPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBezierPath.swift; sourceTree = "<group>"; };
 		CE75164A2FC5E99E002C4625 /* TouchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchView.swift; sourceTree = "<group>"; };
 		CE7516502FC9A29C002C4625 /* EditStitchTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditStitchTool.swift; sourceTree = "<group>"; };
 		CE7516542FC9F6F0002C4625 /* EditCutControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCutControl.swift; sourceTree = "<group>"; };
@@ -400,6 +402,7 @@
 				CE8700172FB039E200061801 /* UISToolBar.swift */,
 				CE8700182FB039E200061801 /* UISView.swift */,
 				CE8700192FB039E200061801 /* WKSWebView.swift */,
+				CE4262622FD25214002916A4 /* UIBezierPath.swift */,
 			);
 			path = UISwift;
 			sourceTree = "<group>";
@@ -761,6 +764,7 @@
 				CE8700792FB039E200061801 /* UIColorHelpers.swift in Sources */,
 				CE87007A2FB039E200061801 /* JSONHelpers.swift in Sources */,
 				CE87007B2FB039E200061801 /* UINavigationOrientationSubController.swift in Sources */,
+				CE4262632FD25220002916A4 /* UIBezierPath.swift in Sources */,
 				CE7516512FC9A2A4002C4625 /* EditStitchTool.swift in Sources */,
 				CE87007C2FB039E200061801 /* UIViewFindView.swift in Sources */,
 				CE87007D2FB039E200061801 /* CGImageHelpers.swift in Sources */,
