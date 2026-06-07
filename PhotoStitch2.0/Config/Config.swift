@@ -35,6 +35,17 @@ let SECOND_PER_SELECTION: TimeInterval = 5
 let INTERVAL_AUTO: TimeInterval = 500
 
 let CICONTEXT = CIContext()
+var EMPTY_DATA: Data {
+    get throws {
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 1
+        let renderer = UIGraphicsImageRenderer(size: CGSize(width: 1, height: 1), format: format)
+        return try renderer.image { c in
+            c.cgContext.setFillColor(UIColor.clear.cgColor)
+            c.cgContext.fill(CGRect(origin: .zero, size: CGSize(width: 1, height: 1)))
+        }.pngData().unwrap()
+    }
+}
 
 var SHOW_ONBOARDING: Bool {
     get { UserDefaults.standard.object(forKey: "4aac33cf6c6a8064") as? Bool ?? true }

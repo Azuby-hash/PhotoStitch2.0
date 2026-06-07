@@ -59,7 +59,7 @@ enum EditTab: String, CaseIterable {
     var axis: NSLayoutConstraint.Axis
     var clean: Bool = false
     var tab = EditTab.none
-    var anim = false
+    var anim = true
     
     var stitchUpdater: EditStitchUpdater? = .init() // DO NOT SET NIL HERE OR INSIDE WILL NOT UPDATE
     var cutUpdater: EditCutUpdater? = .init() // DO NOT SET NIL HERE OR INSIDE WILL NOT UPDATE
@@ -76,7 +76,10 @@ enum EditTab: String, CaseIterable {
     
     func animIfNeeded(perform: @escaping () -> Void) {
         if anim {
-            perform()
+            UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) {
+                
+                perform()
+            }
         } else {
             UIView.performWithoutAnimation {
                 perform()

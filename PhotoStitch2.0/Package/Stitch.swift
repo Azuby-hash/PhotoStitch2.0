@@ -8,6 +8,7 @@
 import UIKit
 import AVFoundation
 import Accelerate
+import Photos
 
 enum StitchError: Error {
     case error(String)
@@ -207,18 +208,18 @@ class Stitch {
         return StitchResult(maxKIndex: maxKIndex, maxBefore: maxBefore, maxAfter: maxAfter, confidence: confidence, samePercent: samePercent)
     }
     
-    func stitch(from asset: AVAsset, progress: @escaping (CGFloat) -> Void) async throws -> StitchItem {
+    func stitch(from av: AVAsset, of asset: PHAsset, progress: @escaping (CGFloat) -> Void) async throws -> StitchItem {
         let date = Date()
         
         // 1. Chuẩn bị Reader và Output
-        guard let track = try await asset.loadTracks(withMediaType: .video).first else {
+        guard let track = try await av.loadTracks(withMediaType: .video).first else {
             throw StitchError.error("No track video")
         }
         
         var transform = try await track.load(.preferredTransform)
         transform = CGAffineTransform.identity.rotated(by: -transform.decomposed().rotation)
         
-        let reader = try AVAssetReader(asset: asset)
+        let reader = try AVAssetReader(asset: av)
         
         // Định dạng đầu ra là BGRA để dễ xử lý ảnh sau này
         let settings: [String: Any] = [
@@ -231,7 +232,7 @@ class Stitch {
         // 2. Bắt đầu đọc
         reader.startReading()
         
-        let duration = try await asset.load(.duration)
+        let duration = try await av.load(.duration)
         let config = Stitch.getConfig(mode: .video)
         let interval: Double = 3 / 60 // Khoảng cách 0.05s
         var lastExtractedTime: Double = -interval // Để lấy được frame đầu tiên tại 0s
@@ -369,7 +370,7 @@ class Stitch {
             }
             
             if let fullStitchCI = fullStitchCI, let stitchCG = CICONTEXT.createCGImage(fullStitchCI, from: fullStitchCI.extent), let currProcess = currProcess {
-                return try StitchItem(image: UIImage(cgImage: stitchCG), process: currProcess)
+                return try StitchItem(image: UIImage(cgImage: stitchCG), asset: asset, process: currProcess)
             }
         }
         
@@ -514,27 +515,43 @@ struct StitchProcess: Equatable {
 }
 
 @Observable class StitchItem: Identifiable {
-    let id = UUID().uuidString
+    var id = UUID().uuidString
     let size: CGSize
+    let asset: PHAsset
     var image: Data
     var clean: Data
     var process = StitchProcess()
     
-    init(image: UIImage) throws {
+    init(image: UIImage, asset: PHAsset) throws {
         guard let ciImage = CIImage(image: image) else {
             throw MainError.error("Cant convert to ciimage")
         }
         
+        self.asset = asset
         self.size = image.size
         self.image = try image.jpegData()
         self.clean = try image.processClean()
         self.process = process.setup(image: ciImage, config: Stitch.getConfig(mode: .image))
     }
     
-    fileprivate init(image: UIImage, process: StitchProcess) throws {
+    init(id: String = UUID().uuidString, asset: PHAsset, size: CGSize, image: Data, clean: Data, process: StitchProcess) {
+        self.id = id
+        self.asset = asset
+        self.size = size
+        self.image = image
+        self.clean = clean
+        self.process = process
+    }
+    
+    fileprivate init(image: UIImage, asset: PHAsset, process: StitchProcess) throws {
         self.size = image.size
+        self.asset = asset
         self.image = try image.jpegData()
         self.clean = try image.processClean()
         self.process = process
+    }
+    
+    func copy(id: String = UUID().uuidString) -> StitchItem {
+        return StitchItem(id: id, asset: asset, size: size, image: image, clean: clean, process: process)
     }
 }

@@ -106,5 +106,20 @@ extension Array where Element: Equatable & Hashable {
             }
         }
     }
+    
+    func transformArray(to newArray: [Element], add: ((Element, Int) async throws -> Void)?, remove: ((Int) async throws -> Void)?, move: ((Int, Int) async throws -> Void)?) async throws {
+        let changes = newArray.difference(from: self).steps
+        
+        for change in changes {
+            switch change {
+            case .remove(_, let index):
+                try await remove?(index)
+            case .insert(let element, let index):
+                try await add?(element, index)
+            case .move(_, let from, let to):
+                try await move?(from, to)
+            }
+        }
+    }
 }
 

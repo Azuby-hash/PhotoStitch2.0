@@ -84,23 +84,10 @@ struct HomeBottom: View {
                 Button {
                     Task {
                         do {
-                            var items = [StitchItem]()
-                            
-                            for asset in homeUpdater.selecteds {
-                                if asset.mediaType == .image {
-                                    items.append(try await PIPELINE.assetImageToItem(asset))
-                                } else {
-                                    items.append(try await PIPELINE.assetVideoToItem(asset) { progress in
-                                        print(progress)
-                                    })
-                                }
-                            }
-                            
                             if homeUpdater.autoStitch {
-                                try await PIPELINE.autoStitch(items)
+                                try await PIPELINE.autoStitch(homeUpdater.items)
                             }
                             
-                            homeUpdater.items = items
                             homeUpdater.axis = .vertical
                             homeUpdater.showEdit = true
                         } catch {

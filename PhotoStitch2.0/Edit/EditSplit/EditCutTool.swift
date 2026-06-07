@@ -13,7 +13,7 @@ struct EditCutTool: View {
     var body: some View {
         HStack {
             Button {
-                
+                editUpdater.cutUpdater?.setMode(editUpdater.cutUpdater?.mode == .pair ? .single : .pair)
             } label: {
                 HStack {
                     Image("rectangle.grid.1x2.fill.badge.ellipsis")
@@ -77,5 +77,104 @@ struct EditCutTool: View {
         let constraints = constraints ?? self.constraints
         constraints.forEach({ $0.isActive = false })
         self.constraints.removeAll(where: { constraints.contains($0) })
+    }
+    
+    func applyCut(_ norRects: [StitchItem: CGRect]) async throws {
+        guard let editUpdater = context?.coordinator.content?.editUpdater else {
+            throw MainError.error("No EditUpdater found")
+        }
+        
+        var resultItems: [StitchItem] = []
+        
+        let oldCuts = editUpdater.items.map({ ($0, $0.process.rect) })
+        
+        try editUpdater.items.forEach { item in
+            guard let norRect = norRects[item] else {
+                resultItems.append(item)
+                return
+            }
+            
+            let currRect = item.process.rect
+            
+            // 2. Snap the removal area to the edges to avoid slivers
+            let snappedRemove = snapRect(norRect, to: currRect, delta: 0.02)
+            
+            // 3. Define the placeholder area (the intersection)
+            let holeRect = currRect.intersection(snappedRemove)
+            
+            if !holeRect.isNull && holeRect.width > 0 && holeRect.height > 0 {
+                var pieceItems: [StitchItem] = []
+                // 4. Create Image Fragments using copy()
+                let fragmentRects = calculateRemaining(base: currRect, hole: holeRect)
+                for fragRect in fragmentRects {
+                    let fragmentItem = item.copy() // Preservation of original state
+                    fragmentItem.process.setRect(fragRect)
+                    pieceItems.append(fragmentItem)
+                }
+                let placeholder = try StitchItem(asset: item.asset, size: item.size, image: EMPTY_DATA, clean: EMPTY_DATA, process: StitchProcess(rect: holeRect))
+                pieceItems.append(placeholder)
+                
+                let sortedPieces = pieceItems.sorted { (a, b) -> Bool in
+                    let rectA = a.process.rect
+                    let rectB = b.process.rect
+                    if abs(rectA.minY - rectB.minY) > 0.0001 {
+                        return rectA.minY < rectB.minY
+                    }
+                    return rectA.minX < rectB.minX
+                }
+                
+                resultItems.append(contentsOf: sortedPieces)
+            } else {
+                resultItems.append(item)
+            }
+        }
+        
+        let resultItemsFilter = resultItems.filter({ $0.image != (try? EMPTY_DATA) })
+        
+        if resultItemsFilter.count > MAX_SELECTION {
+            throw MainError.error("Exceed max items")
+        }
+        
+        editUpdater.anim = false
+        editUpdater.items = resultItems
+        
+        await withCheckedContinuation { continuation in DispatchQueue.main.async { continuation.resume() } }
+        
+        editUpdater.anim = true
+        editUpdater.items = resultItemsFilter
+        
+        let newCuts = editUpdater.items.map({ ($0, $0.process.rect) })
+        
+//        cEdit.applyCutStep(oldCuts: oldCuts, newCuts: newCuts)
+    }
+
+    private func snapRect(_ remove: CGRect, to base: CGRect, delta: CGFloat) -> CGRect {
+        var rect = remove
+        if abs(remove.minX - base.minX) < delta { rect.origin.x = base.minX }
+        if abs(remove.maxX - base.maxX) < delta { rect.size.width = base.maxX - rect.origin.x }
+        if abs(remove.minY - base.minY) < delta { rect.origin.y = base.minY }
+        if abs(remove.maxY - base.maxY) < delta { rect.size.height = base.maxY - rect.origin.y }
+        return rect
+    }
+
+    private func calculateRemaining(base: CGRect, hole: CGRect) -> [CGRect] {
+        var rects: [CGRect] = []
+        let eps: CGFloat = 0.0001
+        
+        // Vertical segments
+        if hole.minY > base.minY + eps {
+            rects.append(CGRect(x: base.minX, y: base.minY, width: base.width, height: hole.minY - base.minY))
+        }
+        if hole.maxY < base.maxY - eps {
+            rects.append(CGRect(x: base.minX, y: hole.maxY, width: base.width, height: base.maxY - hole.maxY))
+        }
+        // Horizontal segments (middle row)
+        if hole.minX > base.minX + eps {
+            rects.append(CGRect(x: base.minX, y: hole.minY, width: hole.minX - base.minX, height: hole.height))
+        }
+        if hole.maxX < base.maxX - eps {
+            rects.append(CGRect(x: hole.maxX, y: hole.minY, width: base.maxX - hole.maxX, height: hole.height))
+        }
+        return rects
     }
 }

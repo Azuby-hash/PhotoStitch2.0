@@ -21,16 +21,19 @@ class EditCutControl: TouchView {
     
     private var scrollViewUpdate: AnyCancellable?
     
-    private let topArrowConfiguration = UIImage.SymbolConfiguration(font: .systemFont(ofSize: 16, weight: .semibold))
+    private let iconConfiguration = UIImage.SymbolConfiguration(font: .systemFont(ofSize: 14, weight: .bold))
     
     private var splitBefore = EditSplitDivider()
     private var splitAfter = EditSplitDivider()
     private var splitButton = UIButtonPro()
+    private var splitMarks = [EditSplitMark]()
     private var splitArea = UIView()
     private var splitDeletors = [EditSplitDeletorList]()
     
     private var cutNorRect = RECT0011
+    private var cutNorPart = CGFloat.zero
     private var beginNorRect = RECT0011
+    private var beginNorPart = CGFloat.zero
     private var onDragView: UIView?
     
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
@@ -54,7 +57,7 @@ extension EditCutControl: ForwardScrollProtocol {
             return false
         }
         
-        for view in [splitBefore, splitAfter] {
+        for view in [splitBefore, splitAfter, splitArea] {
             if view.convert(view.bounds, to: self).contains(point) || getCurrentTouch()?.view == view {
                 return true
             }
@@ -72,12 +75,13 @@ extension EditCutControl: ForwardScrollProtocol {
         eaddSubview(splitArea
             .eaddSubview(splitBefore
                 .eselfConstraints([isVer ? .height(40) : .width(40)]),
-            [.top(-20), .leading(0), isVer ? .trailing(0) : .bottom(0)])
+             [.top(isVer ? -20 : 0), .leading(isVer ? 0 : -20), isVer ? .trailing(0) : .bottom(0)])
             .eaddSubview(splitAfter
                 .eselfConstraints([isVer ? .height(40) : .width(40)]),
-            [.bottom(0), .trailing(0), isVer ? .leading(0) : .top(0)]))
+             [.bottom(isVer ? -20 : 0), .trailing(isVer ? 0 : -20), isVer ? .leading(0) : .top(0)]))
         
         eaddSubview(splitButton
+            .egestureRecognizers([UITapGestureRecognizer(target: self, action: #selector(cutAction))])
             .setContentColor(.white)
             .econfiguration({ configuration in
                 var configuration = configuration
@@ -85,7 +89,7 @@ extension EditCutControl: ForwardScrollProtocol {
                 return configuration
             }))
         
-//        setGestureMappings(zip([firstDragger, afterDragger, areaView], [dragAction, dragAction, dragAction]))
+        setGestureMappings(zip([splitBefore, splitAfter, splitArea], [dragAction, dragAction, dragAction]))
         
         scrollViewUpdate = editUpdater.editGallery.scrollViewUpdate.eraseToAnyPublisher().sink { [self] _ in
             contentUpdate(editUpdater: editUpdater, context: context)
@@ -114,30 +118,106 @@ extension EditCutControl: ForwardScrollProtocol {
         
         if stackFrame.width == 0 || stackFrame.height == 0 { return }
         
-        if alpha < 0.5 {
-            let beginSize = scrollFrame.size * 0.25
-            let expectFrame = CGRect(mid: scrollFrame.mid, size: beginSize)
-            
-            cutNorRect = expectFrame.relative(to: stackFrame).limit0011()
+        let beginSize = scrollFrame.size * 0.25
+        let expectFrame = CGRect(mid: scrollFrame.mid, size: beginSize)
+        let norRect = expectFrame.relative(to: stackFrame).limit0011()
+        
+        if editUpdater.cutUpdater?.mode == .pair {
+            cutNorPart = isVer ? norRect.midY : norRect.midX
+        } else {
+            cutNorRect = norRect
         }
         
-        let cutRect = cutNorRect * stackFrame.size + stackFrame.origin
+        if alpha < 0.5 {
+            cutNorPart = isVer ? norRect.midY : norRect.midX
+            cutNorRect = norRect
+        }
         
         splitBefore.layer.fillColor = ._red
-        splitAfter.layer.fillColor = ._red
+        splitAfter.layer.fillColor = editUpdater.cutUpdater?.mode == .pair ? ._red : UIColor.clear.cgColor
         splitArea.backgroundColor = editUpdater.cutUpdater?.mode == .pair ? ._red.withAlphaComponent(0.2) : .clear
-        splitArea.frame = isVer ? CGRect(x: stackFrame.minX, y: cutRect.minY, width: stackFrame.width, height: cutRect.height) : CGRect(x: cutRect.minX, y: stackFrame.minY, width: cutRect.width, height: stackFrame.height)
-        splitButton.transform = .identity
-        splitButton.frame = isVer ? CGRect(x: min(bounds.width - BUTTON_SIZE - 12, stackFrame.maxX + 12.0), y: cutRect.midY - BUTTON_SIZE / 2, width: BUTTON_SIZE, height: BUTTON_SIZE) : CGRect(x: cutRect.midX - BUTTON_SIZE / 2, y: min(bounds.height - BUTTON_SIZE - 12, stackFrame.maxY + 24.0), width: BUTTON_SIZE, height: BUTTON_SIZE)
-        splitButton.transform = .init(rotationAngle: editUpdater.cutUpdater?.mode == .pair ? 0 : -.pi)
-        splitButton.setBackgroundColor(editUpdater.cutUpdater?.mode == .pair ? ._red : ._primary)
-        splitButton.esetImage(editUpdater.cutUpdater?.mode == .pair ? .trash : .scissors, for: .normal)
+        
+        if editUpdater.cutUpdater?.mode == .pair {
+            let cutRect = cutNorRect * stackFrame.size + stackFrame.origin
+            splitArea.frame = isVer ? CGRect(x: stackFrame.minX, y: cutRect.minY, width: stackFrame.width, height: cutRect.height) : CGRect(x: cutRect.minX, y: stackFrame.minY, width: cutRect.width, height: stackFrame.height)
+            splitButton.transform = .identity
+            splitButton.frame = isVer ? CGRect(x: min(bounds.width - BUTTON_SIZE - 12, stackFrame.maxX + 12.0), y: cutRect.midY - BUTTON_SIZE / 2, width: BUTTON_SIZE, height: BUTTON_SIZE) : CGRect(x: cutRect.midX - BUTTON_SIZE / 2, y: min(bounds.height - BUTTON_SIZE - 12, stackFrame.maxY + 24.0), width: BUTTON_SIZE, height: BUTTON_SIZE)
+        } else {
+            let cutPart = cutNorPart * (isVer ? stackFrame.height : stackFrame.width) + (isVer ? stackFrame.minY : stackFrame.minX)
+            splitArea.frame = isVer ? CGRect(x: stackFrame.minX, y: cutPart, width: stackFrame.width, height: 0) : CGRect(x: cutPart, y: stackFrame.minY, width: 0, height: stackFrame.height)
+            splitButton.transform = .identity
+            splitButton.frame = isVer ? CGRect(x: min(bounds.width - BUTTON_SIZE - 12, stackFrame.maxX + 12.0), y: cutPart - BUTTON_SIZE / 2, width: BUTTON_SIZE, height: BUTTON_SIZE) : CGRect(x: cutPart - BUTTON_SIZE / 2, y: min(bounds.height - BUTTON_SIZE - 12, stackFrame.maxY + 24.0), width: BUTTON_SIZE, height: BUTTON_SIZE)
+            splitButton.transform = .init(rotationAngle: -.pi)
+        }
+        
+        splitButton.setBackgroundColor(._red)
+        splitButton.esetImage(UIImage(named: editUpdater.cutUpdater?.mode == .pair ? "trash" : "scissors", variableValue: 0, configuration: iconConfiguration), for: .normal)
+        
+        let newMarkItems = Array(editUpdater.items.dropLast())
+        
+        let oldMarkItems = splitMarks.map { $0.item }
+
+        oldMarkItems.transformArray(to: newMarkItems) { [self] item, index in
+            let frame = itemFrame(from: item, context: context)
+            splitMarks.insert(makeMark(item: item, isVer: isVer, frame: frame), at: index)
+        } remove: { [self] index in
+            removeMark(at: index)
+        } move: { [self] (from, to) in
+            splitMarks.insert(removeMark(at: from), at: to)
+        }
+        
+        splitMarks.forEach { mark in
+            let frame = itemFrame(from: mark.item, context: context)
+            mark.divider.frame = markFrame(isVer: isVer, frame: frame)
+        }
+    }
+    
+    private func itemFrame(from item: StitchItem, context: EditGallery.Context) -> CGRect {
+        guard let item = itemView(from: item, context: context) else {
+            return .zero
+        }
+        
+        return item.convert(item.bounds, to: self)
+    }
+    
+    private func itemView(from item: StitchItem, context: EditGallery.Context) -> UIView? {
+        guard let stack = context.coordinator.stackView,
+              let index = (stack.arrangedSubviews as? [EditItem])?.firstIndex(where: { $0.item == item }),
+              stack.arrangedSubviews.indices.contains(index)
+        else { return nil }
+        
+        let item = stack.arrangedSubviews[index]
+        
+        return item
+    }
+    
+    private func makeMark(item: StitchItem, isVer: Bool, frame: CGRect) -> EditSplitMark {
+        if let view = splitMarks.first(where: { $0.item == item }) {
+            return view
+        }
+        
+        let divider = EditSplitDivider(frame: markFrame(isVer: isVer, frame: frame))
+        divider.layer.fillColor = ._primary
+        
+        insertSubview(divider, at: 0)
+        
+        return EditSplitMark(item: item, divider: divider)
+    }
+    
+    @discardableResult
+    private func removeMark(at index: Int) -> EditSplitMark {
+        let view = splitMarks.remove(at: index)
+        view.divider.removeFromSuperview()
+        
+        return view
+    }
+    
+    private func markFrame(isVer: Bool, frame: CGRect) -> CGRect {
+        return CGRect(x: isVer ? frame.minX : frame.maxX, y: isVer ? frame.maxY : frame.minY,
+                      width: isVer ? frame.width : 0, height: isVer ? 0 : frame.height)
     }
     
     private func dragAction(g: TouchGesture) {
-        if onDragView != g.view && onDragView != nil { return }
-        onDragView = g.view
-        
         guard let stackView = context?.coordinator.stackView else { return }
         
         let minWidth = CGFloat(1)
@@ -148,46 +228,64 @@ extension EditCutControl: ForwardScrollProtocol {
         
         if g.state == .began {
             beginNorRect = cutNorRect
+            beginNorPart = cutNorPart
+            onDragView = g.view
         }
         
-//        if onDragView == beforeDragger {
-//            var newMinX = beginNorRect.minX
-//            var newMinY = beginNorRect.minY
-//            
-//            if isVer {
-//                newMinY = min(beginNorRect.minY + translate.y, beginNorRect.maxY - minWidth / stackFrame.height)
-//            } else {
-//                newMinX = min(beginNorRect.minX + translate.x, beginNorRect.maxX - minWidth / stackFrame.width)
-//            }
-//            
-//            cutNorRect = CGRect(x: newMinX, y: newMinY, width: beginNorRect.maxX - newMinX, height: beginNorRect.maxY - newMinY).limit0011()
-//        }
-//        
-//        if onDragView == afterDragger {
-//            var newMaxX = beginNorRect.maxX
-//            var newMaxY = beginNorRect.maxY
-//            
-//            if isVer {
-//                newMaxY = max(beginNorRect.maxY + translate.y, beginNorRect.minY + minWidth / stackFrame.height)
-//            } else {
-//                newMaxX = max(beginNorRect.maxX + translate.x, beginNorRect.minX + minWidth / stackFrame.width)
-//            }
-//            
-//            cutNorRect = CGRect(x: beginNorRect.minX, y: beginNorRect.minY, width: newMaxX - beginNorRect.minX, height: newMaxY - beginNorRect.minY).limit0011()
-//        }
+        if onDragView != g.view { return }
+        
+        if onDragView == splitBefore && editUpdater?.cutUpdater?.mode == .pair {
+            var newMinX = beginNorRect.minX
+            var newMinY = beginNorRect.minY
+            
+            if isVer {
+                newMinY = min(beginNorRect.minY + translate.y, beginNorRect.maxY - minWidth / stackFrame.height)
+            } else {
+                newMinX = min(beginNorRect.minX + translate.x, beginNorRect.maxX - minWidth / stackFrame.width)
+            }
+            
+            cutNorRect = CGRect(x: newMinX, y: newMinY, width: beginNorRect.maxX - newMinX, height: beginNorRect.maxY - newMinY).limit0011()
+        }
+        
+        if onDragView == splitAfter && editUpdater?.cutUpdater?.mode == .pair {
+            var newMaxX = beginNorRect.maxX
+            var newMaxY = beginNorRect.maxY
+            
+            if isVer {
+                newMaxY = max(beginNorRect.maxY + translate.y, beginNorRect.minY + minWidth / stackFrame.height)
+            } else {
+                newMaxX = max(beginNorRect.maxX + translate.x, beginNorRect.minX + minWidth / stackFrame.width)
+            }
+            
+            cutNorRect = CGRect(x: beginNorRect.minX, y: beginNorRect.minY, width: newMaxX - beginNorRect.minX, height: newMaxY - beginNorRect.minY).limit0011()
+        }
+        
+        if onDragView == splitArea && editUpdater?.cutUpdater?.mode == .pair {
+            if isVer {
+                let tranY = min(max(translate.y, -beginNorRect.minY), 1 - beginNorRect.maxY)
+                cutNorRect = beginNorRect.applying(.init(translationX: 0, y: tranY))
+            } else {
+                let tranX = min(max(translate.x, -beginNorRect.minX), 1 - beginNorRect.maxX)
+                cutNorRect = beginNorRect.applying(.init(translationX: tranX, y: 0))
+            }
+        }
 
-        if g.state == .ended || g.state == .cancelled {
-            onDragView = nil
+        if editUpdater?.cutUpdater?.mode == .single {
+            cutNorPart = min(max(beginNorPart + (isVer ? translate.y : translate.x), 0), 1)
+        }
+        
+        if let editUpdater = editUpdater, let context = context {
+            update(editUpdater: editUpdater, context: context)
         }
     }
     
     @objc private func cutAction() {
         guard let editUpdater = editUpdater,
-              let stackView = context?.coordinator.stackView,
-              let scrollContent = context?.coordinator.scrollContent
+              let stackView = context?.coordinator.stackView
         else { return }
         
         let isVer = editUpdater.axis == .vertical
+        let cutNorRect = editUpdater.cutUpdater?.mode == .pair ? cutNorRect : CGRect(x: isVer ? 0 : cutNorPart, y: isVer ? cutNorPart : 0, width: isVer ? 1 : MIN_REMOVE, height: isVer ? MIN_REMOVE : 1)
         let cutFrame = cutNorRect.insetBy(dx: isVer ? -1 : 0, dy: isVer ? 0 : -1) * stackView.bounds.size
         
         var cutRects: [StitchItem: CGRect] = [:]
@@ -202,42 +300,52 @@ extension EditCutControl: ForwardScrollProtocol {
             }
         }
         
-        let oldCuts = editUpdater.items.map({ ($0, $0.process.rect) })
+        Task {
+            editUpdater.anim = true
+            context?.coordinator.view?.layoutIfNeeded()
+            editUpdater.anim = false
+            
+            do {
+                try await editUpdater.cutUpdater?.applyCut(cutRects)
+                
+                UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
+                    
+                    splitArea.alpha = 0
+                    splitButton.alpha = 0
+                }
+                
+                if editUpdater.cutUpdater?.mode == .single {
+                    editUpdater.tab = .stitch
+                }
+            } catch {
+                print(error)
+            }
+            
+            UIView.animate(withDuration: ANIM_DURATION, delay: 0.25, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
+                
+                splitArea.alpha = 1
+                splitButton.alpha = 1
+            }
+        }
+    }
+}
 
-//        cEdit.applyCut(cutRects) { [self] in
-//            cEdit.setStitchConstraints([
-//                scrollContent.widthAnchor.constraint(equalToConstant: scrollContent.bounds.width),
-//                scrollContent.heightAnchor.constraint(equalToConstant: scrollContent.bounds.height),
-//                stackView.topAnchor.constraint(equalTo: scrollContent.topAnchor),
-//                stackView.leadingAnchor.constraint(equalTo: scrollContent.leadingAnchor),
-//            ])
-//            
-//            content?.layoutIfNeeded()
-//        } onAnim: { [self] in
-//            if isVer {
-//                cEdit.setStitchConstraints([ stackView.topAnchor.constraint(equalTo: scrollContent.topAnchor, constant: cutFrame.height / 2) ])
-//            } else {
-//                cEdit.setStitchConstraints([ stackView.leadingAnchor.constraint(equalTo: scrollContent.leadingAnchor, constant: cutFrame.width / 2) ])
-//            }
-//                                       
-//            content?.layoutIfNeeded()
-//        } afAnim: { [self] in
-//            cEdit.setStitchConstraints([])
-//            
-//            content?.layoutIfNeeded()
-//            
-//            let newCuts = cEdit.getItems().map({ ($0, $0.getProcess().rect) })
-//            
-//            cEdit.applyCutStep(oldCuts: oldCuts, newCuts: newCuts)
-//        }
+class EditSplitMark {
+    let item: StitchItem
+    let divider: EditSplitDivider
+    
+    init(item: StitchItem, divider: EditSplitDivider) {
+        self.item = item
+        self.divider = divider
     }
 }
 
 class EditSplitDeletorList {
-    let deletors: [EditSplitDeletor]
+    let item: StitchItem
+    var deletors: [EditSplitDeletor] = []
     
-    init(deletors: [EditSplitDeletor]) {
-        self.deletors = deletors
+    init(item: StitchItem) {
+        self.item = item
     }
 }
 
@@ -280,8 +388,8 @@ class EditSplitDivider: UIView {
         let isVer = bounds.width > bounds.height
         
         layer.path = UIBezierPath()
-            .emove(to: CGPoint(x: isVer ? 0 : bounds.midY, y: isVer ? bounds.midX : 0))
-            .eaddLine(to: CGPoint(x: isVer ? bounds.maxX : bounds.midY, y: isVer ? bounds.midX : bounds.maxY))
-            .cgPath.copy(dashingWithPhase: 0, lengths: [5, 10]).copy(strokingWithWidth: 3, lineCap: .round, lineJoin: .round, miterLimit: .pi)
+            .emove(to: CGPoint(x: isVer ? 0 : bounds.midX, y: isVer ? bounds.midY : 0))
+            .eaddLine(to: CGPoint(x: isVer ? bounds.maxX : bounds.midX, y: isVer ? bounds.midY : bounds.maxY))
+            .cgPath.copy(dashingWithPhase: 0, lengths: [5, 10]).copy(strokingWithWidth: 2, lineCap: .round, lineJoin: .round, miterLimit: .pi)
     }
 }

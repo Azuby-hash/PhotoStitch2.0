@@ -49,12 +49,12 @@ class Pipeline {
     }
     
     func assetImageToItem(_ asset: PHAsset) async throws -> StitchItem {
-        return try StitchItem(image: try AssetLibrary.getUIImage(from: asset))
+        return try StitchItem(image: try getUIImage(from: asset), asset: asset)
     }
     
     func assetVideoToItem(_ asset: PHAsset, progress: @escaping (CGFloat) -> Void) async throws -> StitchItem {
         let video: AVAsset? = await withCheckedContinuation { continuation in
-            AssetLibrary.getAVAsset(asset) { result in
+            getAVAsset(asset) { result in
                 continuation.resume(returning: result)
             }
         }
@@ -63,7 +63,7 @@ class Pipeline {
             throw MainError.error("Request video failed")
         }
         
-        return try await Stitch().stitch(from: video, progress: progress)
+        return try await Stitch().stitch(from: video, of: asset, progress: progress)
     }
     
     /**
@@ -77,5 +77,45 @@ class Pipeline {
         else { return image }
 
         return UIImage(cgImage: cgImage)
+    }
+    
+    private func getUIImage(from asset: PHAsset, size: CGSize = CGSize(width: -1, height: -1), quality: PHImageRequestOptionsDeliveryMode = .highQualityFormat, resizeMode: PHImageRequestOptionsResizeMode = .fast) throws -> UIImage {
+        
+        var size = size
+        if size.width < 0 {
+            size = CGSize(width: CGFloat(asset.pixelWidth), height: CGFloat(asset.pixelHeight))
+        }
+        
+        let manager = PHImageManager.default()
+        let options = PHImageRequestOptions()
+        
+        options.deliveryMode = quality
+        options.resizeMode = resizeMode
+        options.isNetworkAccessAllowed = true
+        options.isSynchronous = true
+        
+        var image: UIImage?
+
+        manager.requestImage(for: asset, targetSize: size, contentMode: .aspectFill, options: options, resultHandler: { (result, _) -> Void in
+            image = result
+        })
+        
+        guard let image = image else {
+            throw ALError.error("Request image failed")
+        }
+        
+        return image
+    }
+    
+    private func getAVAsset(_ asset: PHAsset, deliveryMode: PHVideoRequestOptionsDeliveryMode = .highQualityFormat, completion: @escaping (AVAsset?) -> Void) {
+        let option = PHVideoRequestOptions()
+        option.deliveryMode = deliveryMode
+        option.isNetworkAccessAllowed = true
+        
+        PHImageManager.default().requestAVAsset(forVideo: asset, options: option) { avAsset, _, _ in
+            DispatchQueue.main.async {
+                completion(avAsset)
+            }
+        }
     }
 }

@@ -179,11 +179,11 @@ struct EditGallery: UIViewRepresentable {
                     view.setSize(calculateSize(for: item))
                     view.setContent()
                     
-                    if editUpdater.tab == .stitch {
+                    if editUpdater.tab == .split || editUpdater.tab == .stitch {
                         stack.setCustomSpacing(0, after: view)
                     }
                     
-                    if editUpdater.tab == .split || editUpdater.tab == .sort {
+                    if editUpdater.tab == .sort {
                         stack.setCustomSpacing(spacingZeroIndex == index ? 0 : SPLIT_ITEM_SPACING, after: view)
                     }
                 }
@@ -248,9 +248,9 @@ struct EditGallery: UIViewRepresentable {
 
 @Observable class EditGalleryModel {
     @ObservationIgnored var context: EditGallery.Context?
+    @ObservationIgnored var onZoom = false
     
     let scrollViewUpdate = PassthroughSubject<Void, Never>()
-    var onZoom = false
     var spaceZeroIndex: Int?
 }
 

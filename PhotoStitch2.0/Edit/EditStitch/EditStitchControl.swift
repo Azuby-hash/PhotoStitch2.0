@@ -149,7 +149,7 @@ class EditStitchControl: TouchView {
         let oldItems = stitchViews.map { $0.item }
 
         oldItems.transformArray(to: newItems) { [self] item, index in
-            stitchViews.insert(make(item: item, isVer: isVer, frame: itemFrame(from: item, context: context), editUpdater: editUpdater), at: index)
+            stitchViews.insert(make(item: item, isVer: isVer, frame: itemFrame(from: item, context: context)), at: index)
         } remove: { [self] index in
             remove(at: index)
         } move: { [self] (from, to) in
@@ -207,6 +207,10 @@ class EditStitchControl: TouchView {
             view.gradientA.layoutIfNeeded()
         }
         
+        if stitchViews.isEmpty { return }
+        
+        var beforeDragger = stitchViews[0]
+        
         stitchViews.forEach { view in
             guard let index = (stack.arrangedSubviews as? [EditItem])?.firstIndex(where: { $0.item == view.item }),
                   index > 0,
@@ -215,7 +219,6 @@ class EditStitchControl: TouchView {
             
             let beforeLength = isVer ? view.item.process.rect.minY : view.item.process.rect.minX
             let afterLength = isVer ? (1 - view.item.process.rect.maxY) : (1 - view.item.process.rect.maxX)
-            let beforeDragger = stitchViews[index - 1]
             
             UIView.performWithoutAnimation {
                 if beginNorFrameBefores == nil && beginNorFrameAfters == nil && beforeDragger.divider.center.length(to: view.divider.center) < BUTTON_SIZE * 2 {
@@ -223,14 +226,18 @@ class EditStitchControl: TouchView {
                         if view.button.alpha > 0.5 && selected?.item != view.item {
                             view.divider.alpha = 0
                             view.button.alpha = 0
+                            return
                         }
                     } else {
                         if view.button.alpha > 0.5 && selected?.item != view.item {
                             view.divider.alpha = 0
                             view.button.alpha = 0
+                            return
                         }
                     }
                 }
+                
+                beforeDragger = view
             }
         }
     }
@@ -247,7 +254,7 @@ class EditStitchControl: TouchView {
         return isVer ? CGRect(x: min(bounds.width - BUTTON_SIZE - 12, frame.maxX + 12.0), y: frame.maxY - BUTTON_SIZE / 2, width: BUTTON_SIZE, height: BUTTON_SIZE) : CGRect(x: frame.maxX - BUTTON_SIZE / 2, y: min(bounds.height - BUTTON_SIZE - 12, frame.maxY + 24.0), width: BUTTON_SIZE, height: BUTTON_SIZE)
     }
     
-    private func make(item: StitchItem, isVer: Bool, frame: CGRect, editUpdater: EditUpdater) -> EditStitchViews {
+    private func make(item: StitchItem, isVer: Bool, frame: CGRect) -> EditStitchViews {
         if let view = stitchViews.first(where: { $0.item == item }) {
             return view
         }
