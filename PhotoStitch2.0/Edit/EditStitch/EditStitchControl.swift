@@ -348,19 +348,20 @@ class EditStitchControl: TouchView {
         let visibleDimUnscaled = (isVer ? visibleSize.height : visibleSize.width) / zoomScale
 
         if stitchUpdater?.selectItem == stitchView.item {
-            UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
-                let contentOffset = scrollView.contentOffset
-                let storedPadding = isVer ? stackView.convert(stackView.bounds, to: scrollContent).minY : stackView.convert(stackView.bounds, to: scrollContent).minX
-                
-                stitchUpdater?.setSelectItem(nil)
-                
-                context.coordinator.view?.layoutIfNeeded()
-                
-                let offX = isVer ? contentOffset.x : contentOffset.x - (storedPadding * zoomScale)
-                let offY = isVer ? contentOffset.y - (storedPadding * zoomScale) : contentOffset.y
-
-                scrollView.contentOffset = clampedContentOffset(CGPoint(x: offX, y: offY), in: scrollView)
-            }
+            stitchUpdater?.setSelectItem(nil)
+//            UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
+//                let contentOffset = scrollView.contentOffset
+//                let storedPadding = isVer ? stackView.convert(stackView.bounds, to: scrollContent).minY : stackView.convert(stackView.bounds, to: scrollContent).minX
+//                
+//                stitchUpdater?.setSelectItem(nil)
+//                
+//                context.coordinator.view?.layoutIfNeeded()
+//                
+//                let offX = isVer ? contentOffset.x : contentOffset.x - (storedPadding * zoomScale)
+//                let offY = isVer ? contentOffset.y - (storedPadding * zoomScale) : contentOffset.y
+//
+//                scrollView.contentOffset = clampedContentOffset(CGPoint(x: offX, y: offY), in: scrollView)
+//            }
         } else {
             let itemFrame = itemView.convert(itemView.bounds, to: scrollContent)
             // 1. Calculate the 'visual' center target
