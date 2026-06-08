@@ -25,9 +25,27 @@ struct Edit: View {
             
             EditTop()
             EditBottom()
+            
+            if !editUpdater.warningText.isEmpty {
+                Text(editUpdater.warningText)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .font(.system(size: 18, weight: .semibold, design: .rounded))
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(Color._background)
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 12)
+                    .background(Color.primary)
+                    .clipShape(RoundedRectangle(cornerRadius: 24))
+                    .shadow(color: .black.opacity(0.2), radius: 15, x: 0, y: 0)
+                    .padding(.horizontal, 16)
+                    .transition(.blurReplace.combined(with: .opacity))
+                    .allowsHitTesting(false)
+                    .zIndex(1000)
+            }
         }
         .environment(editUpdater)
         .animation(.smooth(duration: ANIM_DURATION), value: editUpdater.tab)
+        .animation(.smooth(duration: ANIM_DURATION), value: editUpdater.warningText)
     }
     
     func getInset(_ size: CGSize) -> EdgeInsets {
@@ -66,6 +84,9 @@ enum EditTab: String, CaseIterable {
     
     let editGallery = EditGalleryModel()
     
+    private(set) var warningText = ""
+    @ObservationIgnored private var warningTask: Task<Void, Never>?
+    
     init(items: [StitchItem], axis: NSLayoutConstraint.Axis) {
         self.items = items
         self.axis = axis
@@ -83,6 +104,22 @@ enum EditTab: String, CaseIterable {
         } else {
             UIView.performWithoutAnimation {
                 perform()
+            }
+        }
+    }
+}
+
+extension EditUpdater {
+    func warningAlert(_ string: String) {
+        warningTask?.cancel()
+        warningText = string
+        warningTask = Task {
+            try? await Task.sleep(for: .seconds(2))
+
+            if !Task.isCancelled {
+                await MainActor.run {
+                    warningText = ""
+                }
             }
         }
     }

@@ -318,7 +318,7 @@ extension EditCutControl: ForwardScrollProtocol {
                     editUpdater.tab = .stitch
                 }
             } catch {
-                print(error)
+                editUpdater.warningAlert("Exceed max items, can't \(editUpdater.cutUpdater?.mode == .single ? "split" : "cut")")
             }
             
             UIView.animate(withDuration: ANIM_DURATION, delay: 0.25, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
