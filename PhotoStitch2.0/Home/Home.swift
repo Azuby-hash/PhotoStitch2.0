@@ -125,8 +125,6 @@ struct Home: View {
     @ObservationIgnored var items: [StitchItem] = []
     @ObservationIgnored var axis: NSLayoutConstraint.Axis = .vertical
     
-    @ObservationIgnored private var itemTask: Task<Void, Never>?
-    
     func select(_ asset: PHAsset) {
         if selecteds.contains(where: { $0.mediaType == .video }),
            asset.mediaType == .video {
@@ -149,14 +147,10 @@ struct Home: View {
                 warningAlert("Maximum number of items reached.")
             }
         }
-        
-        handleChange()
     }
     
     func deselect(_ asset: PHAsset) {
         selecteds = selecteds.filter({ $0 != asset })
-        
-        handleChange()
     }
     
     func setSelect(_ assets: [PHAsset]) {
@@ -166,14 +160,10 @@ struct Home: View {
         if handleMaxSelection() {
             selecteds = curr
         }
-        
-        handleChange()
     }
     
     func deselectAll() {
         selecteds.removeAll()
-        
-        handleChange()
     }
     
     func filterAssets() -> [PHAsset]? {
@@ -250,42 +240,6 @@ struct Home: View {
             if !selecteds.contains(asset) {
                 selecteds.append(asset)
             }
-        }
-    }
-    
-    private func handleChange() {
-        itemTask?.cancel()
-        itemTask = Task {
-            do {
-                try await handleChangeAsync()
-            } catch {
-                print(error)
-            }
-        }
-    }
-    
-    private func handleChangeAsync() async throws {
-        let oldAssets = items.map({ $0.asset })
-        let newAssets = selecteds
-        
-        try await oldAssets.transformArray(to: newAssets) { [self] asset, index in
-            let item: StitchItem
-            if asset.mediaType == .image {
-                item = try await PIPELINE.assetImageToItem(asset)
-            } else {
-                item = try await PIPELINE.assetVideoToItem(asset) { progress in
-                    print(progress)
-                }
-            }
-            
-            items.insert(item, at: index)
-            try Task.checkCancellation()
-        } remove: { [self] index in
-            items.remove(at: index)
-            try Task.checkCancellation()
-        } move: { [self] from, to in
-            items.insert(items.remove(at: from), at: to)
-            try Task.checkCancellation()
         }
     }
 }

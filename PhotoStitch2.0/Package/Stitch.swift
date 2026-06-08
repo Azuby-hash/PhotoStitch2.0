@@ -180,11 +180,15 @@ class Stitch {
             var kRight = 0
             var kSame = 0
             for kIndex in 0..<maxKIndex {
-                if abs(Int(before.leftAverage[maxBefore + kIndex]) - Int(after.leftAverage[maxAfter + kIndex])) <= delta {
+                if before.leftAverage.indices.contains(maxBefore + kIndex),
+                   after.leftAverage.indices.contains(maxBefore + kIndex),
+                   abs(Int(before.leftAverage[maxBefore + kIndex]) - Int(after.leftAverage[maxAfter + kIndex])) <= delta {
                     kLeft += 1
                 }
                 
-                if abs(Int(before.rightAverage[maxBefore + kIndex]) - Int(after.rightAverage[maxAfter + kIndex])) <= delta {
+                if before.rightAverage.indices.contains(maxBefore + kIndex),
+                   after.rightAverage.indices.contains(maxBefore + kIndex),
+                   abs(Int(before.rightAverage[maxBefore + kIndex]) - Int(after.rightAverage[maxAfter + kIndex])) <= delta {
                     kRight += 1
                 }
             }

@@ -48,8 +48,8 @@ class Pipeline {
         print(date.timeIntervalSinceNow)
     }
     
-    func assetImageToItem(_ asset: PHAsset) async throws -> StitchItem {
-        return try StitchItem(image: try getUIImage(from: asset), asset: asset)
+    func assetImageToItem(_ asset: PHAsset) throws -> StitchItem {
+        return try autoreleasepool { try StitchItem(image: try getUIImage(from: asset), asset: asset) }
     }
     
     func assetVideoToItem(_ asset: PHAsset, progress: @escaping (CGFloat) -> Void) async throws -> StitchItem {

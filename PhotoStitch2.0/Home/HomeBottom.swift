@@ -55,7 +55,15 @@ struct HomeBottom: View {
                 }
             } else {
                 Button {
-                    
+                    Task {
+                        do {
+                            homeUpdater.items = try await getItems()
+                            homeUpdater.axis = .horizontal
+                            homeUpdater.showEdit = true
+                        } catch {
+                            print(error)
+                        }
+                    }
                 } label: {
                     Image(.horizontal)
                         .foregroundStyle(Color(uiColor: .label))
@@ -84,10 +92,7 @@ struct HomeBottom: View {
                 Button {
                     Task {
                         do {
-                            if homeUpdater.autoStitch {
-                                try await PIPELINE.autoStitch(homeUpdater.items)
-                            }
-                            
+                            homeUpdater.items = try await getItems()
                             homeUpdater.axis = .vertical
                             homeUpdater.showEdit = true
                         } catch {
@@ -109,6 +114,26 @@ struct HomeBottom: View {
         }
         .align(edge: .trailing, constant: 16)
         .align(edge: .bottom, constant: 0)
+    }
+    
+    private func getItems() async throws -> [StitchItem] {
+        var items = [StitchItem]()
+        
+        for asset in homeUpdater.selecteds {
+            if asset.mediaType == .image {
+                items.append(try PIPELINE.assetImageToItem(asset))
+            } else {
+                items.append(try await PIPELINE.assetVideoToItem(asset) { progress in
+                    print(progress)
+                })
+            }
+        }
+        
+        if homeUpdater.autoStitch {
+            try await PIPELINE.autoStitch(items)
+        }
+        
+        return items
     }
     
     private func getFilterCase() -> [PhotosFilter] {

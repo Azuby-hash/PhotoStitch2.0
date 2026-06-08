@@ -16,7 +16,7 @@ struct Edit: View {
             GeometryReader { geometry in
                 let safeAreaInsets = geometry.safeAreaInsets
                 let bonusInset = getInset(geometry.size)
-                let totalInset = EdgeInsets(top: safeAreaInsets.top + bonusInset.top + 44, leading: safeAreaInsets.leading + bonusInset.leading, bottom: safeAreaInsets.bottom + bonusInset.bottom + 60, trailing: safeAreaInsets.trailing + bonusInset.trailing)
+                let totalInset = EdgeInsets(top: safeAreaInsets.top + bonusInset.top, leading: safeAreaInsets.leading + bonusInset.leading, bottom: safeAreaInsets.bottom + bonusInset.bottom, trailing: safeAreaInsets.trailing + bonusInset.trailing)
                 
                 EditGallery(edgeInsets: totalInset, baseInsets: bonusInset)
                     .ignoresSafeArea()
@@ -59,7 +59,7 @@ struct Edit: View {
             bottomInset = editUpdater.axis == .horizontal ? size.height * 0.3 : 48
         }
         
-        let edgeInsets = EdgeInsets(top: topInset, leading: hozInset, bottom: bottomInset, trailing: hozInset)
+        let edgeInsets = EdgeInsets(top: topInset + 44, leading: hozInset, bottom: bottomInset + 60, trailing: hozInset)
         
         return edgeInsets
     }

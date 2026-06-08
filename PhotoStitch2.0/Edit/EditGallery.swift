@@ -30,7 +30,7 @@ struct EditGallery: UIViewRepresentable {
             .emaximumZoomScale(MAX_ZOOM)
             .ebackgroundColor(.clear)
             .eclipsToBounds(false)
-            .econtentInset(edgeInsets.toUI())
+            .econtentInset(editUpdater.axis == .vertical ? edgeInsets.toUI() : baseInsets.toUI())
         let scrollContent = UIViewPointSubview()
         let stackView = UIStackView()
         let editContent = EditContent()
@@ -75,7 +75,7 @@ struct EditGallery: UIViewRepresentable {
         context.coordinator.stackView?.layer.shadowOpacity = 0.2
         context.coordinator.stackView?.layer.shadowRadius = 40
         
-        context.coordinator.scrollView?.econtentInset(edgeInsets.toUI())
+        context.coordinator.scrollView?.econtentInset(editUpdater.axis == .vertical ? edgeInsets.toUI() : baseInsets.toUI())
         
         uiView.content = self
         uiView.context = context
@@ -317,5 +317,13 @@ class EditItem: UIView {
 extension EdgeInsets {
     func toUI() -> UIEdgeInsets {
         UIEdgeInsets(top: top, left: leading, bottom: bottom, right: trailing)
+    }
+    
+    static func + (lhs: EdgeInsets, rhs: EdgeInsets) -> EdgeInsets {
+        EdgeInsets(top: lhs.top + rhs.top, leading: lhs.leading + rhs.leading, bottom: lhs.bottom + rhs.bottom, trailing: lhs.trailing + rhs.trailing)
+    }
+    
+    static func - (lhs: EdgeInsets, rhs: EdgeInsets) -> EdgeInsets {
+        EdgeInsets(top: lhs.top - rhs.top, leading: lhs.leading - rhs.leading, bottom: lhs.bottom - rhs.bottom, trailing: lhs.trailing - rhs.trailing)
     }
 }
