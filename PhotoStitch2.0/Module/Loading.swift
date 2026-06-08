@@ -11,6 +11,11 @@ import UniformTypeIdentifiers
 
 extension UIViewController {
     func startLoading(_ title: String? = "Loading...") {
+        if let loading = presentedViewController as? UIAlertController {
+            loading.title = title
+            return
+        }
+
         let loadingAlert = UIAlertController(title: title, message: "\n\n", preferredStyle: .alert)
         loadingAlert.addSpinner()
         present(loadingAlert, animated: true)

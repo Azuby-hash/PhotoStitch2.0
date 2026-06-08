@@ -117,21 +117,49 @@ struct HomeBottom: View {
     }
     
     private func getItems() async throws -> [StitchItem] {
-        var items = [StitchItem]()
+        VIEW_CONTROLLER.startLoading("Loading 0 / \(homeUpdater.selecteds.count) Photos...")
         
-        for asset in homeUpdater.selecteds {
-            if asset.mediaType == .image {
-                items.append(try PIPELINE.assetImageToItem(asset))
-            } else {
-                items.append(try await PIPELINE.assetVideoToItem(asset) { progress in
-                    print(progress)
-                })
+        let items = await withTaskGroup(of: Optional<StitchItem>.self) { group in
+            var items = [StitchItem]()
+            
+            for asset in homeUpdater.selecteds {
+                group.addTask {
+                    let item: StitchItem?
+                    
+                    do {
+                        if asset.mediaType == .image {
+                            item = try await PIPELINE.assetImageToItem(asset)
+                        } else {
+                            item = try await PIPELINE.assetVideoToItem(asset) { progress in
+                                print(progress)
+                            }
+                        }
+                    } catch {
+                        print(error)
+                        item = nil
+                    }
+                    
+                    return item
+                }
             }
+            
+            for await item in group {
+                if let item = item {
+                    items.append(item)
+                    
+                    VIEW_CONTROLLER.startLoading("Loading \(items.count) / \(homeUpdater.selecteds.count) Photos...")
+                }
+            }
+            
+            return items.sorted(by: { (homeUpdater.selecteds.firstIndex(of: $0.asset) ?? 0) < (homeUpdater.selecteds.firstIndex(of: $1.asset) ?? 0) })
         }
         
         if homeUpdater.autoStitch {
+            VIEW_CONTROLLER.startLoading("Auto Stitch...")
             try await PIPELINE.autoStitch(items)
         }
+        
+        await withCheckedContinuation { continuation in VIEW_CONTROLLER.stopLoading { continuation.resume() } }
         
         return items
     }
