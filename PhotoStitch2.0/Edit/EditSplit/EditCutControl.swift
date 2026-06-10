@@ -41,8 +41,9 @@ class EditCutControl: TouchView {
             return false
         }
         
-        for view in ([splitButton] + splitDeletors.flatMap({ $0.deletors.map({ $0.button }) })) {
-            if view.convert(view.bounds, to: self).contains(point) {
+        for view in ([splitButton] + splitDeletors.compactMap({ [$0.before?.button, $0.after?.button] })) {
+            if let view = view as? UIView,
+               view.convert(view.bounds, to: self).contains(point) {
                 return true
             }
         }
@@ -170,6 +171,22 @@ extension EditCutControl: ForwardScrollProtocol {
             let frame = itemFrame(from: mark.item, context: context)
             mark.divider.frame = markFrame(isVer: isVer, frame: frame)
         }
+        
+        let oldDeletorItems = splitDeletors.map { $0.item }
+
+        oldDeletorItems.transformArray(to: editUpdater.items) { [self] item, index in
+            let frame = itemFrame(from: item, context: context)
+            splitDeletors.insert(makeDeletor(item: item, isVer: isVer, frame: frame), at: index)
+        } remove: { [self] index in
+            removeDeletor(at: index)
+        } move: { [self] (from, to) in
+            splitDeletors.insert(removeDeletor(at: from), at: to)
+        }
+        
+        splitDeletors.forEach { deletor in
+            let frame = itemFrame(from: deletor.item, context: context)
+            deletorSetup(deletor: deletor, isVer: isVer, frame: frame)
+        }
     }
     
     private func itemFrame(from item: StitchItem, context: EditGallery.Context) -> CGRect {
@@ -215,6 +232,66 @@ extension EditCutControl: ForwardScrollProtocol {
     private func markFrame(isVer: Bool, frame: CGRect) -> CGRect {
         return CGRect(x: isVer ? frame.minX : frame.maxX, y: isVer ? frame.maxY : frame.minY,
                       width: isVer ? frame.width : 0, height: isVer ? 0 : frame.height)
+    }
+    
+    private func makeDeletor(item: StitchItem, isVer: Bool, frame: CGRect) -> EditSplitDeletorList {
+        if let view = splitDeletors.first(where: { $0.item == item }) {
+            return view
+        }
+        
+        let deletor = EditSplitDeletorList(item: item)
+        deletorSetup(deletor: deletor, isVer: isVer, frame: frame)
+        
+        return deletor
+    }
+    
+    @discardableResult
+    private func removeDeletor(at index: Int) -> EditSplitDeletorList {
+        let view = splitDeletors.remove(at: index)
+        view.remove()
+        
+        return view
+    }
+    
+    private func deletorSetup(deletor: EditSplitDeletorList, isVer: Bool, frame: CGRect) {
+//        let itemRect = deletor.item.process.rect * frame.size
+
+        if isVer {
+            let lowRemove = LOW_REMOVE * frame.height / deletor.item.size.height
+            let highRemove = HIGH_REMOVE * frame.height / deletor.item.size.height
+            
+            if itemRect.minY < lowRemove {
+                let areaFrame = CGRect(x: frame.minX, y: frame.minY,
+                                       width: frame.width, height: lowRemove - frame.minY)
+                let buttonFrame = CGRect.zero
+                
+                if deletor.before == nil {
+                    deletor.before = .init(area: UIView(frame: areaFrame), button: UIButtonPro(frame: buttonFrame), isVer: isVer)
+                }
+                
+                deletor.before?.area.frame = areaFrame
+            } else {
+                deletor.before?.remove()
+                deletor.before = nil
+            }
+            
+            if (frame.height - itemRect.maxY) < highRemove {
+                let height = highRemove - (frame.height - itemRect.maxY)
+                
+                let areaFrame = CGRect(x: frame.minX, y: frame.maxY - height,
+                                       width: frame.width, height: height)
+                let buttonFrame = CGRect.zero
+                
+                if deletor.after == nil {
+                    deletor.after = .init(area: UIView(frame: areaFrame), button: UIButtonPro(frame: buttonFrame), isVer: isVer)
+                }
+                
+                deletor.before?.area.frame = areaFrame
+            } else {
+                deletor.after?.remove()
+                deletor.after = nil
+            }
+        }
     }
     
     private func dragAction(g: TouchGesture) {
@@ -342,24 +419,45 @@ class EditSplitMark {
 
 class EditSplitDeletorList {
     let item: StitchItem
-    var deletors: [EditSplitDeletor] = []
+    var before: EditSplitDeletor?
+    var after: EditSplitDeletor?
     
     init(item: StitchItem) {
         self.item = item
     }
+    
+    func remove() {
+        [before, after].forEach({ $0?.remove() })
+    }
 }
 
 class EditSplitDeletor {
-    let min: UIView
-    let max: UIView
+    private let min = EditSplitDivider()
+    private let max = EditSplitDivider()
+    
     let area: UIView
     let button: UIButtonPro
     
-    init(min: UIView, max: UIView, area: UIView, button: UIButtonPro) {
-        self.min = min
-        self.max = max
+    init(area: UIView, button: UIButtonPro, isVer: Bool) {
         self.area = area
         self.button = button
+        
+        area.eaddSubview(min
+                .eselfConstraints([isVer ? .height(2) : .width(2)]),
+             [.top(isVer ? -1 : 0), .leading(isVer ? 0 : -1), isVer ? .trailing(0) : .bottom(0)])
+            .eaddSubview(max
+                .eselfConstraints([isVer ? .height(2) : .width(2)]),
+             [.bottom(isVer ? -1 : 0), .trailing(isVer ? 0 : -1), isVer ? .leading(0) : .top(0)])
+        
+        min.layer.fillColor = ._red
+        min.layer.fillColor = ._red
+        area.backgroundColor = ._red.withAlphaComponent(0.2)
+    }
+    
+    func remove() {
+        for view in [min, max, area] {
+            view.removeFromSuperview()
+        }
     }
 }
 
