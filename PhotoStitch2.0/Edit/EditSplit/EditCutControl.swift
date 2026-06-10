@@ -151,6 +151,8 @@ extension EditCutControl: ForwardScrollProtocol {
             splitButton.transform = .init(rotationAngle: -.pi)
         }
         
+        splitArea.layoutIfNeeded()
+        
         splitButton.setBackgroundColor(._red)
         splitButton.esetImage(UIImage(named: editUpdater.cutUpdater?.mode == .pair ? "trash" : "scissors", variableValue: 0, configuration: iconConfiguration), for: .normal)
         
@@ -254,43 +256,51 @@ extension EditCutControl: ForwardScrollProtocol {
     }
     
     private func deletorSetup(deletor: EditSplitDeletorList, isVer: Bool, frame: CGRect) {
-//        let itemRect = deletor.item.process.rect * frame.size
+        guard isVer else { return }
+        
+        let previewSize = deletor.item.size * frame.width / deletor.item.size.width
+        let itemRect = deletor.item.process.rect * previewSize
 
-        if isVer {
-            let lowRemove = LOW_REMOVE * frame.height / deletor.item.size.height
-            let highRemove = HIGH_REMOVE * frame.height / deletor.item.size.height
+        let lowRemove = LOW_REMOVE * previewSize.width / deletor.item.size.width
+        let highRemove = HIGH_REMOVE * previewSize.width / deletor.item.size.width
+        
+        if itemRect.minY < lowRemove && editUpdater?.cutUpdater?.mode == .single {
+            let areaFrame = CGRect(x: frame.minX, y: frame.minY,
+                                   width: frame.width, height: lowRemove - itemRect.minY)
+            let buttonFrame = CGRect.zero
             
-            if itemRect.minY < lowRemove {
-                let areaFrame = CGRect(x: frame.minX, y: frame.minY,
-                                       width: frame.width, height: lowRemove - frame.minY)
-                let buttonFrame = CGRect.zero
-                
-                if deletor.before == nil {
-                    deletor.before = .init(area: UIView(frame: areaFrame), button: UIButtonPro(frame: buttonFrame), isVer: isVer)
-                }
-                
-                deletor.before?.area.frame = areaFrame
-            } else {
-                deletor.before?.remove()
-                deletor.before = nil
+            if deletor.before == nil {
+                deletor.before = .init(area: UIView(frame: areaFrame), button: UIButtonPro(frame: buttonFrame), isVer: isVer)
             }
             
-            if (frame.height - itemRect.maxY) < highRemove {
-                let height = highRemove - (frame.height - itemRect.maxY)
-                
-                let areaFrame = CGRect(x: frame.minX, y: frame.maxY - height,
-                                       width: frame.width, height: height)
-                let buttonFrame = CGRect.zero
-                
-                if deletor.after == nil {
-                    deletor.after = .init(area: UIView(frame: areaFrame), button: UIButtonPro(frame: buttonFrame), isVer: isVer)
-                }
-                
-                deletor.before?.area.frame = areaFrame
-            } else {
-                deletor.after?.remove()
-                deletor.after = nil
+            deletor.before?.area.frame = areaFrame
+            deletor.before?.area.layoutIfNeeded()
+        } else {
+            deletor.before?.remove()
+            deletor.before = nil
+        }
+        
+        if (previewSize.height - itemRect.maxY) < highRemove && editUpdater?.cutUpdater?.mode == .single {
+            let height = highRemove - (previewSize.height - itemRect.maxY)
+            
+            let areaFrame = CGRect(x: frame.minX, y: frame.maxY - height,
+                                   width: frame.width, height: height)
+            let buttonFrame = CGRect.zero
+            
+            if deletor.after == nil {
+                deletor.after = .init(area: UIView(frame: areaFrame), button: UIButtonPro(frame: buttonFrame), isVer: isVer)
             }
+            
+            deletor.after?.area.frame = areaFrame
+            deletor.after?.area.layoutIfNeeded()
+        } else {
+            deletor.after?.remove()
+            deletor.after = nil
+        }
+        
+        for view in [deletor.before, deletor.after].compactMap({ $0 }) {
+            addSubview(view.area)
+            addSubview(view.button)
         }
     }
     
@@ -450,12 +460,12 @@ class EditSplitDeletor {
              [.bottom(isVer ? -1 : 0), .trailing(isVer ? 0 : -1), isVer ? .leading(0) : .top(0)])
         
         min.layer.fillColor = ._red
-        min.layer.fillColor = ._red
+        max.layer.fillColor = ._red
         area.backgroundColor = ._red.withAlphaComponent(0.2)
     }
     
     func remove() {
-        for view in [min, max, area] {
+        for view in [area, button] {
             view.removeFromSuperview()
         }
     }
@@ -489,5 +499,7 @@ class EditSplitDivider: UIView {
             .emove(to: CGPoint(x: isVer ? 0 : bounds.midX, y: isVer ? bounds.midY : 0))
             .eaddLine(to: CGPoint(x: isVer ? bounds.maxX : bounds.midX, y: isVer ? bounds.midY : bounds.maxY))
             .cgPath.copy(dashingWithPhase: 0, lengths: [5, 10]).copy(strokingWithWidth: 2, lineCap: .round, lineJoin: .round, miterLimit: .pi)
+        
+        clipsToBounds = true
     }
 }
