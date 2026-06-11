@@ -12,6 +12,7 @@ import Combine
 private let DIVIDER_WIDTH: CGFloat = 1.5
 private let DIVIDER_EXTENT: CGFloat = 16
 private let DIVIDER_DRAG_RANGE: CGFloat = 16
+private let DELETE_SIZE: CGFloat = 36
 private let BUTTON_SIZE: CGFloat = 44
 private let BUTTON_SPACING: CGFloat = 32
 
@@ -256,7 +257,10 @@ extension EditCutControl: ForwardScrollProtocol {
     }
     
     private func deletorSetup(deletor: EditSplitDeletorList, isVer: Bool, frame: CGRect) {
-        guard isVer else { return }
+        guard isVer else {
+            deletor.remove()
+            return
+        }
         
         let previewSize = deletor.item.size * frame.width / deletor.item.size.width
         let itemRect = deletor.item.process.rect * previewSize
@@ -267,12 +271,14 @@ extension EditCutControl: ForwardScrollProtocol {
         if itemRect.minY < lowRemove && editUpdater?.cutUpdater?.mode == .single {
             let areaFrame = CGRect(x: frame.minX, y: frame.minY,
                                    width: frame.width, height: lowRemove - itemRect.minY)
-            let buttonFrame = CGRect.zero
+            let buttonFrame = CGRect(x: min(bounds.width - DELETE_SIZE - 12, frame.minX - 12.0 - DELETE_SIZE), y: areaFrame.midY - DELETE_SIZE / 2, width: DELETE_SIZE, height: DELETE_SIZE)
             
             if deletor.before == nil {
                 deletor.before = .init(area: UIView(frame: areaFrame), button: UIButtonPro(frame: buttonFrame), isVer: isVer)
             }
             
+            deletor.before?.button.frame = buttonFrame
+            deletor.before?.button.gestureRecognizers = [UITapGestureRecognizer(target: self, action: #selector(deleteAction))]
             deletor.before?.area.frame = areaFrame
             deletor.before?.area.layoutIfNeeded()
         } else {
@@ -285,12 +291,14 @@ extension EditCutControl: ForwardScrollProtocol {
             
             let areaFrame = CGRect(x: frame.minX, y: frame.maxY - height,
                                    width: frame.width, height: height)
-            let buttonFrame = CGRect.zero
+            let buttonFrame = CGRect(x: min(bounds.width - DELETE_SIZE - 12, frame.minX - 12.0 - DELETE_SIZE), y: areaFrame.midY - DELETE_SIZE / 2, width: DELETE_SIZE, height: DELETE_SIZE)
             
             if deletor.after == nil {
                 deletor.after = .init(area: UIView(frame: areaFrame), button: UIButtonPro(frame: buttonFrame), isVer: isVer)
             }
             
+            deletor.after?.button.frame = buttonFrame
+            deletor.after?.button.gestureRecognizers = [UITapGestureRecognizer(target: self, action: #selector(deleteAction))]
             deletor.after?.area.frame = areaFrame
             deletor.after?.area.layoutIfNeeded()
         } else {
@@ -367,12 +375,44 @@ extension EditCutControl: ForwardScrollProtocol {
     }
     
     @objc private func cutAction() {
+        guard let editUpdater = editUpdater else { return }
+        
+        let isVer = editUpdater.axis == .vertical
+        let cutNorRect = editUpdater.cutUpdater?.mode == .pair ? cutNorRect : CGRect(x: isVer ? 0 : cutNorPart, y: isVer ? cutNorPart : 0, width: isVer ? 1 : MIN_REMOVE, height: isVer ? MIN_REMOVE : 1)
+        
+        cutApply(cutNorRect)
+    }
+    
+    @objc private func deleteAction(g: UITapGestureRecognizer) {
+        guard let editUpdater = editUpdater,
+              let stackView = context?.coordinator.stackView,
+              editUpdater.axis == .vertical,
+              let splitDeletor = splitDeletors.first(where: { $0.before?.button == g.view || $0.after?.button == g.view })
+        else { return }
+        
+        let size = splitDeletor.item.size
+        let stackFrame = stackView.convert(stackView.bounds, to: self)
+        
+        guard size.height > HIGH_REMOVE,
+              size.height > LOW_REMOVE
+        else { return }
+        
+        if g.view == splitDeletor.before?.button, let areaFrame = splitDeletor.before?.area.frame {
+            cutApply(CGRect(origin: areaFrame.origin - stackFrame.origin, size: areaFrame.size) / stackFrame.size)
+        }
+        
+        if g.view == splitDeletor.after?.button, let areaFrame = splitDeletor.after?.area.frame {
+            cutApply(CGRect(origin: areaFrame.origin - stackFrame.origin, size: areaFrame.size) / stackFrame.size)
+        }
+    }
+    
+    private func cutApply(_ rect: CGRect) {
         guard let editUpdater = editUpdater,
               let stackView = context?.coordinator.stackView
         else { return }
         
         let isVer = editUpdater.axis == .vertical
-        let cutNorRect = editUpdater.cutUpdater?.mode == .pair ? cutNorRect : CGRect(x: isVer ? 0 : cutNorPart, y: isVer ? cutNorPart : 0, width: isVer ? 1 : MIN_REMOVE, height: isVer ? MIN_REMOVE : 1)
+        let cutNorRect = rect
         let cutFrame = cutNorRect.insetBy(dx: isVer ? -1 : 0, dy: isVer ? 0 : -1) * stackView.bounds.size
         
         var cutRects: [StitchItem: CGRect] = [:]
@@ -442,6 +482,8 @@ class EditSplitDeletorList {
 }
 
 class EditSplitDeletor {
+    private let iconConfiguration = UIImage.SymbolConfiguration(font: .systemFont(ofSize: 14, weight: .bold))
+    
     private let min = EditSplitDivider()
     private let max = EditSplitDivider()
     
@@ -462,6 +504,16 @@ class EditSplitDeletor {
         min.layer.fillColor = ._red
         max.layer.fillColor = ._red
         area.backgroundColor = ._red.withAlphaComponent(0.2)
+        
+        button
+            .esetImage(UIImage(named: "trash", variableValue: 0, configuration: iconConfiguration), for: .normal)
+            .setContentColor(._white)
+            .setBackgroundColor(._red)
+            .econfiguration({ configuration in
+                var configuration = configuration
+                configuration?.cornerStyle = .capsule
+                return configuration
+            })
     }
     
     func remove() {
