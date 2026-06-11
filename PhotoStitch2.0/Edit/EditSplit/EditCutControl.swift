@@ -42,9 +42,8 @@ class EditCutControl: TouchView {
             return false
         }
         
-        for view in ([splitButton] + splitDeletors.compactMap({ [$0.before?.button, $0.after?.button] })) {
-            if let view = view as? UIView,
-               view.convert(view.bounds, to: self).contains(point) {
+        for view in ([splitButton] + splitDeletors.flatMap({ [$0.before?.button, $0.after?.button].compactMap({ $0 }) })) {
+            if view.convert(view.bounds, to: self).contains(point) {
                 return true
             }
         }
@@ -233,8 +232,8 @@ extension EditCutControl: ForwardScrollProtocol {
     }
     
     private func markFrame(isVer: Bool, frame: CGRect) -> CGRect {
-        return CGRect(x: isVer ? frame.minX : frame.maxX, y: isVer ? frame.maxY : frame.minY,
-                      width: isVer ? frame.width : 0, height: isVer ? 0 : frame.height)
+        return CGRect(x: isVer ? frame.minX : (frame.maxX - 5), y: isVer ? (frame.maxY - 5) : frame.minY,
+                      width: isVer ? frame.width : 10, height: isVer ? 10 : frame.height)
     }
     
     private func makeDeletor(item: StitchItem, isVer: Bool, frame: CGRect) -> EditSplitDeletorList {
@@ -268,7 +267,7 @@ extension EditCutControl: ForwardScrollProtocol {
         let lowRemove = LOW_REMOVE * previewSize.width / deletor.item.size.width
         let highRemove = HIGH_REMOVE * previewSize.width / deletor.item.size.width
         
-        if itemRect.minY < lowRemove && editUpdater?.cutUpdater?.mode == .single {
+        if itemRect.minY < (lowRemove - 1) && editUpdater?.cutUpdater?.mode == .single {
             let areaFrame = CGRect(x: frame.minX, y: frame.minY,
                                    width: frame.width, height: lowRemove - itemRect.minY)
             let buttonFrame = CGRect(x: min(bounds.width - DELETE_SIZE - 12, frame.minX - 12.0 - DELETE_SIZE), y: areaFrame.midY - DELETE_SIZE / 2, width: DELETE_SIZE, height: DELETE_SIZE)
@@ -286,7 +285,7 @@ extension EditCutControl: ForwardScrollProtocol {
             deletor.before = nil
         }
         
-        if (previewSize.height - itemRect.maxY) < highRemove && editUpdater?.cutUpdater?.mode == .single {
+        if (previewSize.height - itemRect.maxY) < (highRemove - 1) && editUpdater?.cutUpdater?.mode == .single {
             let height = highRemove - (previewSize.height - itemRect.maxY)
             
             let areaFrame = CGRect(x: frame.minX, y: frame.maxY - height,
@@ -380,7 +379,7 @@ extension EditCutControl: ForwardScrollProtocol {
         let isVer = editUpdater.axis == .vertical
         let cutNorRect = editUpdater.cutUpdater?.mode == .pair ? cutNorRect : CGRect(x: isVer ? 0 : cutNorPart, y: isVer ? cutNorPart : 0, width: isVer ? 1 : MIN_REMOVE, height: isVer ? MIN_REMOVE : 1)
         
-        cutApply(cutNorRect)
+        cutApply(cutNorRect, switchStitch: editUpdater.cutUpdater?.mode == .single)
     }
     
     @objc private func deleteAction(g: UITapGestureRecognizer) {
@@ -398,15 +397,15 @@ extension EditCutControl: ForwardScrollProtocol {
         else { return }
         
         if g.view == splitDeletor.before?.button, let areaFrame = splitDeletor.before?.area.frame {
-            cutApply(CGRect(origin: areaFrame.origin - stackFrame.origin, size: areaFrame.size) / stackFrame.size)
+            cutApply(CGRect(origin: areaFrame.origin - stackFrame.origin, size: areaFrame.size) / stackFrame.size, switchStitch: false)
         }
         
         if g.view == splitDeletor.after?.button, let areaFrame = splitDeletor.after?.area.frame {
-            cutApply(CGRect(origin: areaFrame.origin - stackFrame.origin, size: areaFrame.size) / stackFrame.size)
+            cutApply(CGRect(origin: areaFrame.origin - stackFrame.origin, size: areaFrame.size) / stackFrame.size, switchStitch: false)
         }
     }
     
-    private func cutApply(_ rect: CGRect) {
+    private func cutApply(_ rect: CGRect, switchStitch: Bool) {
         guard let editUpdater = editUpdater,
               let stackView = context?.coordinator.stackView
         else { return }
@@ -441,7 +440,7 @@ extension EditCutControl: ForwardScrollProtocol {
                     splitButton.alpha = 0
                 }
                 
-                if editUpdater.cutUpdater?.mode == .single {
+                if switchStitch {
                     editUpdater.tab = .stitch
                 }
             } catch {
@@ -482,7 +481,7 @@ class EditSplitDeletorList {
 }
 
 class EditSplitDeletor {
-    private let iconConfiguration = UIImage.SymbolConfiguration(font: .systemFont(ofSize: 14, weight: .bold))
+    private let iconConfiguration = UIImage.SymbolConfiguration(font: .systemFont(ofSize: 12, weight: .bold))
     
     private let min = EditSplitDivider()
     private let max = EditSplitDivider()
@@ -495,11 +494,11 @@ class EditSplitDeletor {
         self.button = button
         
         area.eaddSubview(min
-                .eselfConstraints([isVer ? .height(2) : .width(2)]),
-             [.top(isVer ? -1 : 0), .leading(isVer ? 0 : -1), isVer ? .trailing(0) : .bottom(0)])
+                .eselfConstraints([isVer ? .height(10) : .width(10)]),
+             [.top(isVer ? -5 : 0), .leading(isVer ? 0 : -5), isVer ? .trailing(0) : .bottom(0)])
             .eaddSubview(max
-                .eselfConstraints([isVer ? .height(2) : .width(2)]),
-             [.bottom(isVer ? -1 : 0), .trailing(isVer ? 0 : -1), isVer ? .leading(0) : .top(0)])
+                .eselfConstraints([isVer ? .height(10) : .width(10)]),
+             [.bottom(isVer ? -5 : 0), .trailing(isVer ? 0 : -5), isVer ? .leading(0) : .top(0)])
         
         min.layer.fillColor = ._red
         max.layer.fillColor = ._red
