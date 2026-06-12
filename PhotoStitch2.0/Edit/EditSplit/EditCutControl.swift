@@ -21,6 +21,7 @@ class EditCutControl: TouchView {
     private(set) var context: EditGallery.Context?
     
     private var scrollViewUpdate: AnyCancellable?
+    private var deleteAll: AnyCancellable?
     
     private let iconConfiguration = UIImage.SymbolConfiguration(font: .systemFont(ofSize: 14, weight: .bold))
     
@@ -106,6 +107,36 @@ extension EditCutControl: ForwardScrollProtocol {
         }
         
         alpha = editUpdater.tab == .split ? 1 : 0
+        
+        deleteAll = editUpdater.cutUpdater?.deleteAll.eraseToAnyPublisher().sink(receiveValue: { [weak self] _ in
+            guard let stackView = context.coordinator.stackView,
+                  editUpdater.axis == .vertical,
+                  let self = self
+            else { return }
+            
+            var curNorRects: [CGRect] = []
+            
+            for splitDeletor in splitDeletors {
+                let size = splitDeletor.item.size
+                let stackFrame = stackView.convert(stackView.bounds, to: self)
+                
+                guard size.height > HIGH_REMOVE,
+                      size.height > LOW_REMOVE
+                else { return }
+                
+                if let areaFrame = splitDeletor.before?.area.frame {
+                    curNorRects.append(CGRect(origin: areaFrame.origin - stackFrame.origin, size: areaFrame.size) / stackFrame.size)
+                }
+                
+                if let areaFrame = splitDeletor.after?.area.frame {
+                    curNorRects.append(CGRect(origin: areaFrame.origin - stackFrame.origin, size: areaFrame.size) / stackFrame.size)
+                }
+                
+                print(splitDeletor.before, splitDeletor.after)
+            }
+            
+            applyCuts(curNorRects, switchStitch: false)
+        })
     }
     
     func contentUpdate(editUpdater: EditUpdater, context: EditGallery.Context) {
@@ -379,7 +410,7 @@ extension EditCutControl: ForwardScrollProtocol {
         let isVer = editUpdater.axis == .vertical
         let cutNorRect = editUpdater.cutUpdater?.mode == .pair ? cutNorRect : CGRect(x: isVer ? 0 : cutNorPart, y: isVer ? cutNorPart : 0, width: isVer ? 1 : MIN_REMOVE, height: isVer ? MIN_REMOVE : 1)
         
-        cutApply(cutNorRect, switchStitch: editUpdater.cutUpdater?.mode == .single)
+        applyCuts([cutNorRect], switchStitch: editUpdater.cutUpdater?.mode == .single)
     }
     
     @objc private func deleteAction(g: UITapGestureRecognizer) {
@@ -397,34 +428,16 @@ extension EditCutControl: ForwardScrollProtocol {
         else { return }
         
         if g.view == splitDeletor.before?.button, let areaFrame = splitDeletor.before?.area.frame {
-            cutApply(CGRect(origin: areaFrame.origin - stackFrame.origin, size: areaFrame.size) / stackFrame.size, switchStitch: false)
+            applyCuts([CGRect(origin: areaFrame.origin - stackFrame.origin, size: areaFrame.size) / stackFrame.size], switchStitch: false)
         }
         
         if g.view == splitDeletor.after?.button, let areaFrame = splitDeletor.after?.area.frame {
-            cutApply(CGRect(origin: areaFrame.origin - stackFrame.origin, size: areaFrame.size) / stackFrame.size, switchStitch: false)
+            applyCuts([CGRect(origin: areaFrame.origin - stackFrame.origin, size: areaFrame.size) / stackFrame.size], switchStitch: false)
         }
     }
     
-    private func cutApply(_ rect: CGRect, switchStitch: Bool) {
-        guard let editUpdater = editUpdater,
-              let stackView = context?.coordinator.stackView
-        else { return }
-        
-        let isVer = editUpdater.axis == .vertical
-        let cutNorRect = rect
-        let cutFrame = cutNorRect.insetBy(dx: isVer ? -1 : 0, dy: isVer ? 0 : -1) * stackView.bounds.size
-        
-        var cutRects: [StitchItem: CGRect] = [:]
-        
-        for itemView in (stackView.arrangedSubviews as? [EditItem] ?? []) {
-            guard let item = itemView.item else { continue }
-            
-            let fullItemFrame = itemView.imageView.convert(itemView.imageView.bounds, to: stackView)
-            
-            if cutFrame.intersects(itemView.frame) {
-                cutRects[item] = (cutFrame.intersection(itemView.frame) - fullItemFrame.origin) / fullItemFrame.size
-            }
-        }
+    private func applyCuts(_ rects: [CGRect], switchStitch: Bool) {
+        guard let editUpdater = editUpdater else { return }
         
         Task {
             editUpdater.anim = true
@@ -432,7 +445,7 @@ extension EditCutControl: ForwardScrollProtocol {
             editUpdater.anim = false
             
             do {
-                try await editUpdater.cutUpdater?.applyCut(cutRects)
+                try await editUpdater.cutUpdater?.applyCuts(rects)
                 
                 UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
                     

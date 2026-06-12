@@ -43,6 +43,9 @@ struct Edit: View {
                     .zIndex(1000)
             }
         }
+        .onTapGesture {
+            editUpdater.tapOutside.send()
+        }
         .environment(editUpdater)
         .animation(.smooth(duration: ANIM_DURATION), value: editUpdater.tab)
         .animation(.smooth(duration: ANIM_DURATION), value: editUpdater.warningText)
@@ -86,6 +89,8 @@ enum EditTab: String, CaseIterable {
     
     private(set) var warningText = ""
     @ObservationIgnored private var warningTask: Task<Void, Never>?
+    
+    let tapOutside: PassthroughSubject<Void, Never> = .init()
     
     init(items: [StitchItem], axis: NSLayoutConstraint.Axis) {
         self.items = items

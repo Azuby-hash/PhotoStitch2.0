@@ -28,6 +28,7 @@
 		CE4231B22FACEBC500701039 /* WebViewSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231B12FACEBC500701039 /* WebViewSnapshot.swift */; };
 		CE4231B62FACFBCE00701039 /* Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231B52FACFBCE00701039 /* Loading.swift */; };
 		CE4262632FD25220002916A4 /* UIBezierPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4262622FD25214002916A4 /* UIBezierPath.swift */; };
+		CE46FBA42FDB26400021013C /* MenuPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE46FBA32FDB26400021013C /* MenuPopover.swift */; };
 		CE75164B2FC5E99E002C4625 /* TouchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE75164A2FC5E99E002C4625 /* TouchView.swift */; };
 		CE7516512FC9A2A4002C4625 /* EditStitchTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7516502FC9A29C002C4625 /* EditStitchTool.swift */; };
 		CE7516552FC9F6F0002C4625 /* EditCutControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7516542FC9F6F0002C4625 /* EditCutControl.swift */; };
@@ -146,6 +147,7 @@
 		CE4231B12FACEBC500701039 /* WebViewSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewSnapshot.swift; sourceTree = "<group>"; };
 		CE4231B52FACFBCE00701039 /* Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loading.swift; sourceTree = "<group>"; };
 		CE4262622FD25214002916A4 /* UIBezierPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBezierPath.swift; sourceTree = "<group>"; };
+		CE46FBA32FDB26400021013C /* MenuPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuPopover.swift; sourceTree = "<group>"; };
 		CE75164A2FC5E99E002C4625 /* TouchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchView.swift; sourceTree = "<group>"; };
 		CE7516502FC9A29C002C4625 /* EditStitchTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditStitchTool.swift; sourceTree = "<group>"; };
 		CE7516542FC9F6F0002C4625 /* EditCutControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCutControl.swift; sourceTree = "<group>"; };
@@ -566,6 +568,7 @@
 			children = (
 				CE8700952FB6A61100061801 /* ForwardScroll.swift */,
 				CE75164A2FC5E99E002C4625 /* TouchView.swift */,
+				CE46FBA32FDB26400021013C /* MenuPopover.swift */,
 				CE87FFF02FB0223800061801 /* OpenCV */,
 				CE4231982FA9773400701039 /* AssetLibrary.swift */,
 				CE4231A62FAB566700701039 /* LazyWFVStack.swift */,
@@ -718,6 +721,7 @@
 				CE8700A52FBCB5F800061801 /* EditStitchControl.swift in Sources */,
 				CE8700542FB039E200061801 /* UIViewPointDetect.swift in Sources */,
 				CE8700882FB222C500061801 /* EditGallery.swift in Sources */,
+				CE46FBA42FDB26400021013C /* MenuPopover.swift in Sources */,
 				CE8700552FB039E200061801 /* UISToolBar.swift in Sources */,
 				CE75164B2FC5E99E002C4625 /* TouchView.swift in Sources */,
 				CE8700562FB039E200061801 /* UIViewShadow.swift in Sources */,

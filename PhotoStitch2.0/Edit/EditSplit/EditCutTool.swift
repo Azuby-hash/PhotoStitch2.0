@@ -6,25 +6,58 @@
 //
 
 import SwiftUI
+import Combine
+
+fileprivate let ANIM_ID = "99ff4d39331756d1"
 
 struct EditCutTool: View {
     @Environment(EditUpdater.self) var editUpdater
     
+    @State var showMenu = false
+    
+    @Namespace var namespace
+    
     var body: some View {
-        HStack {
-            Button {
-                editUpdater.cutUpdater?.setMode(editUpdater.cutUpdater?.mode == .pair ? .single : .pair)
-            } label: {
-                HStack {
-                    Image("rectangle.grid.1x2.fill.badge.ellipsis")
-                    Text("Actions")
+        HStack(alignment: .bottom) {
+            GlassContainer {
+                if editUpdater.cutUpdater?.mode == .single {
+                    MenuPopover(showMenu: $showMenu, items: [
+                        .init(icon: Image("trash.square.stack"), name: "Delete All", action: {
+                            editUpdater.cutUpdater?.deleteAll.send()
+                        }),
+                        .init(icon: Image("rectangle.dashed.badge.minus"), name: "To Area", action: {
+                            editUpdater.cutUpdater?.setMode(.pair)
+                        })
+                    ]) {
+                        HStack {
+                            Image("rectangle.grid.1x2.fill.badge.ellipsis")
+                            Text("Options")
+                        }
+                        .font(.system(size: 18, weight: .semibold, design: .rounded))
+                        .foregroundStyle(Color.primary)
+                        .padding(.horizontal, 20)
+                        .frame(width: 150, height: 60)
+                        .modifier(MainGlass(shape: .capsule, type: .clear))
+                        .matchedGeometryEffect(id: ANIM_ID, in: namespace)
+                    }
+                } else {
+                    Button {
+                        editUpdater.cutUpdater?.setMode(.single)
+                    } label: {
+                        HStack {
+                            Image("scissors")
+                            Text("To Cut")
+                        }
+                        .font(.system(size: 18, weight: .semibold, design: .rounded))
+                        .foregroundStyle(Color.primary)
+                        .padding(.horizontal, 20)
+                        .frame(width: 150, height: 60)
+                        .modifier(MainGlass(shape: .capsule, type: .clear))
+                    }
+                    .matchedGeometryEffect(id: ANIM_ID, in: namespace)
                 }
-                .font(.system(size: 18, weight: .semibold, design: .rounded))
-                .foregroundStyle(Color.primary)
-                .padding(.horizontal, 20)
-                .frame(height: 60)
-                .modifier(MainGlass(shape: .capsule, type: .clear))
             }
+            
             
             Button {
                 editUpdater.tab = .stitch
@@ -41,6 +74,12 @@ struct EditCutTool: View {
             }
         }
         .align(edge: .bottom, constant: 0)
+        .onReceive(editUpdater.tapOutside, perform: { _ in
+            withAnimation(.smooth(duration: ANIM_DURATION)) {
+                showMenu = false
+            }
+        })
+        .animation(.smooth(duration: ANIM_DURATION), value: editUpdater.cutUpdater?.mode)
         .onAppear {
             editUpdater.cutUpdater = EditCutUpdater()
             editUpdater.cutUpdater?.context = editUpdater.editGallery.context
@@ -56,6 +95,8 @@ struct EditCutTool: View {
     
     private(set) var constraints: [NSLayoutConstraint] = []
     private(set) var mode: SplitMode = SPLIT_MODE
+    
+    let deleteAll = PassthroughSubject<Void, Never>()
     
     deinit {
         constraints.forEach({ $0.isActive = false })
@@ -79,14 +120,44 @@ struct EditCutTool: View {
         self.constraints.removeAll(where: { constraints.contains($0) })
     }
     
-    func applyCut(_ norRects: [StitchItem: CGRect]) async throws {
+    func applyCuts(_ rects: [CGRect]) async throws {
+        guard let editUpdater = context?.coordinator.content?.editUpdater,
+              let stackView = context?.coordinator.stackView
+        else { throw MainError.error("No EditUpdater found") }
+        
+        let oldCuts = editUpdater.items.map({ ($0, $0.process.rect) })
+        
+        var cutRects: [StitchItem: CGRect] = [:]
+        
+        for rect in rects {
+            let isVer = editUpdater.axis == .vertical
+            let cutNorRect = rect
+            let cutFrame = cutNorRect.insetBy(dx: isVer ? -1 : 0, dy: isVer ? 0 : -1) * stackView.bounds.size
+            
+            for itemView in (stackView.arrangedSubviews as? [EditItem] ?? []) {
+                guard let item = itemView.item else { continue }
+                
+                let fullItemFrame = itemView.imageView.convert(itemView.imageView.bounds, to: stackView)
+                
+                if cutFrame.intersects(itemView.frame) {
+                    cutRects[item] = (cutFrame.intersection(itemView.frame) - fullItemFrame.origin) / fullItemFrame.size
+                }
+            }
+        }
+        
+        try await processCut(cutRects)
+        
+        let newCuts = editUpdater.items.map({ ($0, $0.process.rect) })
+        
+//        cEdit.applyCutStep(oldCuts: oldCuts, newCuts: newCuts)
+    }
+    
+    private func processCut(_ norRects: [StitchItem: CGRect]) async throws {
         guard let editUpdater = context?.coordinator.content?.editUpdater else {
             throw MainError.error("No EditUpdater found")
         }
         
         var resultItems: [StitchItem] = []
-        
-        let oldCuts = editUpdater.items.map({ ($0, $0.process.rect) })
         
         try editUpdater.items.forEach { item in
             guard let norRect = norRects[item] else {
@@ -142,10 +213,6 @@ struct EditCutTool: View {
         
         editUpdater.anim = true
         editUpdater.items = resultItemsFilter
-        
-        let newCuts = editUpdater.items.map({ ($0, $0.process.rect) })
-        
-//        cEdit.applyCutStep(oldCuts: oldCuts, newCuts: newCuts)
     }
 
     private func snapRect(_ remove: CGRect, to base: CGRect, delta: CGFloat) -> CGRect {
