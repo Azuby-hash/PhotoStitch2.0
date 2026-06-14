@@ -54,7 +54,11 @@ struct EditBottom: View {
                     EditCutTool()
                 }
                 
-                if editUpdater.tab == .stitch || editUpdater.tab == .split {
+                if editUpdater.tab == .sort {
+                    EditSortTool()
+                }
+                
+                if editUpdater.tab != .none {
                     HStack {
                         Button {
                             editUpdater.tab = .none

@@ -131,8 +131,6 @@ extension EditCutControl: ForwardScrollProtocol {
                 if let areaFrame = splitDeletor.after?.area.frame {
                     curNorRects.append(CGRect(origin: areaFrame.origin - stackFrame.origin, size: areaFrame.size) / stackFrame.size)
                 }
-                
-                print(splitDeletor.before, splitDeletor.after)
             }
             
             applyCuts(curNorRects, switchStitch: false)

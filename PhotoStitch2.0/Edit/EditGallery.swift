@@ -20,8 +20,13 @@ import Combine
 struct EditGallery: UIViewRepresentable {
     @Environment(EditUpdater.self) var editUpdater
 
-    let edgeInsets: EdgeInsets
-    let baseInsets: EdgeInsets
+    var edgeInsets: EdgeInsets {
+        get { editUpdater.edgeInsets }
+    }
+    
+    var baseInsets: EdgeInsets {
+        get { editUpdater.baseInsets }
+    }
     
     func makeUIView(context: Context) -> UIViewContent {
         let view = UIViewContent()
@@ -133,8 +138,6 @@ struct EditGallery: UIViewRepresentable {
                   let editUpdater = content?.editUpdater
             else { return }
             
-            let spacingZeroIndex = content?.editUpdater.editGallery.spaceZeroIndex
-            
             scroll.delegate = nil
             defer {
                 scroll.delegate = self
@@ -173,18 +176,15 @@ struct EditGallery: UIViewRepresentable {
                     
                     let item = editUpdater.items[index]
                     
-                    view.alpha = 1
                     view.item = item
                     view.editUpdater = editUpdater
                     view.setSize(calculateSize(for: item))
                     view.setContent()
                     
-                    if editUpdater.tab == .split || editUpdater.tab == .stitch {
-                        stack.setCustomSpacing(0, after: view)
-                    }
-                    
                     if editUpdater.tab == .sort {
-                        stack.setCustomSpacing(spacingZeroIndex == index ? 0 : SPLIT_ITEM_SPACING, after: view)
+                        stack.setCustomSpacing(SPLIT_ITEM_SPACING, after: view)
+                    } else {
+                        stack.setCustomSpacing(0, after: view)
                     }
                 }
                 
@@ -251,7 +251,6 @@ struct EditGallery: UIViewRepresentable {
     @ObservationIgnored var onZoom = false
     
     let scrollViewUpdate = PassthroughSubject<Void, Never>()
-    var spaceZeroIndex: Int?
 }
 
 extension StitchItem: Hashable {

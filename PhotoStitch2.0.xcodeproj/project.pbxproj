@@ -29,6 +29,9 @@
 		CE4231B62FACFBCE00701039 /* Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231B52FACFBCE00701039 /* Loading.swift */; };
 		CE4262632FD25220002916A4 /* UIBezierPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4262622FD25214002916A4 /* UIBezierPath.swift */; };
 		CE46FBA42FDB26400021013C /* MenuPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE46FBA32FDB26400021013C /* MenuPopover.swift */; };
+		CE46FBA72FDEA9D20021013C /* EditSort.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE46FBA62FDEA9CD0021013C /* EditSort.swift */; };
+		CE46FBAA2FDEA9F70021013C /* EditSortControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE46FBA92FDEA9F70021013C /* EditSortControl.swift */; };
+		CE46FBAB2FDEA9F70021013C /* EditSortTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE46FBA82FDEA9F70021013C /* EditSortTool.swift */; };
 		CE75164B2FC5E99E002C4625 /* TouchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE75164A2FC5E99E002C4625 /* TouchView.swift */; };
 		CE7516512FC9A2A4002C4625 /* EditStitchTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7516502FC9A29C002C4625 /* EditStitchTool.swift */; };
 		CE7516552FC9F6F0002C4625 /* EditCutControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7516542FC9F6F0002C4625 /* EditCutControl.swift */; };
@@ -148,6 +151,9 @@
 		CE4231B52FACFBCE00701039 /* Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loading.swift; sourceTree = "<group>"; };
 		CE4262622FD25214002916A4 /* UIBezierPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBezierPath.swift; sourceTree = "<group>"; };
 		CE46FBA32FDB26400021013C /* MenuPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuPopover.swift; sourceTree = "<group>"; };
+		CE46FBA62FDEA9CD0021013C /* EditSort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSort.swift; sourceTree = "<group>"; };
+		CE46FBA82FDEA9F70021013C /* EditSortTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSortTool.swift; sourceTree = "<group>"; };
+		CE46FBA92FDEA9F70021013C /* EditSortControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSortControl.swift; sourceTree = "<group>"; };
 		CE75164A2FC5E99E002C4625 /* TouchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchView.swift; sourceTree = "<group>"; };
 		CE7516502FC9A29C002C4625 /* EditStitchTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditStitchTool.swift; sourceTree = "<group>"; };
 		CE7516542FC9F6F0002C4625 /* EditCutControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCutControl.swift; sourceTree = "<group>"; };
@@ -339,8 +345,19 @@
 				CE8700902FB6A60000061801 /* EditAttach */,
 				CE7516522FC9A57D002C4625 /* EditStitch */,
 				CE7516532FC9F6DF002C4625 /* EditSplit */,
+				CE46FBA52FDEA9B70021013C /* EditSort */,
 			);
 			path = Edit;
+			sourceTree = "<group>";
+		};
+		CE46FBA52FDEA9B70021013C /* EditSort */ = {
+			isa = PBXGroup;
+			children = (
+				CE46FBA62FDEA9CD0021013C /* EditSort.swift */,
+				CE46FBA82FDEA9F70021013C /* EditSortTool.swift */,
+				CE46FBA92FDEA9F70021013C /* EditSortControl.swift */,
+			);
+			path = EditSort;
 			sourceTree = "<group>";
 		};
 		CE7516522FC9A57D002C4625 /* EditStitch */ = {
@@ -749,6 +766,8 @@
 				CE8700692FB039E200061801 /* UISView.swift in Sources */,
 				CE87006A2FB039E200061801 /* UIViewLoadNib.swift in Sources */,
 				CE87006B2FB039E200061801 /* UISScrollView.swift in Sources */,
+				CE46FBAA2FDEA9F70021013C /* EditSortControl.swift in Sources */,
+				CE46FBAB2FDEA9F70021013C /* EditSortTool.swift in Sources */,
 				CE87006C2FB039E200061801 /* UISTextView.swift in Sources */,
 				CE87006D2FB039E200061801 /* UISSearchBar.swift in Sources */,
 				CE87006E2FB039E200061801 /* UIViewZPosition.swift in Sources */,
@@ -782,6 +801,7 @@
 				CE8700842FB039E200061801 /* DataSizeHelpers.swift in Sources */,
 				CE8700852FB039E200061801 /* URLSessionHelpers.swift in Sources */,
 				CE8700862FB039E200061801 /* UISStackView.swift in Sources */,
+				CE46FBA72FDEA9D20021013C /* EditSort.swift in Sources */,
 				CE1FDC822F9D181000460178 /* Main.swift in Sources */,
 				CE4231AE2FACE79400701039 /* Edit.swift in Sources */,
 			);

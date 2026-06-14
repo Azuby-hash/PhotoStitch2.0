@@ -18,10 +18,22 @@ struct Edit: View {
                 let bonusInset = getInset(geometry.size)
                 let totalInset = EdgeInsets(top: safeAreaInsets.top + bonusInset.top, leading: safeAreaInsets.leading + bonusInset.leading, bottom: safeAreaInsets.bottom + bonusInset.bottom, trailing: safeAreaInsets.trailing + bonusInset.trailing)
                 
-                EditGallery(edgeInsets: totalInset, baseInsets: bonusInset)
+                Color.clear.onGeometryChange(for: EdgeInsets.self) { geometry in
+                    return bonusInset
+                } action: { newValue in
+                    editUpdater.baseInsets = newValue
+                }.onGeometryChange(for: EdgeInsets.self) { geometry in
+                    return totalInset
+                } action: { newValue in
+                    editUpdater.edgeInsets = newValue
+                }
+                
+                EditGallery()
                     .ignoresSafeArea()
                     .modifier(EdgeModifier(top: 44, bottom: 60))
             }
+            
+
             
             EditTop()
             EditBottom()
@@ -48,23 +60,21 @@ struct Edit: View {
         }
         .environment(editUpdater)
         .animation(.smooth(duration: ANIM_DURATION), value: editUpdater.tab)
+        .animation(.smooth(duration: ANIM_DURATION), value: editUpdater.edgeInsets)
+        .animation(.smooth(duration: ANIM_DURATION), value: editUpdater.baseInsets)
         .animation(.smooth(duration: ANIM_DURATION), value: editUpdater.warningText)
     }
     
     func getInset(_ size: CGSize) -> EdgeInsets {
-        var hozInset = editUpdater.axis == .vertical ? size.width * 0.2 : 48
-        var topInset = editUpdater.axis == .horizontal ? size.height * 0.1 : 48
-        var bottomInset = editUpdater.axis == .horizontal ? size.height * 0.2 : 48
+        let hozMultiple = editUpdater.tab == .sort ? (isIpad ? 0.4 : 0.3) : (isIpad ? 0.3 : 0.2)
+        let topMultiple = editUpdater.tab == .sort ? (isIpad ? 0.4 : 0.3) : (isIpad ? 0.2 : 0.1)
+        let bottomMultiple = editUpdater.tab == .sort ? (isIpad ? 0.4 : 0.3) : (isIpad ? 0.3 : 0.2)
         
-        if isIpad {
-            hozInset = editUpdater.axis == .vertical ? size.width * 0.3 : 48
-            topInset = editUpdater.axis == .horizontal ? size.height * 0.2 : 48
-            bottomInset = editUpdater.axis == .horizontal ? size.height * 0.3 : 48
-        }
+        let hozInset = editUpdater.axis == .vertical ? size.width * hozMultiple : 48
+        let topInset = editUpdater.axis == .horizontal ? size.height * topMultiple : 48
+        let bottomInset = editUpdater.axis == .horizontal ? size.height * bottomMultiple : 48
         
-        let edgeInsets = EdgeInsets(top: topInset + 44, leading: hozInset, bottom: bottomInset + 60, trailing: hozInset)
-        
-        return edgeInsets
+        return EdgeInsets(top: topInset + 44, leading: hozInset, bottom: bottomInset + 60, trailing: hozInset)
     }
 }
 
@@ -84,6 +94,10 @@ enum EditTab: String, CaseIterable {
     
     var stitchUpdater: EditStitchUpdater? = .init() // DO NOT SET NIL HERE OR INSIDE WILL NOT UPDATE
     var cutUpdater: EditCutUpdater? = .init() // DO NOT SET NIL HERE OR INSIDE WILL NOT UPDATE
+    var sortUpdater: EditSortUpdater? = .init() // DO NOT SET NIL HERE OR INSIDE WILL NOT UPDATE
+    
+    var edgeInsets: EdgeInsets = EdgeInsets()
+    var baseInsets: EdgeInsets = EdgeInsets()
     
     let editGallery = EditGalleryModel()
     
@@ -98,6 +112,7 @@ enum EditTab: String, CaseIterable {
         
         self.stitchUpdater = nil
         self.cutUpdater = nil
+        self.sortUpdater = nil
     }
     
     func animIfNeeded(perform: @escaping () -> Void) {

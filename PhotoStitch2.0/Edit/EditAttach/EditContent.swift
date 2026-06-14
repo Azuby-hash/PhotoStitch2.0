@@ -18,7 +18,7 @@ class EditContent: UIViewPointSubview {
         
         setupStitch()
         setupCut()
-//        setupSort()
+        setupSort()
     }
     
     func update(editUpdater: EditUpdater, context: EditGallery.Context) {
@@ -27,5 +27,6 @@ class EditContent: UIViewPointSubview {
         
         updateStitch()
         updateCut()
+        updateSort()
     }
 }
