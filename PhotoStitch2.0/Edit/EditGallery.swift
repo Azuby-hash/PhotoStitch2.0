@@ -182,7 +182,7 @@ struct EditGallery: UIViewRepresentable {
                     view.setContent()
                     
                     if editUpdater.tab == .sort {
-                        stack.setCustomSpacing(SPLIT_ITEM_SPACING, after: view)
+                        stack.setCustomSpacing(editUpdater.editGallery.spacingZeroIndex == index ? 0 : SPLIT_ITEM_SPACING, after: view)
                     } else {
                         stack.setCustomSpacing(0, after: view)
                     }
@@ -251,6 +251,7 @@ struct EditGallery: UIViewRepresentable {
     @ObservationIgnored var onZoom = false
     
     let scrollViewUpdate = PassthroughSubject<Void, Never>()
+    var spacingZeroIndex: Int?
 }
 
 extension StitchItem: Hashable {
