@@ -146,56 +146,53 @@ struct EditGallery: UIViewRepresentable {
             let newSegements = editUpdater.items
             let oldSegements = (stack.arrangedSubviews as? [EditItem])?.map({ $0.item }) ?? []
             
-            UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [.allowUserInteraction, .curveEaseInOut]) { [self] in
+            oldSegements.transformArray(to: newSegements) { [self] segment, index in
+                let item = EditItem()
 
-                oldSegements.transformArray(to: newSegements) { [self] segment, index in
-                    let item = EditItem()
-
-                    item.item = segment
-                    item.editUpdater = editUpdater
-                    
-                    if let segment = segment {
-                        item.setSize(calculateSize(for: segment))
-                    }
-                    
-                    item.setContent()
-                    stack.insertArrangedSubview(item, at: index)
-                    stack.layoutIfNeeded()
-                } remove: { index in
-                    stack.arrangedSubviews[index].removeFromSuperview()
-                } move: { (from, to) in
-                    stack.insertArrangedSubview(stack.arrangedSubviews[from], at: to)
+                item.item = segment
+                item.editUpdater = editUpdater
+                
+                if let segment = segment {
+                    item.setSize(calculateSize(for: segment))
                 }
                 
-                view?.layoutIfNeeded()
-                
-                stack.arrangedSubviews.enumerated().forEach { (index, view) in
-                    guard editUpdater.items.indices.contains(index),
-                          let view = view as? EditItem
-                    else { return }
-                    
-                    let item = editUpdater.items[index]
-                    
-                    view.item = item
-                    view.editUpdater = editUpdater
-                    view.setSize(calculateSize(for: item))
-                    view.setContent()
-                    
-                    if editUpdater.tab == .sort {
-                        stack.setCustomSpacing(editUpdater.editGallery.spacingZeroIndex == index ? 0 : SPLIT_ITEM_SPACING, after: view)
-                    } else {
-                        stack.setCustomSpacing(0, after: view)
-                    }
-                }
-                
-                stack.axis = editUpdater.axis
+                item.setContent()
+                stack.insertArrangedSubview(item, at: index)
                 stack.layoutIfNeeded()
+            } remove: { index in
+                stack.arrangedSubviews[index].removeFromSuperview()
+            } move: { (from, to) in
+                stack.insertArrangedSubview(stack.arrangedSubviews[from], at: to)
+            }
+            
+            view?.layoutIfNeeded()
+            
+            stack.arrangedSubviews.enumerated().forEach { (index, view) in
+                guard editUpdater.items.indices.contains(index),
+                      let view = view as? EditItem
+                else { return }
                 
-                view?.layoutIfNeeded()
+                let item = editUpdater.items[index]
+                
+                view.item = item
+                view.editUpdater = editUpdater
+                view.setSize(calculateSize(for: item))
+                view.setContent()
                 
                 if editUpdater.tab == .sort {
-                    scrollContent?.transform = .identity
+                    stack.setCustomSpacing(editUpdater.editGallery.spacingZeroIndex == index ? 0 : SPLIT_ITEM_SPACING, after: view)
+                } else {
+                    stack.setCustomSpacing(0, after: view)
                 }
+            }
+            
+            stack.axis = editUpdater.axis
+            stack.layoutIfNeeded()
+            
+            view?.layoutIfNeeded()
+            
+            if editUpdater.tab == .sort {
+                scrollContent?.transform = .identity
             }
         }
         
