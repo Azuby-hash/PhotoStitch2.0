@@ -18,22 +18,10 @@ struct Edit: View {
                 let bonusInset = getInset(geometry.size)
                 let totalInset = EdgeInsets(top: safeAreaInsets.top + bonusInset.top, leading: safeAreaInsets.leading + bonusInset.leading, bottom: safeAreaInsets.bottom + bonusInset.bottom, trailing: safeAreaInsets.trailing + bonusInset.trailing)
                 
-                Color.clear.onGeometryChange(for: EdgeInsets.self) { geometry in
-                    return bonusInset
-                } action: { newValue in
-                    editUpdater.baseInsets = newValue
-                }.onGeometryChange(for: EdgeInsets.self) { geometry in
-                    return totalInset
-                } action: { newValue in
-                    editUpdater.edgeInsets = newValue
-                }
-                
-                EditGallery()
+                EditGallery(edgeInsets: totalInset, baseInsets: bonusInset)
                     .ignoresSafeArea()
                     .modifier(EdgeModifier(top: 44, bottom: 60))
             }
-            
-
             
             EditTop()
             EditBottom()
@@ -60,8 +48,6 @@ struct Edit: View {
         }
         .environment(editUpdater)
         .animation(.smooth(duration: ANIM_DURATION), value: editUpdater.tab)
-        .animation(.smooth(duration: ANIM_DURATION), value: editUpdater.edgeInsets)
-        .animation(.smooth(duration: ANIM_DURATION), value: editUpdater.baseInsets)
         .animation(.smooth(duration: ANIM_DURATION), value: editUpdater.warningText)
     }
     
@@ -95,10 +81,7 @@ enum EditTab: String, CaseIterable {
     var stitchUpdater: EditStitchUpdater? = .init() // DO NOT SET NIL HERE OR INSIDE WILL NOT UPDATE
     var cutUpdater: EditCutUpdater? = .init() // DO NOT SET NIL HERE OR INSIDE WILL NOT UPDATE
     var sortUpdater: EditSortUpdater? = .init() // DO NOT SET NIL HERE OR INSIDE WILL NOT UPDATE
-    
-    var edgeInsets: EdgeInsets = EdgeInsets()
-    var baseInsets: EdgeInsets = EdgeInsets()
-    
+
     let editGallery = EditGalleryModel()
     
     private(set) var warningText = ""
@@ -117,10 +100,7 @@ enum EditTab: String, CaseIterable {
     
     func animIfNeeded(perform: @escaping () -> Void) {
         if anim {
-            UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) {
-                
-                perform()
-            }
+            perform()
         } else {
             UIView.performWithoutAnimation {
                 perform()

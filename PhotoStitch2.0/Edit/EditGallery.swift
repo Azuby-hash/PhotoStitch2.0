@@ -20,13 +20,8 @@ import Combine
 struct EditGallery: UIViewRepresentable {
     @Environment(EditUpdater.self) var editUpdater
 
-    var edgeInsets: EdgeInsets {
-        get { editUpdater.edgeInsets }
-    }
-    
-    var baseInsets: EdgeInsets {
-        get { editUpdater.baseInsets }
-    }
+    let edgeInsets: EdgeInsets
+    let baseInsets: EdgeInsets
     
     func makeUIView(context: Context) -> UIViewContent {
         let view = UIViewContent()
@@ -75,6 +70,7 @@ struct EditGallery: UIViewRepresentable {
     func updateUIView(_ uiView: UIViewContent, context: Context) {
         editUpdater.editGallery.context = context
         
+        context.coordinator.content = self
         context.coordinator.stackView?.layer.shadowColor = ._blackVert
         context.coordinator.stackView?.layer.shadowOffset = .zero
         context.coordinator.stackView?.layer.shadowOpacity = 0.2
@@ -148,7 +144,7 @@ struct EditGallery: UIViewRepresentable {
             
             oldSegements.transformArray(to: newSegements) { [self] segment, index in
                 let item = EditItem()
-
+                
                 item.item = segment
                 item.editUpdater = editUpdater
                 
@@ -176,20 +172,28 @@ struct EditGallery: UIViewRepresentable {
                 
                 view.item = item
                 view.editUpdater = editUpdater
-                view.setSize(calculateSize(for: item))
-                view.setContent()
                 
+                UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
+                    
+                    view.setSize(calculateSize(for: item))
+                    view.setContent()
+                }
+            }
+            
+            stack.arrangedSubviews.enumerated().forEach { (index, view) in
                 if editUpdater.tab == .sort {
                     stack.setCustomSpacing(editUpdater.editGallery.spacingZeroIndex == index ? 0 : SPLIT_ITEM_SPACING, after: view)
                 } else {
                     stack.setCustomSpacing(0, after: view)
                 }
             }
-            
-            stack.axis = editUpdater.axis
-            stack.layoutIfNeeded()
-            
-            view?.layoutIfNeeded()
+    
+            UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
+                
+                stack.axis = editUpdater.axis
+                stack.layoutIfNeeded()
+                view?.layoutIfNeeded()
+            }
             
             if editUpdater.tab == .sort {
                 scrollContent?.transform = .identity
@@ -265,6 +269,7 @@ class EditItem: UIView {
     weak var item: StitchItem?
     weak var editUpdater: EditUpdater?
     
+    private var size: CGSize?
     private var data: Data?
     
     let imageView = UIImageView().econtentMode(.scaleAspectFill)
@@ -274,13 +279,16 @@ class EditItem: UIView {
         backgroundColor = .systemBackground
         clipsToBounds = true
         
+        self.size = size
+        
         eselfConstraints([.width(size.width), .height(size.height)])
         layoutIfNeeded()
     }
     
     func setContent() {
         guard let item = item,
-              let editUpdater = editUpdater
+              let editUpdater = editUpdater,
+              let size = size
         else { return }
         
         let data = editUpdater.clean ? item.image : item.clean
@@ -296,10 +304,10 @@ class EditItem: UIView {
         let exportSize = item.process.rect * item.size
         
         if editUpdater.axis == .horizontal {
-            let scale = bounds.size.height / exportSize.height
+            let scale = size.height / exportSize.height
             imageSize = item.size * scale
         } else {
-            let scale = bounds.size.width / exportSize.width
+            let scale = size.width / exportSize.width
             imageSize = item.size * scale
         }
         
