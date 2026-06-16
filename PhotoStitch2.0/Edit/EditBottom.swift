@@ -58,7 +58,7 @@ struct EditBottom: View {
                     EditSortTool()
                 }
                 
-                if editUpdater.tab != .none {
+                if editUpdater.tab != .none && !(editUpdater.tab == .sort && editUpdater.sortUpdater?.selectionMode == true) {
                     HStack {
                         Button {
                             editUpdater.tab = .none
@@ -75,5 +75,6 @@ struct EditBottom: View {
             }
             .align(edge: .bottom, constant: 0)
         }
+        .animation(.smooth(duration: ANIM_DURATION), value: editUpdater.sortUpdater?.selectionMode)
     }
 }

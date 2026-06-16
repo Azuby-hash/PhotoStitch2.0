@@ -10,6 +10,8 @@ import SwiftUI
 import Combine
 import AVFoundation
 
+private let BUTTON_SIZE: CGFloat = 44
+
 class EditSortControl: UIViewPointSubview {
     private(set) weak var editUpdater: EditUpdater?
     private(set) var context: EditGallery.Context?
@@ -61,6 +63,7 @@ class EditSortControl: UIViewPointSubview {
         }
         
         let enable = editUpdater.tab == .sort
+        let isVer = editUpdater.axis == .vertical
         
         if isEnable != enable {
             isEnable = enable
@@ -77,62 +80,97 @@ class EditSortControl: UIViewPointSubview {
             scrollView.setZoomScale(1, animated: true)
         }
         
-//        func make(id: String) -> EditSortAttach {
-//            let button = UIButtonPro()
-//                .setBackgroundColor(._surfaceprimary)
-//                .setContentColor(._containertexticonprimary)
-//                .esetImage(UIImage(systemName: "minus", withConfiguration: iconConfiguration))
-//                .econfiguration({ configuration in
-//                    var configuration = configuration
-//                    configuration?.cornerStyle = .capsule
-//                    return configuration
-//                })
-//                .etranslatesAutoresizingMaskIntoConstraints(true)
-//                .eaddTarget(self, action: #selector(removeItem), for: .touchUpInside)
-//            
-//            addSubview(button)
-//            
-//            return EditSortAttach(id: id, button: button)
-//        }
-//        
-//        let newIds = cEdit.getItems().map { $0.id }
-//        
-//        let oldIds = attachs.map { $0.id }
-//
-//        oldIds.transformArray(to: newIds) { [self] id, index in
-//            attachs.insert(make(id: id), at: index)
-//        } remove: { [self] index in
-//            attachs.remove(at: index).remove()
-//        } move: { [self] (from, to) in
-//            attachs.insert(attachs.remove(at: from), at: to)
-//        }
-//
-//        zip(attachs, items).forEach { (dragger, item) in
-//            let highlight = dragger.highlight
-//            let button = dragger.button
-//            let frame = item.convert(item.bounds, to: self)
-//            let buttonSize = CGFloat(36)
-//            
-//            UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
-//                button.alpha = cEdit.getItems().count > 1 && cEdit.getDragItem() == nil ? 1 : 0
-//                item.layer.cornerRadius = cEdit.getTab() == .photos && cEdit.getState() == .editing ? 16 : 0
-//            }
-//
-//            highlight.frame = frame
-//            button.frame = CGRect(x: frame.maxX - buttonSize / 2, y: frame.minY - buttonSize / 2, width: buttonSize, height: buttonSize)
-//        }
+        let oldAttachItems = attachs.map { $0.item }
+
+        oldAttachItems.transformArray(to: editUpdater.items) { [self] item, index in
+            let frame = itemFrame(from: item, context: context)
+            attachs.insert(makeAttach(item: item, isVer: isVer, frame: frame), at: index)
+        } remove: { [self] index in
+            removeAttach(at: index)
+        } move: { [self] (from, to) in
+            attachs.insert(removeAttach(at: from), at: to)
+        }
+        
+        attachs.forEach { attach in
+            let frame = itemFrame(from: attach.item, context: context)
+            attach.button.frame = buttonFrame(isVer: isVer, frame: frame)
+            
+            var name = "photo.circle.arrow.trianglehead.2.clockwise.rotate.90"
+            if editUpdater.sortUpdater?.selectionMode == true {
+                name = editUpdater.sortUpdater?.selectItems.contains(attach.item) == true ? "checkmark.circle.fill" : "circle"
+            }
+            
+            attach.button.setImage(UIImage(named: name, in: .main, with: iconConfiguration), for: .normal)
+        }
     }
     
-//    @objc private func removeItem(button: UIButton) {
-//        guard let index = attachs.firstIndex(where: { $0.button == button }) else {
-//            return
-//        }
-//        
-//        let oldItems = cEdit.getItems()
-//        cEdit.remove(at: index)
-//        let newItems = cEdit.getItems()
-//        cEdit.removeStep(oldItems: oldItems, newItems: newItems)
-//    }
+    private func itemFrame(from item: StitchItem, context: EditGallery.Context) -> CGRect {
+        guard let item = itemView(from: item, context: context) else {
+            return .zero
+        }
+        
+        return item.convert(item.bounds, to: self)
+    }
+    
+    private func itemView(from item: StitchItem, context: EditGallery.Context) -> UIView? {
+        guard let stack = context.coordinator.stackView,
+              let index = (stack.arrangedSubviews as? [EditItem])?.firstIndex(where: { $0.item == item }),
+              stack.arrangedSubviews.indices.contains(index)
+        else { return nil }
+        
+        let item = stack.arrangedSubviews[index]
+        
+        return item
+    }
+    
+    private func makeAttach(item: StitchItem, isVer: Bool, frame: CGRect) -> EditSortAttach {
+        if let view = attachs.first(where: { $0.item == item }) {
+            return view
+        }
+        
+        let button = UIButtonPro(frame: buttonFrame(isVer: isVer, frame: frame))
+            .setContentColor(._blackVert)
+            .econfiguration({ configuration in
+                var configuration = configuration
+                configuration?.cornerStyle = .capsule
+                return configuration
+            })
+            .etranslatesAutoresizingMaskIntoConstraints(true)
+            .eaddTarget(self, action: #selector(tapAction), for: .touchUpInside)
+        let attach = EditSortAttach(item: item, button: button)
+        
+        addSubview(button)
+        
+        return attach
+    }
+    
+    @discardableResult
+    private func removeAttach(at index: Int) -> EditSortAttach {
+        let view = attachs.remove(at: index)
+        view.remove()
+        
+        return view
+    }
+    
+    private func buttonFrame(isVer: Bool, frame: CGRect) -> CGRect {
+        return isVer ? CGRect(x: frame.maxX - BUTTON_SIZE / 2, y: frame.minY - BUTTON_SIZE / 2, width: BUTTON_SIZE, height: BUTTON_SIZE) : CGRect(x: frame.minX - BUTTON_SIZE / 2, y: frame.maxY - BUTTON_SIZE / 2, width: BUTTON_SIZE, height: BUTTON_SIZE)
+    }
+    
+    @objc private func tapAction(button: UIButton) {
+        guard let sortUpdater = editUpdater?.sortUpdater,
+              let item = attachs.first(where: { $0.button == button })?.item
+        else { return }
+        
+        if sortUpdater.selectionMode == true {
+            if sortUpdater.selectItems.contains(item) {
+                sortUpdater.selectItems.removeAll(where: { $0 == item })
+            } else {
+                sortUpdater.selectItems.append(item)
+            }
+        } else {
+            
+        }
+    }
     
     @objc private func dragItem(g: UILongPressGestureRecognizer) {
         guard let stackView = context?.coordinator.stackView else { return }
