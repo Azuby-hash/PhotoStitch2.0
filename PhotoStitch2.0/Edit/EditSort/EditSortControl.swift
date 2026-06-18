@@ -95,7 +95,7 @@ class EditSortControl: UIViewPointSubview {
             let frame = itemFrame(from: attach.item, context: context)
             attach.button.frame = buttonFrame(isVer: isVer, frame: frame)
             
-            var name = "photo.circle.arrow.trianglehead.2.clockwise.rotate.90"
+            var name = "arrow.trianglehead.2.counterclockwise.rotate.90"
             if editUpdater.sortUpdater?.selectionMode == true {
                 name = editUpdater.sortUpdater?.selectItems.contains(attach.item) == true ? "checkmark.circle.fill" : "circle"
             }

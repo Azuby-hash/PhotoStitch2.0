@@ -23,12 +23,13 @@ struct EditSortTool: View {
                         Text("Delete")
                     }
                     .font(.system(size: 18, weight: .semibold, design: .rounded))
-                    .foregroundStyle(Color._red.opacity(editUpdater.sortUpdater?.selectItems.isEmpty == false ? 1 : 0.3))
+                    .foregroundStyle(Color._white)
                     .padding(.horizontal, 24)
                     .frame(height: 60)
-                    .modifier(MainGlass(shape: .capsule, type: .clear))
+                    .modifier(MainGlass(shape: .capsule, type: .color(._red)))
                 }
                 .allowsHitTesting(editUpdater.sortUpdater?.selectItems.isEmpty == false)
+//                .opacity(editUpdater.sortUpdater?.selectItems.isEmpty == false ? 1 : 0.3)
             } else {
                 Button {
                     
@@ -66,6 +67,11 @@ struct EditSortTool: View {
         }
         .onDisappear {
             editUpdater.sortUpdater = nil
+        }
+        .onChange(editUpdater.sortUpdater?.selectionMode) { mode in
+            if mode != true {
+                editUpdater.sortUpdater?.selectItems.removeAll()
+            }
         }
     }
 }
