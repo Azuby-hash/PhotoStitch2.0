@@ -26,6 +26,8 @@ struct EditSortTool: View {
         
         HStack {
             if editUpdater.sortUpdater?.selectionMode == true {
+                let opacity = editUpdater.sortUpdater?.selectItems.isEmpty == false ? 1 : 0.3
+                
                 Button {
                     editUpdater.items.removeAll(where: { editUpdater.sortUpdater?.selectItems.contains($0) == true })
                     editUpdater.sortUpdater?.selectItems.removeAll()
@@ -36,13 +38,13 @@ struct EditSortTool: View {
                         Text("Delete")
                     }
                     .font(.system(size: 18, weight: .semibold, design: .rounded))
-                    .foregroundStyle(Color._white)
+                    .foregroundStyle(Color._white.opacity(opacity))
                     .padding(.horizontal, 24)
                     .frame(height: 60)
-                    .modifier(MainGlass(shape: .capsule, type: .color(._red)))
+                    .modifier(MainGlass(shape: .capsule, type: .color(._red.opacity(opacity))))
                 }
                 .allowsHitTesting(editUpdater.sortUpdater?.selectItems.isEmpty == false)
-//                .opacity(editUpdater.sortUpdater?.selectItems.isEmpty == false ? 1 : 0.3)
+                .animation(.smooth(duration: ANIM_DURATION), value: opacity)
             } else {
                 Button {
                     editUpdater.sortUpdater?.photoPosition = .before
@@ -89,7 +91,7 @@ struct EditSortTool: View {
             }
         }
         .sheet(isPresented: showPhotoPicker, content: {
-            PhotosPicker(selection: photoItem, matching: .images) {
+            PhotosPicker(selection: photoItem, matching: .images, photoLibrary: .shared()) {
                 if let position = editUpdater.sortUpdater?.photoPosition {
                     if case .before = position {
                         Text("Select a photo to add to first of list")
@@ -99,11 +101,11 @@ struct EditSortTool: View {
                         Text("Select a photo to add to last of list")
                     }
                     
-                    if case let .mid(item) = position {
+                    if case .mid = position {
                         Text("Select a photo to add to current position of list")
                     }
                     
-                    if case let .replace(item) = position {
+                    if case .replace = position {
                         Text("Select a photo to replace item")
                     }
                 }
@@ -117,6 +119,7 @@ struct EditSortTool: View {
                 do {
                     if let position = editUpdater.sortUpdater?.photoPosition, let data = try await photoItem.wrappedValue.unwrap().loadTransferable(type: Data.self), let image = UIImage(data: data) {
                         let image = PIPELINE.fixImageForOpenCV(image)
+                        print(try photoItem.wrappedValue.unwrap())
                         let newItem = try StitchItem(asset: PHAsset.fetchAssets(withLocalIdentifiers: [photoItem.wrappedValue.unwrap().itemIdentifier.unwrap()], options: nil).object(at: 0), size: image.size, image: image.jpegData(), clean: image.processClean(), process: StitchProcess().setup(image: CIImage(image: image).unwrap(), config: Stitch.getConfig(mode: .image)))
                         
                         if case .before = position {

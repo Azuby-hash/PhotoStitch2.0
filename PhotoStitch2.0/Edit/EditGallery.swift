@@ -60,8 +60,10 @@ struct EditGallery: UIViewRepresentable {
         editUpdater.animIfNeeded {
             view.layoutIfNeeded()
             
-            context.coordinator.editContent?.setup(editUpdater: editUpdater, context: context)
-            context.coordinator.editOverlay?.setup(editUpdater: editUpdater, context: context)
+            UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
+                context.coordinator.editContent?.setup(editUpdater: editUpdater, context: context)
+                context.coordinator.editOverlay?.setup(editUpdater: editUpdater, context: context)
+            }
         }
         
         return view
@@ -88,8 +90,10 @@ struct EditGallery: UIViewRepresentable {
             
             context.coordinator.layoutUpdate()
             
-            context.coordinator.editContent?.update(editUpdater: editUpdater, context: context)
-            context.coordinator.editOverlay?.update(editUpdater: editUpdater, context: context)
+            UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
+                context.coordinator.editContent?.update(editUpdater: editUpdater, context: context)
+                context.coordinator.editOverlay?.update(editUpdater: editUpdater, context: context)
+            }
         }
     }
     
@@ -142,41 +146,43 @@ struct EditGallery: UIViewRepresentable {
             let newSegements = editUpdater.items
             let oldSegements = (stack.arrangedSubviews as? [EditItem])?.map({ $0.item }) ?? []
             
-            oldSegements.transformArray(to: newSegements) { [self] segment, index in
-                let item = EditItem()
-                
-                item.item = segment
-                item.editUpdater = editUpdater
-                
-                if let segment = segment {
-                    item.setSize(calculateSize(for: segment))
-                }
-                
-                item.setContent()
-                stack.insertArrangedSubview(item, at: index)
-                stack.layoutIfNeeded()
-            } remove: { index in
-                stack.arrangedSubviews[index].removeFromSuperview()
-            } move: { (from, to) in
-                stack.insertArrangedSubview(stack.arrangedSubviews[from], at: to)
-            }
-            
-            view?.layoutIfNeeded()
-            
-            stack.arrangedSubviews.enumerated().forEach { (index, view) in
-                guard editUpdater.items.indices.contains(index),
-                      let view = view as? EditItem
-                else { return }
-                
-                let item = editUpdater.items[index]
-                
-                view.item = item
-                view.editUpdater = editUpdater
-                
-                UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
+            UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
+                oldSegements.transformArray(to: newSegements) { [self] segment, index in
+                    let item = EditItem()
                     
-                    view.setSize(calculateSize(for: item))
-                    view.setContent()
+                    item.item = segment
+                    item.editUpdater = editUpdater
+                    
+                    if let segment = segment {
+                        item.setSize(calculateSize(for: segment))
+                    }
+                    
+                    item.setContent()
+                    stack.insertArrangedSubview(item, at: index)
+                    stack.layoutIfNeeded()
+                } remove: { index in
+                    stack.arrangedSubviews[index].removeFromSuperview()
+                } move: { (from, to) in
+                    stack.insertArrangedSubview(stack.arrangedSubviews[from], at: to)
+                }
+
+                view?.layoutIfNeeded()
+
+                stack.arrangedSubviews.enumerated().forEach { (index, view) in
+                    guard editUpdater.items.indices.contains(index),
+                          let view = view as? EditItem
+                    else { return }
+                    
+                    let item = editUpdater.items[index]
+                    
+                    view.item = item
+                    view.editUpdater = editUpdater
+                    
+                    UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
+                        
+                        view.setSize(calculateSize(for: item))
+                        view.setContent()
+                    }
                 }
             }
             
@@ -240,8 +246,10 @@ struct EditGallery: UIViewRepresentable {
                 
                 context.coordinator.layoutUpdate()
                 
-                context.coordinator.editContent?.update(editUpdater: editUpdater, context: context)
-                context.coordinator.editOverlay?.update(editUpdater: editUpdater, context: context)
+                UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
+                    context.coordinator.editContent?.update(editUpdater: editUpdater, context: context)
+                    context.coordinator.editOverlay?.update(editUpdater: editUpdater, context: context)
+                }
             }
         }
     }

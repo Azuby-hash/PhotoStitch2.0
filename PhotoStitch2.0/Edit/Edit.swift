@@ -49,6 +49,7 @@ struct Edit: View {
         .environment(editUpdater)
         .animation(.smooth(duration: ANIM_DURATION), value: editUpdater.tab)
         .animation(.smooth(duration: ANIM_DURATION), value: editUpdater.warningText)
+        .allowsHitTesting(!editUpdater.block)
     }
     
     func getInset(_ size: CGSize) -> EdgeInsets {
@@ -77,6 +78,7 @@ enum EditTab: String, CaseIterable {
     var clean: Bool = false
     var tab = EditTab.none
     var anim = true
+    var block = false
     
     var stitchUpdater: EditStitchUpdater? = .init() // DO NOT SET NIL HERE OR INSIDE WILL NOT UPDATE
     var cutUpdater: EditCutUpdater? = .init() // DO NOT SET NIL HERE OR INSIDE WILL NOT UPDATE

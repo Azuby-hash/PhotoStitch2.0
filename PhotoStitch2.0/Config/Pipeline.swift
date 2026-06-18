@@ -73,10 +73,11 @@ class Pipeline {
         let image = image.resize(size: image.size)
 
         guard let ciImage = CIImage(image: image),
-              let cgImage = CICONTEXT.createCGImage(ciImage, from: ciImage.extent)
+              let cgImage = CICONTEXT.createCGImage(ciImage, from: ciImage.extent),
+              let data = try? UIImage(cgImage: cgImage).jpegData()
         else { return image }
 
-        return UIImage(cgImage: cgImage)
+        return UIImage(data: data) ?? image
     }
     
     private func getUIImage(from asset: PHAsset, size: CGSize = CGSize(width: -1, height: -1), quality: PHImageRequestOptionsDeliveryMode = .highQualityFormat, resizeMode: PHImageRequestOptionsResizeMode = .fast) throws -> UIImage {

@@ -14,7 +14,17 @@ struct EditStitchTool: View {
         HStack {
             if editUpdater.axis == .vertical {
                 Button {
+                    editUpdater.block = true
                     
+                    Task {
+                        do {
+                            try await PIPELINE.autoStitch(editUpdater.items)
+                            editUpdater.block = false
+                            editUpdater.warningAlert("Auto Stitch apply!")
+                        } catch {
+                            print(error)
+                        }
+                    }
                 } label: {
                     HStack {
                         Image("rectangle.arrowtriangle.inward.badge.sparkles")
