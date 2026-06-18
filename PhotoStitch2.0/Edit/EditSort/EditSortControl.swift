@@ -168,7 +168,8 @@ class EditSortControl: UIViewPointSubview {
                 sortUpdater.selectItems.append(item)
             }
         } else {
-            
+            sortUpdater.photoPosition = .replace(item: item)
+            sortUpdater.showPhotoPicker = true
         }
     }
     
