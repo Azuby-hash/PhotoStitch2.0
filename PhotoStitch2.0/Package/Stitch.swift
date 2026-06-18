@@ -522,8 +522,8 @@ struct StitchProcess: Equatable {
     var id = UUID().uuidString
     let size: CGSize
     let asset: PHAsset
-    var image: Data
-    var clean: Data
+    let image: Data
+    let clean: Data
     var process = StitchProcess()
     
     init(image: UIImage, asset: PHAsset) throws {

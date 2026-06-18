@@ -28,22 +28,48 @@ struct EditTop: View {
                 
                 HStack(spacing: 0) {
                     Button {
+                        guard editUpdater.undoRedo.canUndo else { return }
                         
+                        editUpdater.block = true
+                        
+                        Task {
+                            do {
+                                try await editUpdater.undoRedo.undo()
+                            } catch {
+                                print(error)
+                            }
+                            
+                            editUpdater.block = false
+                        }
                     } label: {
                         Image("arrow.uturn.backward")
                             .font(.system(size: 18, weight: .semibold, design: .rounded))
-                            .foregroundStyle(Color.primary)
                             .frame(width: 44, height: 44)
                     }
+                    .disabled(!editUpdater.undoRedo.canUndo)
+                    .tint(Color.primary)
                     
                     Button {
+                        guard editUpdater.undoRedo.canRedo else { return }
                         
+                        editUpdater.block = true
+                        
+                        Task {
+                            do {
+                                try await editUpdater.undoRedo.redo()
+                            } catch {
+                                print(error)
+                            }
+                            
+                            editUpdater.block = false
+                        }
                     } label: {
                         Image("arrow.uturn.forward")
                             .font(.system(size: 18, weight: .semibold, design: .rounded))
-                            .foregroundStyle(Color.primary)
                             .frame(width: 44, height: 44)
                     }
+                    .disabled(!editUpdater.undoRedo.canRedo)
+                    .tint(Color.primary)
                 }
                 .modifier(MainGlass(shape: .capsule, type: .clear))
                 

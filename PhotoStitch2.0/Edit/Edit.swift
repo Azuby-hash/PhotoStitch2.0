@@ -85,6 +85,8 @@ enum EditTab: String, CaseIterable {
     var sortUpdater: EditSortUpdater? = .init() // DO NOT SET NIL HERE OR INSIDE WILL NOT UPDATE
 
     let editGallery = EditGalleryModel()
+    let undoRedo = UndoRedo()
+    var undoRedoPending: EditHolder?
     
     private(set) var warningText = ""
     @ObservationIgnored private var warningTask: Task<Void, Never>?
@@ -109,6 +111,35 @@ enum EditTab: String, CaseIterable {
             }
         }
     }
+    
+    func undoRedoBegin() {
+        undoRedoPending = getValues()
+    }
+    
+    func undoRedoCommit() {
+        guard let oldValues = undoRedoPending else { return }
+        let newValues = getValues()
+        
+        undoRedo.add(UndoRedoStep(undo: { [self] in
+            try await setValues(oldValues)
+        }, redo: { [self] in
+            try await setValues(newValues)
+        }))
+    }
+    
+    private func getValues() -> EditHolder {
+        return EditHolder(items: items.map({ .init(item: $0, rect: $0.process.rect) }), clean: clean, tab: tab)
+    }
+    
+    private func setValues(_ value: EditHolder) async throws {
+        items = value.items.map({ holder in
+            holder.item.process.setRect(holder.rect)
+            return holder.item
+        })
+        
+        clean = value.clean
+        tab = value.tab
+    }
 }
 
 extension EditUpdater {
@@ -124,5 +155,27 @@ extension EditUpdater {
                 }
             }
         }
+    }
+}
+
+class EditHolder {
+    let items: [EditItemHolder]
+    let clean: Bool
+    let tab: EditTab
+    
+    init(items: [EditItemHolder], clean: Bool, tab: EditTab) {
+        self.items = items
+        self.clean = clean
+        self.tab = tab
+    }
+}
+
+class EditItemHolder {
+    let item: StitchItem
+    let rect: CGRect
+    
+    init(item: StitchItem, rect: CGRect) {
+        self.item = item
+        self.rect = rect
     }
 }

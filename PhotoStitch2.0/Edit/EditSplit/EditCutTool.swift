@@ -194,6 +194,8 @@ struct EditCutTool: View {
                     return rectA.minX < rectB.minX
                 }
                 
+                pieceItems.first?.id = item.id
+                
                 resultItems.append(contentsOf: sortedPieces)
             } else {
                 resultItems.append(item)

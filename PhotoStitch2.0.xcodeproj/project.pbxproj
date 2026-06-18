@@ -14,6 +14,7 @@
 		CE1FDC832F9D181000460178 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE1FDC772F9D181000460178 /* Assets.xcassets */; };
 		CE1FDC852F9D181000460178 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE1FDC7A2F9D181000460178 /* LaunchScreen.storyboard */; };
 		CE1FDC862F9D181000460178 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE1FDC7C2F9D181000460178 /* Main.storyboard */; };
+		CE25DA262FE4432300DE2E22 /* UndoRedo.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE25DA252FE4431F00DE2E22 /* UndoRedo.swift */; };
 		CE4231912F9E834700701039 /* MainGlass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231902F9E834400701039 /* MainGlass.swift */; };
 		CE4231932FA78CF800701039 /* HomeTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231922FA78CF200701039 /* HomeTop.swift */; };
 		CE4231952FA78D5400701039 /* HomeBottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231942FA78D5100701039 /* HomeBottom.swift */; };
@@ -136,6 +137,7 @@
 		CE1FDC7B2F9D181000460178 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CE1FDC7D2F9D181000460178 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		CE1FDC7E2F9D181000460178 /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
+		CE25DA252FE4431F00DE2E22 /* UndoRedo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoRedo.swift; sourceTree = "<group>"; };
 		CE4231902F9E834400701039 /* MainGlass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainGlass.swift; sourceTree = "<group>"; };
 		CE4231922FA78CF200701039 /* HomeTop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTop.swift; sourceTree = "<group>"; };
 		CE4231942FA78D5100701039 /* HomeBottom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBottom.swift; sourceTree = "<group>"; };
@@ -583,6 +585,7 @@
 		CEBD6C0F2F9D1D0100E176D7 /* Module */ = {
 			isa = PBXGroup;
 			children = (
+				CE25DA252FE4431F00DE2E22 /* UndoRedo.swift */,
 				CE8700952FB6A61100061801 /* ForwardScroll.swift */,
 				CE75164A2FC5E99E002C4625 /* TouchView.swift */,
 				CE46FBA32FDB26400021013C /* MenuPopover.swift */,
@@ -734,6 +737,7 @@
 				CE8700502FB039E200061801 /* UIViewMask.swift in Sources */,
 				CE8700512FB039E200061801 /* WKSWebView.swift in Sources */,
 				CE8700522FB039E200061801 /* UISImageView.swift in Sources */,
+				CE25DA262FE4432300DE2E22 /* UndoRedo.swift in Sources */,
 				CE8700532FB039E200061801 /* UIStackViewHighlight.swift in Sources */,
 				CE8700A52FBCB5F800061801 /* EditStitchControl.swift in Sources */,
 				CE8700542FB039E200061801 /* UIViewPointDetect.swift in Sources */,

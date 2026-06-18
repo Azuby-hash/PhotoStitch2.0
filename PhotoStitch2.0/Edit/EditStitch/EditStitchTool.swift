@@ -17,13 +17,18 @@ struct EditStitchTool: View {
                     editUpdater.block = true
                     
                     Task {
+                        editUpdater.undoRedoBegin()
+                        
                         do {
                             try await PIPELINE.autoStitch(editUpdater.items)
-                            editUpdater.block = false
                             editUpdater.warningAlert("Auto Stitch apply!")
+                            
+                            editUpdater.undoRedoCommit()
                         } catch {
                             print(error)
                         }
+                        
+                        editUpdater.block = false
                     }
                 } label: {
                     HStack {

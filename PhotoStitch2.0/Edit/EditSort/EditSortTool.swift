@@ -29,9 +29,13 @@ struct EditSortTool: View {
                 let opacity = editUpdater.sortUpdater?.selectItems.isEmpty == false ? 1 : 0.3
                 
                 Button {
+                    editUpdater.undoRedoBegin()
+                    
                     editUpdater.items.removeAll(where: { editUpdater.sortUpdater?.selectItems.contains($0) == true })
                     editUpdater.sortUpdater?.selectItems.removeAll()
                     editUpdater.sortUpdater?.selectionMode = false
+                    
+                    editUpdater.undoRedoCommit()
                 } label: {
                     HStack {
                         Image("trash")
@@ -116,6 +120,8 @@ struct EditSortTool: View {
             if showPhotoPicker.wrappedValue { return }
             
             Task {
+                editUpdater.undoRedoBegin()
+                
                 do {
                     if let position = editUpdater.sortUpdater?.photoPosition, let data = try await photoItem.wrappedValue.unwrap().loadTransferable(type: Data.self), let image = UIImage(data: data) {
                         let image = PIPELINE.fixImageForOpenCV(image)
@@ -138,6 +144,8 @@ struct EditSortTool: View {
                             newItem.id = editUpdater.items[index].id
                             editUpdater.items[index] = newItem
                         }
+                        
+                        editUpdater.undoRedoCommit()
                     }
                 } catch {
                     print(error)

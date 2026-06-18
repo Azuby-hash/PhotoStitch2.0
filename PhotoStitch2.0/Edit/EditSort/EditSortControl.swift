@@ -56,7 +56,8 @@ class EditSortControl: UIViewPointSubview {
     private func contentUpdate(editUpdater: EditUpdater, context: EditGallery.Context) {
         guard let stackView = context.coordinator.stackView,
               let items = stackView.arrangedSubviews as? [EditItem], !items.isEmpty,
-              let scrollView = context.coordinator.scrollView
+              let scrollView = context.coordinator.scrollView,
+              beginItems == nil
         else {
             print("No Items")
             return
@@ -184,6 +185,11 @@ class EditSortControl: UIViewPointSubview {
                   let snap = item.snapshotView(afterScreenUpdates: true)
             else { return }
             
+            editUpdater?.undoRedoBegin()
+            
+            attachs.forEach({ $0.remove() })
+            attachs.removeAll()
+            
             beginPoint = point
             beginFrame = stackView.convert(item.frame, to: self)
             beginDrag = snap
@@ -211,10 +217,6 @@ class EditSortControl: UIViewPointSubview {
             
             UIView.performWithoutAnimation {
                 snap.layoutIfNeeded()
-            }
-            
-            if let editUpdater = editUpdater, let context = context {
-                contentUpdate(editUpdater: editUpdater, context: context)
             }
             
             UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .allowUserInteraction) {
@@ -252,6 +254,8 @@ class EditSortControl: UIViewPointSubview {
                     let newItems = editUpdater?.items
 //                    cEdit.addStep(oldItems: oldItems, newItems: newItems)
                 }
+                
+                editUpdater?.undoRedoCommit()
                 
                 beginPoint = nil
                 beginFrame = nil

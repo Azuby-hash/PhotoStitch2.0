@@ -442,6 +442,8 @@ extension EditCutControl: ForwardScrollProtocol {
             context?.coordinator.view?.layoutIfNeeded()
             editUpdater.anim = false
             
+            editUpdater.undoRedoBegin()
+
             do {
                 try await editUpdater.cutUpdater?.applyCuts(rects)
                 
@@ -454,6 +456,8 @@ extension EditCutControl: ForwardScrollProtocol {
                 if switchStitch {
                     editUpdater.tab = .stitch
                 }
+                
+                editUpdater.undoRedoCommit()
             } catch {
                 editUpdater.warningAlert("Exceed max items, can't \(editUpdater.cutUpdater?.mode == .single ? "split" : "cut")")
             }

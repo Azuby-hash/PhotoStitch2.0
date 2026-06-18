@@ -246,7 +246,7 @@ struct EditGallery: UIViewRepresentable {
                 
                 context.coordinator.layoutUpdate()
                 
-                UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
+                UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) {
                     context.coordinator.editContent?.update(editUpdater: editUpdater, context: context)
                     context.coordinator.editOverlay?.update(editUpdater: editUpdater, context: context)
                 }

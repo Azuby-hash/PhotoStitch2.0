@@ -453,6 +453,8 @@ extension EditStitchControl {
         let stitchUpdater = editUpdater?.stitchUpdater
         
         if g.state == .ended || g.state == .cancelled {
+            editUpdater?.undoRedoCommit()
+            
             UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
                 stitchViews.forEach({ $0.show(true) })
             }
@@ -463,6 +465,8 @@ extension EditStitchControl {
         else { return }
         
         if g.state == .began {
+            editUpdater?.undoRedoBegin()
+            
             beginDrag()
             
             beginNorFrameBefores = editUpdater?.items.map({ ($0, $0.process.rect) })
@@ -505,6 +509,8 @@ extension EditStitchControl {
         let stitchUpdater = editUpdater?.stitchUpdater
         
         if g.state == .ended || g.state == .cancelled {
+            editUpdater?.undoRedoCommit()
+            
             UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
                 stitchViews.forEach({ $0.show(true) })
             }
@@ -515,6 +521,8 @@ extension EditStitchControl {
         else { return }
         
         if g.state == .began {
+            editUpdater?.undoRedoBegin()
+            
             beginDrag()
             
             beginNorFrameAfters = editUpdater?.items.map({ ($0, $0.process.rect) })
@@ -554,6 +562,8 @@ extension EditStitchControl {
     
     private func dragMid(g: TouchGesture) {
         if g.state == .ended || g.state == .cancelled {
+            editUpdater?.undoRedoCommit()
+            
             UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
                 stitchViews.forEach({ $0.show(true) })
             }
@@ -572,6 +582,8 @@ extension EditStitchControl {
         else { return }
         
         if g.state == .began {
+            editUpdater.undoRedoBegin()
+            
             beginDrag()
             
             if stackView.bounds.contains(g.location(in: stackView)) {
