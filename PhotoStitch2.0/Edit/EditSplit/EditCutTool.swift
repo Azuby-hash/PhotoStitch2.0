@@ -19,45 +19,27 @@ struct EditCutTool: View {
     
     var body: some View {
         HStack(alignment: .bottom) {
-            GlassContainer {
-                if editUpdater.cutUpdater?.mode == .single {
-                    MenuPopover(showMenu: $showMenu, items: [
-                        .init(icon: Image("trash.square.stack"), name: "Delete All", action: {
-                            editUpdater.cutUpdater?.deleteAll.send()
-                        }),
-                        .init(icon: Image("rectangle.dashed.badge.minus"), name: "To Area", action: {
-                            editUpdater.cutUpdater?.setMode(.pair)
-                        })
-                    ]) {
-                        HStack {
-                            Image("rectangle.grid.1x2.fill.badge.ellipsis")
-                            Text("Options")
-                        }
-                        .font(.system(size: 18, weight: .semibold, design: .rounded))
-                        .foregroundStyle(Color.primary)
-                        .padding(.horizontal, 20)
-                        .frame(width: 150, height: 60)
-                        .modifier(MainGlass(shape: .capsule, type: .clear))
-                        .matchedGeometryEffect(id: ANIM_ID, in: namespace)
-                    }
-                } else {
-                    Button {
-                        editUpdater.cutUpdater?.setMode(.single)
-                    } label: {
-                        HStack {
-                            Image("scissors")
-                            Text("To Cut")
-                        }
-                        .font(.system(size: 18, weight: .semibold, design: .rounded))
-                        .foregroundStyle(Color.primary)
-                        .padding(.horizontal, 20)
-                        .frame(width: 150, height: 60)
-                        .modifier(MainGlass(shape: .capsule, type: .clear))
-                    }
-                    .matchedGeometryEffect(id: ANIM_ID, in: namespace)
+            MenuPopover(showMenu: $showMenu, items: [
+                .init(icon: Image(editUpdater.clean ? "eye.slash.fill" : "eye.fill"), name: "Scroll Bar", close: false, action: {
+                    editUpdater.clean.toggle()
+                }),
+                .init(icon: Image("trash.square.stack"), name: "Delete All", action: {
+                    editUpdater.cutUpdater?.deleteAll.send()
+                }),
+                .init(icon: Image(editUpdater.cutUpdater?.mode == .pair ? "scissors.180" : "rectangle.dashed.badge.minus"), name: editUpdater.cutUpdater?.mode == .pair ? "To Cut" : "To Area", action: {
+                    editUpdater.cutUpdater?.setMode(editUpdater.cutUpdater?.mode == .pair ? .single: .pair)
+                })
+            ]) {
+                HStack {
+                    Image("rectangle.grid.1x2.fill.badge.ellipsis")
+                    Text("Options")
                 }
+                .font(.system(size: 18, weight: .semibold, design: .rounded))
+                .foregroundStyle(Color.primary)
+                .padding(.horizontal, 20)
+                .frame(width: 150, height: 60)
+                .modifier(MainGlass(shape: .capsule, type: .clear))
             }
-            
             
             Button {
                 editUpdater.tab = .stitch

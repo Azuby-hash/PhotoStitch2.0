@@ -299,7 +299,7 @@ class EditItem: UIView {
               let size = size
         else { return }
         
-        let data = editUpdater.clean ? item.image : item.clean
+        let data = editUpdater.clean ? item.clean : item.image
         
         if data != self.data {
             self.data = data

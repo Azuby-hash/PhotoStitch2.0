@@ -47,7 +47,7 @@ struct EditStitchTool: View {
                 editUpdater.tab = .split
             } label: {
                 HStack {
-                    Image("scissors")
+                    Image("scissors.90.up")
                     Text("Split")
                 }
                 .font(.system(size: 18, weight: .semibold, design: .rounded))

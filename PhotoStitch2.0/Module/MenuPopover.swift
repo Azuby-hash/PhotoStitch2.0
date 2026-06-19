@@ -16,6 +16,7 @@ struct MenuPopover<Content: View>: View {
         let id = UUID()
         var icon: Image?
         var name: String
+        var close: Bool = true
         var action: ()->Void
     }
     
@@ -103,8 +104,11 @@ struct MenuPopover<Content: View>: View {
                 .onEnded {
                     if let name = hoveredName, let item = items.first(where: { $0.name == name }), showMenu {
                         item.action()
-                        withAnimation(.smooth(duration: ANIM_DURATION)) {
-                            showMenu = false
+                        
+                        if item.close {
+                            withAnimation(.smooth(duration: ANIM_DURATION)) {
+                                showMenu = false
+                            }
                         }
                     }
                     
@@ -113,10 +117,18 @@ struct MenuPopover<Content: View>: View {
                 .onTapGesture(perform: { point in
                     if let name = itemFrames.first(where: { $0.value.contains(point) })?.key, let item = items.first(where: { $0.name == name }), showMenu {
                         item.action()
+                        
+                        if item.close {
+                            withAnimation(.smooth(duration: ANIM_DURATION)) {
+                                showMenu = false
+                            }
+                        }
+                        
+                        return
                     }
                     
                     withAnimation(.smooth(duration: ANIM_DURATION)) {
-                        showMenu = !showMenu
+                        showMenu = true
                     }
                 })
                 .frame(maxWidth: .infinity, maxHeight: .infinity)

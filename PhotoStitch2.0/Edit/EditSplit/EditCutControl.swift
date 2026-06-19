@@ -175,15 +175,13 @@ extension EditCutControl: ForwardScrollProtocol {
         } else {
             let cutPart = cutNorPart * (isVer ? stackFrame.height : stackFrame.width) + (isVer ? stackFrame.minY : stackFrame.minX)
             splitArea.frame = isVer ? CGRect(x: stackFrame.minX, y: cutPart, width: stackFrame.width, height: 0) : CGRect(x: cutPart, y: stackFrame.minY, width: 0, height: stackFrame.height)
-            splitButton.transform = .identity
             splitButton.frame = isVer ? CGRect(x: min(bounds.width - BUTTON_SIZE - 12, stackFrame.maxX + 12.0), y: cutPart - BUTTON_SIZE / 2, width: BUTTON_SIZE, height: BUTTON_SIZE) : CGRect(x: cutPart - BUTTON_SIZE / 2, y: min(bounds.height - BUTTON_SIZE - 12, stackFrame.maxY + 24.0), width: BUTTON_SIZE, height: BUTTON_SIZE)
-            splitButton.transform = .init(rotationAngle: -.pi)
         }
         
         splitArea.layoutIfNeeded()
         
         splitButton.setBackgroundColor(._red)
-        splitButton.esetImage(UIImage(named: editUpdater.cutUpdater?.mode == .pair ? "trash" : "scissors", variableValue: 0, configuration: iconConfiguration), for: .normal)
+        splitButton.esetImage(UIImage(named: editUpdater.cutUpdater?.mode == .pair ? "trash" : "scissors.180", variableValue: 0, configuration: iconConfiguration), for: .normal)
         
         let newMarkItems = Array(editUpdater.items.dropLast())
         
