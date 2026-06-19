@@ -28,7 +28,6 @@ class EditSortControl: UIViewPointSubview {
     private var beginCenters: [CGPoint]?
     private var beginGesture: UILongPressGestureRecognizer?
     private var beginEditItem: EditItem?
-    private var beginItems: [StitchItem]?
     private var timer: Timer?
     
     private var isEnable = false
@@ -57,7 +56,7 @@ class EditSortControl: UIViewPointSubview {
         guard let stackView = context.coordinator.stackView,
               let items = stackView.arrangedSubviews as? [EditItem], !items.isEmpty,
               let scrollView = context.coordinator.scrollView,
-              beginItems == nil
+              beginEditItem == nil
         else {
             print("No Items")
             return
@@ -195,8 +194,6 @@ class EditSortControl: UIViewPointSubview {
             beginDrag = snap
             beginCenters = stackView.arrangedSubviews.map({ $0.center })
             beginGesture = g
-            beginItems = editUpdater?.items
-
             beginEditItem = item
             
             addTimer()
@@ -250,11 +247,6 @@ class EditSortControl: UIViewPointSubview {
         
         if [.ended, .cancelled].contains(g.state) {
             defer {
-                if let oldItems = beginItems {
-                    let newItems = editUpdater?.items
-//                    cEdit.addStep(oldItems: oldItems, newItems: newItems)
-                }
-                
                 editUpdater?.undoRedoCommit()
                 
                 beginPoint = nil
@@ -262,7 +254,6 @@ class EditSortControl: UIViewPointSubview {
                 beginDrag = nil
                 beginCenters = nil
                 beginGesture = nil
-                beginItems = nil
                 beginEditItem = nil
                 
                 removeTimer()

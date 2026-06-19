@@ -125,8 +125,6 @@ struct EditCutTool: View {
               let stackView = context?.coordinator.stackView
         else { throw MainError.error("No EditUpdater found") }
         
-        let oldCuts = editUpdater.items.map({ ($0, $0.process.rect) })
-        
         var cutRects: [StitchItem: CGRect] = [:]
         
         for rect in rects {
@@ -146,10 +144,6 @@ struct EditCutTool: View {
         }
         
         try await processCut(cutRects)
-        
-        let newCuts = editUpdater.items.map({ ($0, $0.process.rect) })
-        
-//        cEdit.applyCutStep(oldCuts: oldCuts, newCuts: newCuts)
     }
     
     private func processCut(_ norRects: [StitchItem: CGRect]) async throws {

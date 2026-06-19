@@ -349,19 +349,6 @@ class EditStitchControl: TouchView {
 
         if stitchUpdater?.selectItem == stitchView.item {
             stitchUpdater?.setSelectItem(nil)
-//            UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
-//                let contentOffset = scrollView.contentOffset
-//                let storedPadding = isVer ? stackView.convert(stackView.bounds, to: scrollContent).minY : stackView.convert(stackView.bounds, to: scrollContent).minX
-//                
-//                stitchUpdater?.setSelectItem(nil)
-//                
-//                context.coordinator.view?.layoutIfNeeded()
-//                
-//                let offX = isVer ? contentOffset.x : contentOffset.x - (storedPadding * zoomScale)
-//                let offY = isVer ? contentOffset.y - (storedPadding * zoomScale) : contentOffset.y
-//
-//                scrollView.contentOffset = clampedContentOffset(CGPoint(x: offX, y: offY), in: scrollView)
-//            }
         } else {
             let itemFrame = itemView.convert(itemView.bounds, to: scrollContent)
             // 1. Calculate the 'visual' center target
@@ -453,8 +440,6 @@ extension EditStitchControl {
         let stitchUpdater = editUpdater?.stitchUpdater
         
         if g.state == .ended || g.state == .cancelled {
-            editUpdater?.undoRedoCommit()
-            
             UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
                 stitchViews.forEach({ $0.show(true) })
             }
@@ -502,6 +487,8 @@ extension EditStitchControl {
             }
             
             endDrag()
+            
+            editUpdater?.undoRedoCommit()
         }
     }
     
@@ -509,8 +496,6 @@ extension EditStitchControl {
         let stitchUpdater = editUpdater?.stitchUpdater
         
         if g.state == .ended || g.state == .cancelled {
-            editUpdater?.undoRedoCommit()
-            
             UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
                 stitchViews.forEach({ $0.show(true) })
             }
@@ -557,13 +542,13 @@ extension EditStitchControl {
             }
             
             endDrag()
+            
+            editUpdater?.undoRedoCommit()
         }
     }
     
     private func dragMid(g: TouchGesture) {
         if g.state == .ended || g.state == .cancelled {
-            editUpdater?.undoRedoCommit()
-            
             UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
                 stitchViews.forEach({ $0.show(true) })
             }
@@ -613,6 +598,8 @@ extension EditStitchControl {
         
         if g.state == .ended || g.state == .cancelled {
             endDrag()
+            
+            editUpdater.undoRedoCommit()
         }
     }
     
@@ -712,18 +699,13 @@ extension EditStitchControl {
     }
     
     private func endDrag() {
-        editUpdater?.anim = true
+        guard let editUpdater = editUpdater else { return }
         
-//        if let begin = beginNorFrameMids {
-//            cEdit.setStitchFramesStep(oldFrames: begin.filter({ $0.rect.width >= MIN_REMOVE && $0.rect.height >= MIN_REMOVE }),
-//                                      newFrames: cEdit.getItems().map({ ($0, $0.getProcess().rect) }).filter({ $0.rect.width >= MIN_REMOVE && $0.rect.height >= MIN_REMOVE }))
-//        } else if let begin = beginNorFrameBefores {
-//            cEdit.setStitchFramesStep(oldFrames: begin.filter({ $0.rect.width >= MIN_REMOVE && $0.rect.height >= MIN_REMOVE }),
-//                                      newFrames: cEdit.getItems().map({ ($0, $0.getProcess().rect) }).filter({ $0.rect.width >= MIN_REMOVE && $0.rect.height >= MIN_REMOVE }))
-//        } else if let begin = beginNorFrameAfters {
-//            cEdit.setStitchFramesStep(oldFrames: begin.filter({ $0.rect.width >= MIN_REMOVE && $0.rect.height >= MIN_REMOVE }),
-//                                      newFrames: cEdit.getItems().map({ ($0, $0.getProcess().rect) }).filter({ $0.rect.width >= MIN_REMOVE && $0.rect.height >= MIN_REMOVE }))
-//        }
+        editUpdater.anim = true
+        
+        if beginNorFrameBefores != nil || beginNorFrameAfters != nil {
+            editUpdater.items = editUpdater.items.filter({ $0.process.rect.width >= MIN_REMOVE && $0.process.rect.height >= MIN_REMOVE })
+        }
         
         beginNorFrameBefores = nil
         beginNorFrameAfters = nil
@@ -733,7 +715,7 @@ extension EditStitchControl {
         UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
             context?.coordinator.view?.layoutIfNeeded()
             
-            if let editUpdater = editUpdater, let context = context {
+            if let context = context {
                 contentUpdate(editUpdater: editUpdater, context: context)
             }
         }
