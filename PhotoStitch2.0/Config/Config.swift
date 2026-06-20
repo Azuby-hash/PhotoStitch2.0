@@ -20,6 +20,7 @@ let RECT0011 = CGRect(x: 0, y: 0, width: 1, height: 1)
 let ANIM_DURATION = CGFloat(0.25)
 let MAX_ZOOM = CGFloat(100)
 let PROCESS_SIZE = CGFloat(512)
+let COMPRESSION_QUALITY: CGFloat = 0.8
 
 let LOW_REMOVE: CGFloat = 141
 let HIGH_REMOVE: CGFloat = 156

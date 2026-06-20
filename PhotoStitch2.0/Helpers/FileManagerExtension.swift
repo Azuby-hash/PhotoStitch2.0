@@ -9,6 +9,16 @@ import UIKit
 
 fileprivate let folderID = "ffc4f1f8-ab79-4d48-b232-9c6f0279471b"
 
+fileprivate var tempFolder: URL = {
+    let path = FileManager.default.temporaryDirectory.appendingPathComponent(folderID)
+    
+    if !FileManager.default.fileExists(atPath: path.path) {
+        try? FileManager.default.createDirectory(atPath: path.path, withIntermediateDirectories: true, attributes: nil)
+    }
+
+    return path
+}()
+
 fileprivate var localFolder: URL = {
     guard let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?
         .appendingPathComponent(folderID)
@@ -153,6 +163,14 @@ extension FileManager {
         }
         
         return localFolder.appendingPathComponent(name)
+    }
+    
+    static func tempUrl(name: String?) -> URL {
+        guard let name = name else {
+            return tempFolder
+        }
+        
+        return tempFolder.appendingPathComponent(name)
     }
 }
 

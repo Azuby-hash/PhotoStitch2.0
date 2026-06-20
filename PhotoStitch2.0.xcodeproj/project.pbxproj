@@ -15,6 +15,7 @@
 		CE1FDC852F9D181000460178 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE1FDC7A2F9D181000460178 /* LaunchScreen.storyboard */; };
 		CE1FDC862F9D181000460178 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE1FDC7C2F9D181000460178 /* Main.storyboard */; };
 		CE25DA262FE4432300DE2E22 /* UndoRedo.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE25DA252FE4431F00DE2E22 /* UndoRedo.swift */; };
+		CE25DA2A2FE5B90400DE2E22 /* SegmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE25DA292FE5B90400DE2E22 /* SegmentView.swift */; };
 		CE4231912F9E834700701039 /* MainGlass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231902F9E834400701039 /* MainGlass.swift */; };
 		CE4231932FA78CF800701039 /* HomeTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231922FA78CF200701039 /* HomeTop.swift */; };
 		CE4231952FA78D5400701039 /* HomeBottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231942FA78D5100701039 /* HomeBottom.swift */; };
@@ -138,6 +139,7 @@
 		CE1FDC7D2F9D181000460178 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		CE1FDC7E2F9D181000460178 /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
 		CE25DA252FE4431F00DE2E22 /* UndoRedo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoRedo.swift; sourceTree = "<group>"; };
+		CE25DA292FE5B90400DE2E22 /* SegmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentView.swift; sourceTree = "<group>"; };
 		CE4231902F9E834400701039 /* MainGlass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainGlass.swift; sourceTree = "<group>"; };
 		CE4231922FA78CF200701039 /* HomeTop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTop.swift; sourceTree = "<group>"; };
 		CE4231942FA78D5100701039 /* HomeBottom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBottom.swift; sourceTree = "<group>"; };
@@ -589,6 +591,7 @@
 				CE8700952FB6A61100061801 /* ForwardScroll.swift */,
 				CE75164A2FC5E99E002C4625 /* TouchView.swift */,
 				CE46FBA32FDB26400021013C /* MenuPopover.swift */,
+				CE25DA292FE5B90400DE2E22 /* SegmentView.swift */,
 				CE87FFF02FB0223800061801 /* OpenCV */,
 				CE4231982FA9773400701039 /* AssetLibrary.swift */,
 				CE4231A62FAB566700701039 /* LazyWFVStack.swift */,
@@ -774,6 +777,7 @@
 				CE46FBAB2FDEA9F70021013C /* EditSortTool.swift in Sources */,
 				CE87006C2FB039E200061801 /* UISTextView.swift in Sources */,
 				CE87006D2FB039E200061801 /* UISSearchBar.swift in Sources */,
+				CE25DA2A2FE5B90400DE2E22 /* SegmentView.swift in Sources */,
 				CE87006E2FB039E200061801 /* UIViewZPosition.swift in Sources */,
 				CE8700A32FBC9BF900061801 /* EditStitch.swift in Sources */,
 				CE87006F2FB039E200061801 /* UILabelHighlightColor.swift in Sources */,

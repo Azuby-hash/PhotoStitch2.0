@@ -21,10 +21,13 @@ struct Edit: View {
                 EditGallery(edgeInsets: totalInset, baseInsets: bonusInset)
                     .ignoresSafeArea()
                     .modifier(EdgeModifier(top: 44, bottom: 60))
+    
+                ZStack {
+                    EditBottom()
+                    EditTop(geometry: geometry)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
-            
-            EditTop()
-            EditBottom()
             
             if !editUpdater.warningText.isEmpty {
                 Text(editUpdater.warningText)
@@ -139,6 +142,10 @@ enum EditTab: String, CaseIterable {
         
         clean = value.clean
         tab = value.tab
+    }
+    
+    func export(_ type: Pipeline.ExportType, progress: @escaping (CGFloat) -> Void) async throws -> Data {
+        return try await PIPELINE.export(items: items, axis: axis, clean: clean, type: type, progress: progress)
     }
 }
 

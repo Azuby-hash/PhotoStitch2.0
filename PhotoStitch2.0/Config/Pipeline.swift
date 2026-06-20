@@ -8,6 +8,11 @@
 import SwiftUI
 import Photos
 
+@globalActor
+actor PipelineActor {
+    static let shared = PipelineActor()
+}
+
 let PIPELINE = Pipeline()
 
 class Pipeline {
@@ -78,6 +83,119 @@ class Pipeline {
         else { return image }
 
         return UIImage(data: data) ?? image
+    }
+    
+    enum ExportType {
+        case raw(quality: CGFloat)
+        case pdf
+    }
+    
+    @PipelineActor
+    func export(items: [StitchItem], axis: NSLayoutConstraint.Axis, clean: Bool, type: ExportType, progress: @escaping (CGFloat) -> Void) async throws -> Data {
+        var frames = [CGRect]()
+        
+        for item in items {
+            await frames.append(item.process.rect * item.size)
+        }
+        
+        guard let minWidth = frames.min(by: { $0.width < $1.width })?.width,
+              let minHeight = frames.min(by: { $0.height < $1.height })?.height
+        else { throw MainError.error("Estimate size too small") }
+        
+        let width: CGFloat
+        let height: CGFloat
+        
+        if axis == .horizontal {
+            var sumWidth: CGFloat = 0
+            
+            frames = frames.map { frame in
+                let width = frame.width * (minHeight / frame.height)
+                let frame = CGRect(x: sumWidth, y: 0, width: width, height: minHeight)
+                
+                sumWidth += width
+                
+                return frame
+            }
+            
+            width = sumWidth
+            height = minHeight
+        } else {
+            var sumHeight: CGFloat = 0
+            
+            frames = frames.map { frame in
+                let height = frame.height * (minWidth / frame.width)
+                let frame = CGRect(x: 0, y: sumHeight, width: minWidth, height: height)
+                
+                sumHeight += height
+                
+                return frame
+            }
+            
+            width = minWidth
+            height = sumHeight
+        }
+        
+        let size = CGSize(width: width, height: height)
+        
+        let image: Data
+        
+        progress(0)
+        
+        if case let .raw(quality) = type {
+            let format = UIGraphicsImageRendererFormat()
+            format.scale = 1
+            let renderer = UIGraphicsImageRenderer(size: size, format: format)
+            image = renderer.jpegData(withCompressionQuality: quality) { _ in
+                for (index, item) in items.enumerated() {
+                    if Task.isCancelled { break }
+                    
+                    autoreleasepool {
+                        do {
+                            let image = clean ? item.clean : item.image
+                            
+                            let cropCG = try UIImage(data: image).unwrap().cgImage.unwrap().cropping(to: item.process.rect * item.size).unwrap()
+                            
+                            if frames.indices.contains(index) {
+                                UIImage(cgImage: cropCG).draw(in: frames[index])
+                            }
+                        } catch {
+                            print(error)
+                        }
+                    }
+                    
+                    progress(CGFloat(index + 1) / CGFloat(items.count))
+                }
+            }
+        } else {
+            let renderer = UIGraphicsPDFRenderer(bounds: CGRect(origin: .zero, size: size))
+            image = renderer.pdfData { context in
+                context.beginPage()
+                
+                for (index, item) in items.enumerated() {
+                    if Task.isCancelled { break }
+                    
+                    autoreleasepool {
+                        do {
+                            let image = clean ? item.clean : item.image
+                            
+                            let cropCG = try UIImage(data: image).unwrap().cgImage.unwrap().cropping(to: item.process.rect * item.size).unwrap()
+                            
+                            if frames.indices.contains(index) {
+                                UIImage(cgImage: cropCG).draw(in: frames[index])
+                            }
+                        } catch {
+                            print(error)
+                        }
+                    }
+                    
+                    progress(CGFloat(index + 1) / CGFloat(items.count))
+                }
+            }
+        }
+        
+        try Task.checkCancellation()
+        
+        return image
     }
     
     private func getUIImage(from asset: PHAsset, size: CGSize = CGSize(width: -1, height: -1), quality: PHImageRequestOptionsDeliveryMode = .highQualityFormat, resizeMode: PHImageRequestOptionsResizeMode = .fast) throws -> UIImage {
