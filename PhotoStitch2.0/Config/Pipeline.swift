@@ -145,7 +145,7 @@ class Pipeline {
             let format = UIGraphicsImageRendererFormat()
             format.scale = 1
             let renderer = UIGraphicsImageRenderer(size: size, format: format)
-            image = renderer.jpegData(withCompressionQuality: quality) { _ in
+            var data = renderer.jpegData(withCompressionQuality: quality) { _ in
                 for (index, item) in items.enumerated() {
                     if Task.isCancelled { break }
                     
@@ -166,6 +166,10 @@ class Pipeline {
                     progress(CGFloat(index + 1) / CGFloat(items.count))
                 }
             }
+            
+            data = addScreenshotMetadata(to: data) ?? data
+            
+            image = data
         } else {
             let renderer = UIGraphicsPDFRenderer(bounds: CGRect(origin: .zero, size: size))
             image = renderer.pdfData { context in
@@ -236,5 +240,34 @@ class Pipeline {
                 completion(avAsset)
             }
         }
+    }
+    
+    @PipelineActor
+    private func addScreenshotMetadata(to data: Data) -> Data? {
+        guard let source = CGImageSourceCreateWithData(data as CFData, nil),
+              let type = CGImageSourceGetType(source)
+        else { return nil }
+        
+        let mutableData = NSMutableData()
+        
+        guard let destination = CGImageDestinationCreateWithData(mutableData, type, 1, nil) else { return nil }
+        
+        // Tạo Dictionary Metadata cho Exif UserComment
+        let exifDictionary: [String: Any] = [
+            kCGImagePropertyExifUserComment as String: "Screenshot"
+        ]
+        
+        let metadata: [String: Any] = [
+            kCGImagePropertyExifDictionary as String: exifDictionary
+        ]
+        
+        // Thêm ảnh và metadata vào destination
+        CGImageDestinationAddImageFromSource(destination, source, 0, metadata as CFDictionary)
+        
+        if CGImageDestinationFinalize(destination) {
+            return mutableData as Data
+        }
+        
+        return nil
     }
 }

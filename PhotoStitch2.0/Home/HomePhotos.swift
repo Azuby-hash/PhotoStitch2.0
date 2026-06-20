@@ -161,10 +161,36 @@ struct HomePhoto: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .onAppear {
                     Task {
-                        image = try AssetLibrary.getUIImage(from: asset, size: CGSize(width: 300, height: 300), quality: .opportunistic, resizeMode: .fast)
+                        image = try await preview(from: asset, quality: .opportunistic, resizeMode: .fast)
                     }
                 }
         }
+    }
+    
+    @PipelineActor
+    func preview(from asset: PHAsset, quality: PHImageRequestOptionsDeliveryMode = .highQualityFormat, resizeMode: PHImageRequestOptionsResizeMode = .fast) async throws -> UIImage {
+        
+        let size = await CGSize(width: asset.pixelWidth, height: asset.pixelHeight).aspectFill(to: CGSize(width: 300, height: 300))
+        
+        let manager = PHImageManager.default()
+        let options = PHImageRequestOptions()
+        
+        options.deliveryMode = quality
+        options.resizeMode = resizeMode
+        options.isNetworkAccessAllowed = true
+        options.isSynchronous = true
+        
+        var image: UIImage?
+
+        manager.requestImage(for: asset, targetSize: size, contentMode: .aspectFill, options: options, resultHandler: { (result, _) -> Void in
+            image = result
+        })
+        
+        guard let image = image else {
+            throw ALError.error("Request image failed")
+        }
+        
+        return image
     }
 }
 

@@ -123,45 +123,6 @@ class AssetLibrary {
     }
     
     /**
-     Get UIImage from PHAsset
-     
-     > Important: if size is negative number this will export full size
-     
-     - Parameters:
-        - asset: Input asset
-        - size: Expect size to export, default is full size
-        - quality: Expect image quality to export, default is .highQualityFormat
-        - resizeMode: Expect mode to export, default is .fast
-     */
-    static func getUIImage(from asset: PHAsset, size: CGSize = CGSize(width: -1, height: -1), quality: PHImageRequestOptionsDeliveryMode = .highQualityFormat, resizeMode: PHImageRequestOptionsResizeMode = .fast) throws -> UIImage {
-        
-        var size = size
-        if size.width < 0 {
-            size = CGSize(width: CGFloat(asset.pixelWidth), height: CGFloat(asset.pixelHeight))
-        }
-        
-        let manager = PHImageManager.default()
-        let options = PHImageRequestOptions()
-        
-        options.deliveryMode = quality
-        options.resizeMode = resizeMode
-        options.isNetworkAccessAllowed = true
-        options.isSynchronous = true
-        
-        var image: UIImage?
-
-        manager.requestImage(for: asset, targetSize: size, contentMode: .aspectFill, options: options, resultHandler: { (result, _) -> Void in
-            image = result
-        })
-        
-        guard let image = image else {
-            throw ALError.error("Request image failed")
-        }
-        
-        return image
-    }
-    
-    /**
      Delete asset in library
      
      - Parameters:
