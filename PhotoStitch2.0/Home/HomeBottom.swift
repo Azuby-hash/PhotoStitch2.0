@@ -14,7 +14,7 @@ struct HomeBottom: View {
     
     var body: some View {
         GlassContainer {
-            if homeUpdater.showMenu == .filters {
+            if homeUpdater.showMenu == .web { } else if homeUpdater.showMenu == .filters {
                 VStack(spacing: 0) {
                     ForEach(getFilterCase(), id: \.self) { filter in
                         Button {
@@ -75,10 +75,17 @@ struct HomeBottom: View {
         .align(edge: .leading, constant: 16)
         .align(edge: .bottom, constant: 0)
         
+        let showWeb = Binding(
+            get: { homeUpdater.showMenu == .web },
+            set: { homeUpdater.showMenu = $0 ? .web : .none }
+        )
+        
+        if homeUpdater.showMenu == .web {
+            HomeWeb(showWeb: showWeb)
+        }
+        
         GlassContainer {
-            if homeUpdater.showMenu == .web {
-                
-            } else if homeUpdater.selecteds.isEmpty {
+            if homeUpdater.showMenu == .web { } else if homeUpdater.selecteds.isEmpty {
                 Button {
                     homeUpdater.showMenu = .web
                 } label: {
@@ -151,7 +158,11 @@ struct HomeBottom: View {
                 }
             }
             
-            return items.sorted(by: { (homeUpdater.selecteds.firstIndex(of: $0.asset) ?? 0) < (homeUpdater.selecteds.firstIndex(of: $1.asset) ?? 0) })
+            return try? items.sorted(by: { (homeUpdater.selecteds.firstIndex(of: try $0.asset.unwrap()) ?? 0) < (homeUpdater.selecteds.firstIndex(of: try $1.asset.unwrap()) ?? 0) })
+        }
+        
+        guard let items = items else {
+            throw MainError.error("No Items")
         }
         
         if homeUpdater.autoStitch {

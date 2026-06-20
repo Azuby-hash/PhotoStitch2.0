@@ -521,12 +521,12 @@ struct StitchProcess: Equatable {
 @Observable class StitchItem: Identifiable {
     var id = UUID().uuidString
     let size: CGSize
-    let asset: PHAsset
+    let asset: PHAsset?
     let image: Data
     let clean: Data
     var process = StitchProcess()
     
-    init(image: UIImage, asset: PHAsset) throws {
+    init(image: UIImage, asset: PHAsset?) throws {
         guard let ciImage = CIImage(image: image) else {
             throw MainError.error("Cant convert to ciimage")
         }
@@ -538,7 +538,7 @@ struct StitchProcess: Equatable {
         self.process = process.setup(image: ciImage, config: Stitch.getConfig(mode: .image))
     }
     
-    init(id: String = UUID().uuidString, asset: PHAsset, size: CGSize, image: Data, clean: Data, process: StitchProcess) {
+    init(id: String = UUID().uuidString, asset: PHAsset?, size: CGSize, image: Data, clean: Data, process: StitchProcess) {
         self.id = id
         self.asset = asset
         self.size = size
@@ -547,7 +547,7 @@ struct StitchProcess: Equatable {
         self.process = process
     }
     
-    fileprivate init(image: UIImage, asset: PHAsset, process: StitchProcess) throws {
+    fileprivate init(image: UIImage, asset: PHAsset?, process: StitchProcess) throws {
         self.size = image.size
         self.asset = asset
         self.image = try image.jpegData()

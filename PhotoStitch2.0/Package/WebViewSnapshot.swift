@@ -144,7 +144,7 @@ class WebViewSnapshot {
             return
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
             self.waitForContentLoaded(webView: webView, retries: retries - 1, then: next)
         }
     }

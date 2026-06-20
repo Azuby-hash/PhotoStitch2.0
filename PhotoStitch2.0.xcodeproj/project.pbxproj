@@ -16,6 +16,7 @@
 		CE1FDC862F9D181000460178 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE1FDC7C2F9D181000460178 /* Main.storyboard */; };
 		CE25DA262FE4432300DE2E22 /* UndoRedo.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE25DA252FE4431F00DE2E22 /* UndoRedo.swift */; };
 		CE25DA2A2FE5B90400DE2E22 /* SegmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE25DA292FE5B90400DE2E22 /* SegmentView.swift */; };
+		CE25DA2C2FE6D84800DE2E22 /* HomeWeb.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE25DA2B2FE6D84500DE2E22 /* HomeWeb.swift */; };
 		CE4231912F9E834700701039 /* MainGlass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231902F9E834400701039 /* MainGlass.swift */; };
 		CE4231932FA78CF800701039 /* HomeTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231922FA78CF200701039 /* HomeTop.swift */; };
 		CE4231952FA78D5400701039 /* HomeBottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231942FA78D5100701039 /* HomeBottom.swift */; };
@@ -140,6 +141,7 @@
 		CE1FDC7E2F9D181000460178 /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
 		CE25DA252FE4431F00DE2E22 /* UndoRedo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoRedo.swift; sourceTree = "<group>"; };
 		CE25DA292FE5B90400DE2E22 /* SegmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentView.swift; sourceTree = "<group>"; };
+		CE25DA2B2FE6D84500DE2E22 /* HomeWeb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWeb.swift; sourceTree = "<group>"; };
 		CE4231902F9E834400701039 /* MainGlass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainGlass.swift; sourceTree = "<group>"; };
 		CE4231922FA78CF200701039 /* HomeTop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTop.swift; sourceTree = "<group>"; };
 		CE4231942FA78D5100701039 /* HomeBottom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBottom.swift; sourceTree = "<group>"; };
@@ -557,6 +559,7 @@
 				CE4231922FA78CF200701039 /* HomeTop.swift */,
 				CE4231942FA78D5100701039 /* HomeBottom.swift */,
 				CE42319A2FA9783E00701039 /* HomePhotos.swift */,
+				CE25DA2B2FE6D84500DE2E22 /* HomeWeb.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -803,6 +806,7 @@
 				CE87007F2FB039E200061801 /* CIImageHelpers.swift in Sources */,
 				CE8700802FB039E200061801 /* UIViewBiggerPoint.swift in Sources */,
 				CE8700962FB6A61100061801 /* ForwardScroll.swift in Sources */,
+				CE25DA2C2FE6D84800DE2E22 /* HomeWeb.swift in Sources */,
 				CE8700812FB039E200061801 /* UIViewEmbed.swift in Sources */,
 				CE8700822FB039E200061801 /* GestureHelpers.swift in Sources */,
 				CE8700832FB039E200061801 /* UIImageGif.swift in Sources */,
