@@ -37,7 +37,9 @@ struct HomeTop: View {
             } else {
                 if homeUpdater.selecteds.isEmpty {
                     Button {
-                        homeUpdater.showMenu = .albums
+                        if !homeUpdater.getAllAlbum().isEmpty {
+                            homeUpdater.showMenu = .albums
+                        }
                     } label: {
                         HStack {
                             Text(homeUpdater.album?.getName() ?? "Screenshots")

@@ -55,7 +55,7 @@ struct HomeWeb: View {
                 searchField(glassType: .color(._background.opacity(0.5)))
             }
             .padding(16)
-            .frame(maxWidth: .infinity)
+            .frame(maxWidth: 450)
             .modifier(MainGlass(shape: RoundedRectangle(cornerRadius: 38), type: .clear))
             
             openWebsiteButton
@@ -182,7 +182,7 @@ struct HomeWeb: View {
                     .font(.system(size: 18, weight: .semibold, design: .rounded))
             }
             .padding(.horizontal, 24)
-            .frame(maxWidth: .infinity)
+            .frame(maxWidth: 450)
             .frame(height: 60)
             .modifier(MainGlass(shape: .capsule, type: .color(._primary)))
             .tint(.white)

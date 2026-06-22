@@ -62,6 +62,7 @@ struct Subscription: View {
             }
             .padding(.horizontal, 20)
             .padding(.top, 16)
+            .frame(maxWidth: 450)
 
             
             if showClose {
@@ -310,22 +311,24 @@ struct Subscription: View {
             .frame(height: 60)
             .modifier(MainGlass(shape: .capsule, type: .color(._primary)))
             .overlay {
-                Capsule()
-                    .fill(
-                        LinearGradient(
-                            colors: [
-                                Color.white.opacity(0),
-                                Color.white.opacity(0.25),
-                                Color.white.opacity(0)
-                            ],
-                            startPoint: .leading,
-                            endPoint: .trailing
+                GeometryReader { geometry in
+                    Capsule()
+                        .fill(
+                            LinearGradient(
+                                colors: [
+                                    Color.white.opacity(0),
+                                    Color.white.opacity(0.25),
+                                    Color.white.opacity(0)
+                                ],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
                         )
-                    )
-                    .blur(radius: 20)
-                    .rotationEffect(.degrees(20))
-                    .offset(x: subUpdater.shimmerOffset)
-                    .blendMode(.plusLighter)
+                        .blur(radius: 20)
+                        .rotationEffect(.degrees(20))
+                        .offset(x: subUpdater.shimmerOffset * geometry.size.width / 2)
+                        .blendMode(.plusLighter)
+                }
             }
             .clipShape(Capsule())
             .shadow(color: Color._primary.opacity(0.35), radius: 20, x: 0, y: 8)
@@ -423,18 +426,18 @@ enum SubscriptionPlan {
     
     func startLoop() {
         loopTask?.cancel()
-        shimmerOffset = -220
+        shimmerOffset = -1
         loopTask = Task {
             while !Task.isCancelled {
                 withAnimation(.easeInOut(duration: 1.6)) {
-                    shimmerOffset = 220
+                    shimmerOffset = 1
                 }
                 try? await Task.sleep(for: .seconds(1.6))
                 
                 guard !Task.isCancelled else { break }
                 
                 withAnimation(.easeInOut(duration: 1.6)) {
-                    shimmerOffset = -220
+                    shimmerOffset = -1
                 }
                 try? await Task.sleep(for: .seconds(1.6))
             }

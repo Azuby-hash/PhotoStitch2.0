@@ -349,6 +349,7 @@ struct EditTop: View {
         }
         .align(edge: .bottom, constant: 0)
         .padding(.horizontal, 16)
+        .frame(maxWidth: 450)
         .transition(.move(edge: .bottom).combined(with: .opacity))
     }
     

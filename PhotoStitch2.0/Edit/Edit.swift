@@ -78,7 +78,7 @@ enum EditTab: String, CaseIterable {
 @Observable class EditUpdater {
     var items: [StitchItem]
     var axis: NSLayoutConstraint.Axis
-    var clean: Bool = false
+    var clean: Bool = true
     var tab = EditTab.none
     var anim = true
     var block = false

@@ -60,6 +60,8 @@ struct EditGallery: UIViewRepresentable {
         editUpdater.animIfNeeded {
             view.layoutIfNeeded()
             
+            context.coordinator.layoutUpdate()
+            
             UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
                 context.coordinator.editContent?.setup(editUpdater: editUpdater, context: context)
                 context.coordinator.editOverlay?.setup(editUpdater: editUpdater, context: context)
@@ -178,12 +180,11 @@ struct EditGallery: UIViewRepresentable {
                     view.item = item
                     view.editUpdater = editUpdater
                     
-                    UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
-                        
-                        view.setSize(calculateSize(for: item))
-                        view.setContent()
-                    }
+                    view.setSize(calculateSize(for: item))
+                    view.setContent()
                 }
+                
+                stack.layoutIfNeeded()
             }
             
             stack.arrangedSubviews.enumerated().forEach { (index, view) in
@@ -280,6 +281,9 @@ class EditItem: UIView {
     private var size: CGSize?
     private var data: Data?
     
+    private weak var imgWidth: NSLayoutConstraint?
+    private weak var imgHeight: NSLayoutConstraint?
+    
     let imageView = UIImageView().econtentMode(.scaleAspectFill)
     
     func setSize(_ size: CGSize) {
@@ -310,19 +314,33 @@ class EditItem: UIView {
         var imageSize: CGSize
         
         let exportSize = item.process.rect * item.size
+        let multiple: CGFloat
         
         if editUpdater.axis == .horizontal {
             let scale = size.height / exportSize.height
             imageSize = item.size * scale
+            multiple = imageSize.height / size.height
         } else {
             let scale = size.width / exportSize.width
             imageSize = item.size * scale
+            multiple = imageSize.width / size.width
         }
         
         let imagePosi = item.process.rect.origin * imageSize * -1
         
-        imageView.eselfConstraints([.width(imageSize.width), .height(imageSize.height)])
         eaddSubview(imageView, [.leading(imagePosi.x), .top(imagePosi.y)])
+        
+        let widthAnchor = editUpdater.axis == .vertical ? imageView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: multiple) : imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor, multiplier: imageSize.width / imageSize.height)
+        self.imgWidth?.isActive = false
+        self.imgWidth = widthAnchor
+        let heightAnchor = editUpdater.axis == .horizontal ? imageView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: multiple) : imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: imageSize.height / imageSize.width)
+        self.imgHeight?.isActive = false
+        self.imgHeight = heightAnchor
+        
+        NSLayoutConstraint.activate([
+            widthAnchor, heightAnchor
+        ])
+        
         layoutIfNeeded()
     }
 }
