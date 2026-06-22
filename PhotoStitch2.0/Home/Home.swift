@@ -58,6 +58,8 @@ struct Home: View {
                     try await homeUpdater.registerChange()
                 }
             }
+            
+            homeUpdater.showSubscription = true
         })
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification), perform: { _ in
             Task {
