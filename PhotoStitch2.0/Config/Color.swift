@@ -22,6 +22,7 @@ extension UIColor {
     static let _background = UIColor(named: "Background")!
     static let _red = UIColor(named: "Red")!
     static let _red15 = UIColor(named: "Red15")!
+    static let _yellow = UIColor(named: "Yellow")!
     static let _disable = UIColor(named: "Disable")!
     static let _secondary = UIColor(named: "Secondary")!
 }
@@ -40,6 +41,7 @@ extension CGColor {
     static let _background = UIColor._background.cgColor
     static let _red = UIColor._red.cgColor
     static let _red15 = UIColor._red15.cgColor
+    static let _yellow = UIColor._yellow.cgColor
     static let _disable = UIColor._disable.cgColor
     static let _secondary = UIColor._secondary.cgColor
 }
@@ -58,6 +60,7 @@ extension CIColor {
     static let _background = CIColor(color: UIColor._background)
     static let _red = CIColor(color: UIColor._red)
     static let _red15 = CIColor(color: UIColor._red15)
+    static let _yellow = CIColor(color: UIColor._yellow)
     static let _disable = CIColor(color: UIColor._disable)
     static let _secondary = CIColor(color: UIColor._secondary)
 }
@@ -76,6 +79,7 @@ extension Color {
     static let _background = Color("Background")
     static let _red = Color("Red")
     static let _red15 = Color("Red15")
+    static let _yellow = Color("Yellow")
     static let _disable = Color("Disable")
     static let _secondary = Color("Secondary")
 }

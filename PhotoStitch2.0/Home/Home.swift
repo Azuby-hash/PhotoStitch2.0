@@ -90,6 +90,9 @@ struct Home: View {
         .fullScreenCover(isPresented: $homeUpdater.showSubscription) {
             Subscription()
         }
+        .sheet(isPresented: $homeUpdater.showInstruction, content: {
+            VideoInstruction()
+        })
         .environment(homeUpdater)
     }
 }
@@ -112,11 +115,38 @@ struct Home: View {
     var showMenu = MenuType.none
     var showOnboarding = SHOW_ONBOARDING
     var showSubscription = false
+    var showInstruction = false {
+        didSet {
+            if !showInstruction {
+                AUTO_SHOW_INSTRUCTION = false
+            }
+        }
+    }
 
-    var autoSelection = AUTO_SELECTION
-    var autoStitch = AUTO_STITCH
-    var removeOriginals = REMOVE_ORIGINALS
-    var photofilter = PHOTO_FILTER
+    var autoSelection = AUTO_SELECTION {
+        didSet {
+            AUTO_SELECTION = autoSelection
+        }
+    }
+    var autoStitch = AUTO_STITCH {
+        didSet {
+            AUTO_STITCH = autoStitch
+        }
+    }
+    var removeOriginals = REMOVE_ORIGINALS {
+        didSet {
+            REMOVE_ORIGINALS = removeOriginals
+        }
+    }
+    var photofilter = PHOTO_FILTER {
+        didSet {
+            PHOTO_FILTER = photofilter
+            
+            if photofilter != .images && AUTO_SHOW_INSTRUCTION {
+                showInstruction = true
+            }
+        }
+    }
     
     private(set) var warningText = ""
     @ObservationIgnored private var warningTask: Task<Void, Never>?

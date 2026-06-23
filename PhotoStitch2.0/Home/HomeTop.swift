@@ -11,96 +11,115 @@ struct HomeTop: View {
     @Environment(HomeUpdater.self) var homeUpdater
     
     var body: some View {
-        GlassContainer {
-            if homeUpdater.showMenu == .albums {
-                VStack(spacing: 0) {
-                    ForEach(homeUpdater.getAllAlbum(), id: \.localizedTitle) { album in
-                        Button {
-                            homeUpdater.selectAlbum(album)
-                            homeUpdater.showMenu = .none
-                        } label: {
-                            HStack(spacing: 12) {
-                                Text(album.getName())
-                                Spacer()
-                                Image("checkmark")
-                                    .opacity(homeUpdater.album?.getName() == album.getName() ? 1 : 0)
-                            }
-                            .foregroundStyle(Color(uiColor: .label))
-                            .frame(height: 40)
-                        }
-                    }
-                }
-                .padding(.horizontal, 20)
-                .padding(.vertical, 8)
-                .frame(maxWidth: 240)
-                .modifier(MainGlass(shape: RoundedRectangle(cornerRadius: 24), type: .clear))
-            } else {
-                if homeUpdater.selecteds.isEmpty {
+        HStack(alignment: .top, spacing: homeUpdater.selecteds.isEmpty ? -1000 : 16) {
+            HStack(alignment: .top) {
+                if homeUpdater.photofilter != .images {
                     Button {
-                        if !homeUpdater.getAllAlbum().isEmpty {
-                            homeUpdater.showMenu = .albums
-                        }
+                        homeUpdater.showInstruction = true
                     } label: {
                         HStack {
-                            Text(homeUpdater.album?.getName() ?? "Screenshots")
-                                .font(.system(size: 26, weight: .bold, design: .rounded))
-                            Image("arrowtriangle.down.fill")
-                                .resizable()
-                                .frame(width: 10, height: 7)
-                                .modifier(GlassModifier(shape: .capsule))
+                            Image("questionmark")
+                                .font(.system(size: 16, weight: .bold, design: .rounded))
+                                .foregroundStyle(Color.white)
                         }
-                        .foregroundStyle(Color.primary)
-                        .frame(height: 44)
+                        .frame(width: 32, height: 32)
+                        .modifier(MainGlass(shape: .capsule, type: .color(._primary)))
+                    }
+                    .padding(.top, 6)
+                }
+                
+                GlassContainer {
+                    if homeUpdater.showMenu == .albums {
+                        VStack(spacing: 0) {
+                            ForEach(homeUpdater.getAllAlbum(), id: \.localizedTitle) { album in
+                                Button {
+                                    homeUpdater.selectAlbum(album)
+                                    homeUpdater.showMenu = .none
+                                } label: {
+                                    HStack(spacing: 12) {
+                                        Text(album.getName())
+                                        Spacer()
+                                        Image("checkmark")
+                                            .opacity(homeUpdater.album?.getName() == album.getName() ? 1 : 0)
+                                    }
+                                    .foregroundStyle(Color(uiColor: .label))
+                                    .frame(height: 40)
+                                }
+                            }
+                        }
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 8)
+                        .frame(maxWidth: 240)
+                        .modifier(MainGlass(shape: RoundedRectangle(cornerRadius: 24), type: .clear))
+                    } else {
+                        if homeUpdater.selecteds.isEmpty {
+                            Button {
+                                if !homeUpdater.getAllAlbum().isEmpty {
+                                    homeUpdater.showMenu = .albums
+                                }
+                            } label: {
+                                HStack {
+                                    Text(homeUpdater.album?.getName() ?? "Screenshots")
+                                        .font(.system(size: 26, weight: .bold, design: .rounded))
+                                    Image("arrowtriangle.down.fill")
+                                        .resizable()
+                                        .frame(width: 10, height: 7)
+                                        .modifier(MainGlass(shape: .capsule, type: .clear))
+                                }
+                                .foregroundStyle(Color.primary)
+                                .frame(height: 44)
+                            }
+                        } else {
+                            HStack {
+                                Text(homeUpdater.album?.getName() ?? "Recents")
+                                    .font(.system(size: 26, weight: .bold, design: .rounded))
+                            }
+                            .foregroundStyle(Color.primary)
+                            .frame(height: 44)
+                        }
+                    }
+                }
+            }
+            
+            Spacer()
+            
+            GlassContainer {
+                if homeUpdater.showMenu == .settings {
+                    HomeMenu()
+                } else if homeUpdater.selecteds.isEmpty {
+                    Button {
+                        homeUpdater.showMenu = .settings
+                    } label: {
+                        Image("line.3.horizontal.decrease")
+                            .font(.system(size: 22, weight: .semibold))
+                            .foregroundStyle(Color(uiColor: .label))
+                            .frame(width: 44, height: 44)
+                            .modifier(MainGlass(shape: .capsule, type: .clear))
                     }
                 } else {
-                    HStack {
-                        Text(homeUpdater.album?.getName() ?? "Recents")
-                            .font(.system(size: 26, weight: .bold, design: .rounded))
-                    }
-                    .foregroundStyle(Color.primary)
-                    .frame(height: 44)
-                }
-            }
-        }
-        .align(edge: .leading, constant: 16)
-        .align(edge: .top, constant: 0)
-        
-        GlassContainer {
-            if homeUpdater.showMenu == .settings {
-                HomeMenu()
-            } else if homeUpdater.selecteds.isEmpty {
-                Button {
-                    homeUpdater.showMenu = .settings
-                } label: {
-                    Image("line.3.horizontal.decrease")
-                        .font(.system(size: 22, weight: .semibold))
-                        .foregroundStyle(Color(uiColor: .label))
-                        .frame(width: 44, height: 44)
+                    Button {
+                        homeUpdater.deselectAll()
+                    } label: {
+                        HStack {
+                            Text("\(homeUpdater.selecteds.count)")
+                                .font(.system(size: 16, weight: .bold, design: .rounded))
+                                .foregroundStyle(Color(uiColor: .label))
+                                .frame(width: 32, height: 32)
+                                .background(.ultraThinMaterial)
+                                .clipShape(.capsule)
+                            Text("Deselect All")
+                                .font(.system(size: 18, weight: .semibold))
+                                .frame(maxWidth: .infinity)
+                        }
+                        .foregroundStyle(Color(uiColor: ._red))
+                        .padding(.leading, 6)
+                        .padding(.trailing, 16)
+                        .frame(height: 44)
                         .modifier(MainGlass(shape: .capsule, type: .clear))
-                }
-            } else {
-                Button {
-                    homeUpdater.deselectAll()
-                } label: {
-                    HStack {
-                        Text("\(homeUpdater.selecteds.count)")
-                            .font(.system(size: 16, weight: .bold, design: .rounded))
-                            .foregroundStyle(Color(uiColor: .label))
-                            .frame(width: 32, height: 32)
-                            .background(.ultraThinMaterial)
-                            .clipShape(.capsule)
-                        Text("Deselect All")
-                            .font(.system(size: 18, weight: .semibold))
                     }
-                    .foregroundStyle(Color(uiColor: ._red))
-                    .padding(.leading, 6)
-                    .padding(.trailing, 16)
-                    .frame(height: 44)
-                    .modifier(MainGlass(shape: .capsule, type: .clear))
                 }
             }
         }
-        .align(edge: .trailing, constant: 0)
         .padding(.horizontal, 16)
         .align(edge: .top, constant: 0)
     }

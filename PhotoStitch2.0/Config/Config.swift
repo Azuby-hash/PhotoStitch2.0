@@ -83,6 +83,11 @@ var SPLIT_MODE: SplitMode {
     set { UserDefaults.standard.set(newValue.rawValue, forKey: "c7f4216524e1df5c") }
 }
 
+var AUTO_SHOW_INSTRUCTION: Bool {
+    get { UserDefaults.standard.object(forKey: "85bf6e3cbd2c8cd7") as? Bool ?? true }
+    set { UserDefaults.standard.set(newValue, forKey: "85bf6e3cbd2c8cd7") }
+}
+
 enum RemoveOriginals: Int, CaseIterable {
     case never
     case ask

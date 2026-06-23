@@ -236,7 +236,7 @@ extension AssetLibrary {
             albums = [recents] + albums.filter({ $0.getName() != recents.getName() })
         }
         
-        let screenshotAssets = albums.filter({ $0.subType == .smartAlbumScreenshots || $0.subType == .smartAlbumScreenRecordings }).flatMap({ $0.assets })
+        let screenshotAssets = albums.filter({ $0.subType == .smartAlbumScreenshots || $0.subType == .smartAlbumScreenRecordings }).flatMap({ $0.assets }).sorted(by: { a, _ in a.mediaType == .video })
         let screenshotInfo = ALInfo(assets: screenshotAssets, localizedTitle: "Screenshots", subType: .smartAlbumScreenshots)
         
         albums = albums.filter({ $0.subType != .smartAlbumScreenshots && $0.subType != .smartAlbumScreenRecordings })

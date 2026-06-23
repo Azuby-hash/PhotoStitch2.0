@@ -12,7 +12,13 @@ class UIButtonPro: UIButton {
 
     private var titleContainer = AttributeContainer()
     private var subtitleContainer = AttributeContainer()
-    private var backgroundColorConfig = UIColor.clear
+    private var backgroundColorConfig: UIColor = {
+        if #available(iOS 26, *) {
+            return UIColor.clear
+        } else {
+            return UIColor.systemBackground
+        }
+    } ()
     
     private var didLoad = false
     
