@@ -191,40 +191,61 @@ struct EditTop: View {
                     
                     if saveMode != .pdf {
                         Button {
-                            if #available(iOS 14, *) {
-                                PHPhotoLibrary.requestAuthorization(for: .addOnly, handler: { status in
-                                    if status == .authorized || status == .limited {
-                                        PHPhotoLibrary.shared().performChanges({
-                                            PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: url)
-                                        }) { success, err in
-                                            DispatchQueue.main.async {
-                                                editUpdater.warningAlert("Saved to your photo gallery")
-                                                saveFinish()
-                                            }
-                                        }
-                                    } else {
+                            PHPhotoLibrary.requestAuthorization { status in
+                                if status == .authorized {
+                                    PHPhotoLibrary.shared().performChanges({
+                                        PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: url)
+                                    }) { success, err in
                                         DispatchQueue.main.async {
-                                            editUpdater.warningAlert("Failed to save")
+                                            if status == .denied {
+                                                showAlert(title: "Saved", message: "Image successfully saved to Library.", actions: [
+                                                    UIAlertAction(title: "OK", style: .default)
+                                                ])
+                                            } else {
+                                                let assets = editUpdater.items.compactMap({ $0.asset })
+                                                
+                                                if homeUpdater.removeOriginals == .ask {
+                                                    showAlert(title: "Saved", message: "Image successfully saved to Library.", actions: [
+                                                        UIAlertAction(title: "Delete Original Photos", style: .destructive, handler: { _ in
+                                                            PHPhotoLibrary.shared().performChanges {
+                                                                PHAssetChangeRequest.deleteAssets(assets as NSFastEnumeration)
+                                                            } completionHandler: { success, _ in
+                                                                if success {
+                                                                    homeUpdater.showEdit = false
+                                                                }
+                                                            }
+                                                        }),
+                                                        UIAlertAction(title: "Keep Original Photos", style: .default)
+                                                    ])
+                                                }
+                                                
+                                                if homeUpdater.removeOriginals == .always {
+                                                    showAlert(title: "Saved", message: "Image successfully saved to Library.", actions: [
+                                                        UIAlertAction(title: "OK", style: .default, handler: { _ in
+                                                            PHPhotoLibrary.shared().performChanges {
+                                                                PHAssetChangeRequest.deleteAssets(assets as NSFastEnumeration)
+                                                            } completionHandler: { success, _ in
+                                                                if success {
+                                                                    homeUpdater.showEdit = false
+                                                                }
+                                                            }
+                                                        })
+                                                    ])
+                                                }
+                                                
+                                                if homeUpdater.removeOriginals == .never {
+                                                    showAlert(title: "Saved", message: "Image successfully saved to Library.", actions: [
+                                                        UIAlertAction(title: "OK", style: .default)
+                                                    ])
+                                                }
+                                            }
                                             saveFinish()
                                         }
                                     }
-                                })
-                            } else {
-                                PHPhotoLibrary.requestAuthorization { status in
-                                    if status == .authorized {
-                                        PHPhotoLibrary.shared().performChanges({
-                                            PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: url)
-                                        }) { success, err in
-                                            DispatchQueue.main.async {
-                                                editUpdater.warningAlert("Saved to your photo gallery")
-                                                saveFinish()
-                                            }
-                                        }
-                                    } else {
-                                        DispatchQueue.main.async {
-                                            editUpdater.warningAlert("Failed to save")
-                                            saveFinish()
-                                        }
+                                } else {
+                                    DispatchQueue.main.async {
+                                        editUpdater.warningAlert("Failed to save")
+                                        saveFinish()
                                     }
                                 }
                             }
@@ -357,5 +378,16 @@ struct EditTop: View {
         showSave = false
         url = nil
         progress = 0
+    }
+    
+    private func showAlert(title: String, message: String, actions: [UIAlertAction] = [UIAlertAction(title: "OK", style: .default)]) {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            actions.forEach({ alert.addAction($0) })
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                VIEW_CONTROLLER.present(alert, animated: true)
+            }
+        }
     }
 }

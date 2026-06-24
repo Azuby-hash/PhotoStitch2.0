@@ -144,6 +144,7 @@ class Pipeline {
         if case let .raw(quality) = type {
             let format = UIGraphicsImageRendererFormat()
             format.scale = 1
+            format.opaque = true
             let renderer = UIGraphicsImageRenderer(size: size, format: format)
             var data = renderer.jpegData(withCompressionQuality: quality) { _ in
                 for (index, item) in items.enumerated() {
