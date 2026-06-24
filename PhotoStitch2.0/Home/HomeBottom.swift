@@ -12,6 +12,8 @@ import Combine
 struct HomeBottom: View {
     @Environment(HomeUpdater.self) var homeUpdater
     
+    @Namespace var namespace
+    
     var body: some View {
         GlassContainer {
             if homeUpdater.showMenu == .web { } else if homeUpdater.showMenu == .filters {
@@ -80,12 +82,10 @@ struct HomeBottom: View {
             set: { homeUpdater.showMenu = $0 ? .web : .none }
         )
         
-        if homeUpdater.showMenu == .web {
-            HomeWeb(showWeb: showWeb)
-        }
-        
         GlassContainer {
-            if homeUpdater.showMenu == .web { } else if homeUpdater.selecteds.isEmpty {
+            if homeUpdater.showMenu == .web {
+                HomeWeb(showWeb: showWeb, namespace: namespace)
+            } else if homeUpdater.selecteds.isEmpty {
                 Button {
                     homeUpdater.showMenu = .web
                 } label: {
@@ -94,7 +94,10 @@ struct HomeBottom: View {
                         .foregroundStyle(Color(uiColor: .label))
                         .frame(width: 60, height: 60)
                         .modifier(MainGlass(shape: .capsule, type: .clear))
+                        .matchedGeometryEffect(id: "entry", in: namespace)
                 }
+                .align(edge: .trailing, constant: 16)
+                .align(edge: .bottom, constant: 0)
             } else {
                 Button {
                     Task {
@@ -117,10 +120,10 @@ struct HomeBottom: View {
                     .frame(height: 60)
                     .modifier(MainGlass(shape: .capsule, type: .color(._primary)))
                 }
+                .align(edge: .trailing, constant: 16)
+                .align(edge: .bottom, constant: 0)
             }
         }
-        .align(edge: .trailing, constant: 16)
-        .align(edge: .bottom, constant: 0)
     }
     
     private func getItems() async throws -> [StitchItem] {

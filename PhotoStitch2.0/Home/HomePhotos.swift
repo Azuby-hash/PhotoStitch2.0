@@ -5,6 +5,7 @@
 //  Created by Azuby on 5/5/26.
 //
 
+import UIKit
 import SwiftUI
 import Photos
 import PhotosUI
@@ -40,7 +41,6 @@ struct HomePhotos: View {
             
             ScrollView(showsIndicators: false) {
                 if let assets = assets {
-                    
                     LazyWFVStack(geometry: geometry, items: assets.enumerated().map({ (assetIndex, asset) in
                         let selected = homeUpdater.selecteds.contains(asset)
                         let index = homeUpdater.selecteds.firstIndex(of: asset) ?? 0
@@ -68,6 +68,7 @@ struct HomePhotos: View {
                     .padding(.bottom, IOS26 ? 0 : 60)
                     .padding(.horizontal, 16)
                     .padding(.vertical, 32)
+                    .animation(.smooth(duration: ANIM_DURATION), value: homeUpdater.selecteds)
                 } else {
                     Color.clear
                 }
@@ -125,7 +126,7 @@ struct HomePhotos: View {
                     isCancelled = false
                 }
             }
-            .animation(.easeInOut(duration: ANIM_DURATION), value: assets)
+            .animation(.smooth(duration: ANIM_DURATION), value: assets)
             .modifier(EdgeModifier(top: 44, bottom: 60))
             .modifier(HomeNoAccess())
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -161,7 +162,7 @@ struct HomePhoto: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .onAppear {
                     Task {
-                        image = try await preview(from: asset, quality: .opportunistic, resizeMode: .fast)
+                        image = try? await preview(from: asset, quality: .opportunistic, resizeMode: .fast)
                     }
                 }
         }

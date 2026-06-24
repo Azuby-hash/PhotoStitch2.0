@@ -17,6 +17,8 @@ struct HomeWeb: View {
     @State private var webUpdater = HomeWebUpdater()
     @FocusState private var isSearchFocused: Bool
     
+    let namespace: Namespace.ID
+    
     var body: some View {
         ZStack {
             if webUpdater.activeURL != nil {
@@ -25,7 +27,6 @@ struct HomeWeb: View {
                 entryCard
             }
         }
-        .transition(.move(edge: .bottom).combined(with: .opacity))
         .animation(.smooth(duration: 0.25), value: isSearchFocused)
         .onChange(webUpdater.activeURL) { url in
             if let url = url {
@@ -58,7 +59,7 @@ struct HomeWeb: View {
             .frame(maxWidth: 450)
             .modifier(MainGlass(shape: RoundedRectangle(cornerRadius: 38), type: .clear))
             
-            openWebsiteButton
+            openWebsiteButton.matchedGeometryEffect(id: "entry", in: namespace)
         }
         .padding(.horizontal, 20)
         .padding(.bottom, isSearchFocused ? 24 : 0)
@@ -79,7 +80,7 @@ struct HomeWeb: View {
                 HStack {
                     backForwardButtons(glassType: .clear)
                     Spacer()
-                    closeButton(glassType: .clear)
+                    closeButton(glassType: .clear).matchedGeometryEffect(id: "entry", in: namespace)
                 }
                 .padding(.horizontal, 20)
                 

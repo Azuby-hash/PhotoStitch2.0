@@ -52,6 +52,7 @@ struct LazyWFVStack<Content: View>: View {
     let colWidth: CGFloat
     let columns: Int
     var spacing: CGFloat = 8
+    var onHeightChange: ((CGFloat) -> Void)?
     
     var body: some View {
         let (list, columnHeights) = calculateList()
@@ -76,6 +77,16 @@ struct LazyWFVStack<Content: View>: View {
             }
         }
         .frame(width: colWidth, height: columnHeights.max())
+        .onAppear {
+            if let height = columnHeights.max() {
+                onHeightChange?(height)
+            }
+        }
+        .onChange(columnHeights) { _ in
+            if let height = columnHeights.max() {
+                onHeightChange?(height)
+            }
+        }
     }
     
     private func calculateList() -> ([LazyWFVRect<Content>], [CGFloat]) {
