@@ -59,7 +59,7 @@ struct HomeBottom: View {
                 Button {
                     Task {
                         do {
-                            homeUpdater.items = try await getItems()
+                            homeUpdater.items = try await homeUpdater.getItems()
                             homeUpdater.axis = .horizontal
                             homeUpdater.showEdit = true
                         } catch {
@@ -102,7 +102,7 @@ struct HomeBottom: View {
                 Button {
                     Task {
                         do {
-                            homeUpdater.items = try await getItems()
+                            homeUpdater.items = try await homeUpdater.getItems()
                             homeUpdater.axis = .vertical
                             homeUpdater.showEdit = true
                         } catch {
@@ -124,58 +124,6 @@ struct HomeBottom: View {
                 .align(edge: .bottom, constant: 0)
             }
         }
-    }
-    
-    private func getItems() async throws -> [StitchItem] {
-        VIEW_CONTROLLER.startLoading("Loading 0 / \(homeUpdater.selecteds.count) Photos...")
-        
-        let items = await withTaskGroup(of: Optional<StitchItem>.self) { group in
-            var items = [StitchItem]()
-            
-            for asset in homeUpdater.selecteds {
-                group.addTask {
-                    let item: StitchItem?
-                    
-                    do {
-                        if asset.mediaType == .image {
-                            item = try await PIPELINE.assetImageToItem(asset)
-                        } else {
-                            item = try await PIPELINE.assetVideoToItem(asset) { progress in
-                                print(progress)
-                            }
-                        }
-                    } catch {
-                        print(error)
-                        item = nil
-                    }
-                    
-                    return item
-                }
-            }
-            
-            for await item in group {
-                if let item = item {
-                    items.append(item)
-                    
-                    VIEW_CONTROLLER.startLoading("Loading \(items.count) / \(homeUpdater.selecteds.count) Photos...")
-                }
-            }
-            
-            return try? items.sorted(by: { (homeUpdater.selecteds.firstIndex(of: try $0.asset.unwrap()) ?? 0) < (homeUpdater.selecteds.firstIndex(of: try $1.asset.unwrap()) ?? 0) })
-        }
-        
-        guard let items = items else {
-            throw MainError.error("No Items")
-        }
-        
-        if homeUpdater.autoStitch {
-            VIEW_CONTROLLER.startLoading("Auto Stitch...")
-            try await PIPELINE.autoStitch(items)
-        }
-        
-        await withCheckedContinuation { continuation in VIEW_CONTROLLER.stopLoading { continuation.resume() } }
-        
-        return items
     }
     
     private func getFilterCase() -> [PhotosFilter] {

@@ -15,7 +15,6 @@
 		AF1719062FECE2D900DA1D67 /* PhotoStitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1719002FECE2D900DA1D67 /* PhotoStitch.swift */; };
 		AF1719072FECE2D900DA1D67 /* PhotoStitchBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1719012FECE2D900DA1D67 /* PhotoStitchBundle.swift */; };
 		AF1719082FECE2D900DA1D67 /* PhotoStitchControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1719022FECE2D900DA1D67 /* PhotoStitchControl.swift */; };
-		AF1719092FECE2D900DA1D67 /* PhotoStitchLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1719032FECE2D900DA1D67 /* PhotoStitchLiveActivity.swift */; };
 		AF17190A2FECE2D900DA1D67 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF1718FE2FECE2D900DA1D67 /* Assets.xcassets */; };
 		CE1FDC802F9D181000460178 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1FDC762F9D181000460178 /* AppDelegate.swift */; };
 		CE1FDC812F9D181000460178 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1FDC7D2F9D181000460178 /* SceneDelegate.swift */; };
@@ -138,6 +137,16 @@
 		CEBD6C0D2F9D1CC400E176D7 /* Materials.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEBD6BFA2F9D1CC400E176D7 /* Materials.xcassets */; };
 		CEBD6C9B2F9D1D6A00E176D7 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEBD6C9A2F9D1D6A00E176D7 /* Colors.xcassets */; };
 		CEBD6C9D2F9D1D7C00E176D7 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C9C2F9D1D7C00E176D7 /* Color.swift */; };
+		CED999EC2FED67AD0003577B /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEBD6C9A2F9D1D6A00E176D7 /* Colors.xcassets */; };
+		CED999EF2FED6A310003577B /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C9C2F9D1D7C00E176D7 /* Color.swift */; };
+		CED999F22FED6CB10003577B /* Support.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED999F12FED6CAD0003577B /* Support.swift */; };
+		CED999F52FED85D00003577B /* AppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1718FD2FECE2D900DA1D67 /* AppIntent.swift */; };
+		CED999F62FED873F0003577B /* ViewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87FFFE2FB039E200061801 /* ViewHelpers.swift */; };
+		CED999F72FED873F0003577B /* GestureHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87FFFC2FB039E200061801 /* GestureHelpers.swift */; };
+		CED999F82FED873F0003577B /* GlassModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87FFFD2FB039E200061801 /* GlassModifier.swift */; };
+		CED999F92FED8CC80003577B /* Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEBD6BF92F9D1CC400E176D7 /* Icons.xcassets */; };
+		CED999FA2FED8F180003577B /* MainGlass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231902F9E834400701039 /* MainGlass.swift */; };
+		CED999FB2FED94520003577B /* Symbols.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE7516602FCDCA84002C4625 /* Symbols.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -175,7 +184,6 @@
 		AF1719002FECE2D900DA1D67 /* PhotoStitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoStitch.swift; sourceTree = "<group>"; };
 		AF1719012FECE2D900DA1D67 /* PhotoStitchBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoStitchBundle.swift; sourceTree = "<group>"; };
 		AF1719022FECE2D900DA1D67 /* PhotoStitchControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoStitchControl.swift; sourceTree = "<group>"; };
-		AF1719032FECE2D900DA1D67 /* PhotoStitchLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoStitchLiveActivity.swift; sourceTree = "<group>"; };
 		AF4637672FECBC6F00277245 /* PhotoStitch2.0.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PhotoStitch2.0.entitlements; sourceTree = "<group>"; };
 		CE1FDC5E2F9D180400460178 /* PhotoStitch2.0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoStitch2.0.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE1FDC762F9D181000460178 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -302,6 +310,7 @@
 		CEBD6BFE2F9D1CC400E176D7 /* Updater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Updater.swift; sourceTree = "<group>"; };
 		CEBD6C9A2F9D1D6A00E176D7 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		CEBD6C9C2F9D1D7C00E176D7 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		CED999F12FED6CAD0003577B /* Support.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Support.swift; sourceTree = "<group>"; };
 		D4AAEC8C621ECAB52E001FBA /* Pods_PhotoStitch2_0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PhotoStitch2_0.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9BB7334FDF3F5D98FBC647E /* Pods-PhotoStitch2.0.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotoStitch2.0.release.xcconfig"; path = "Target Support Files/Pods-PhotoStitch2.0/Pods-PhotoStitch2.0.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -337,7 +346,7 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		AF1719042FECE2D900DA1D67 /* PhotoStitch */ = {
+		AF1719042FECE2D900DA1D67 /* PhotoStitchExtension */ = {
 			isa = PBXGroup;
 			children = (
 				AF1718FD2FECE2D900DA1D67 /* AppIntent.swift */,
@@ -346,16 +355,15 @@
 				AF1719002FECE2D900DA1D67 /* PhotoStitch.swift */,
 				AF1719012FECE2D900DA1D67 /* PhotoStitchBundle.swift */,
 				AF1719022FECE2D900DA1D67 /* PhotoStitchControl.swift */,
-				AF1719032FECE2D900DA1D67 /* PhotoStitchLiveActivity.swift */,
 			);
-			path = PhotoStitch;
+			path = PhotoStitchExtension;
 			sourceTree = "<group>";
 		};
 		CE1FDC552F9D180400460178 = {
 			isa = PBXGroup;
 			children = (
 				CE1FDC7F2F9D181000460178 /* PhotoStitch2.0 */,
-				AF1719042FECE2D900DA1D67 /* PhotoStitch */,
+				AF1719042FECE2D900DA1D67 /* PhotoStitchExtension */,
 				CE42319E2FAB46A900701039 /* Frameworks */,
 				CE1FDC5F2F9D180400460178 /* Products */,
 				6C7FCB7654A1878DB20D6ADA /* Pods */,
@@ -646,6 +654,7 @@
 			isa = PBXGroup;
 			children = (
 				CEBD6BEB2F9D1CC400E176D7 /* Config.swift */,
+				CED999F12FED6CAD0003577B /* Support.swift */,
 				CEBD6C9C2F9D1D7C00E176D7 /* Color.swift */,
 				CE87FFF72FB0387800061801 /* Pipeline.swift */,
 			);
@@ -767,6 +776,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				AF17190A2FECE2D900DA1D67 /* Assets.xcassets in Resources */,
+				CED999FB2FED94520003577B /* Symbols.xcassets in Resources */,
+				CED999F92FED8CC80003577B /* Icons.xcassets in Resources */,
+				CED999EC2FED67AD0003577B /* Colors.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -821,7 +833,11 @@
 				AF1719062FECE2D900DA1D67 /* PhotoStitch.swift in Sources */,
 				AF1719072FECE2D900DA1D67 /* PhotoStitchBundle.swift in Sources */,
 				AF1719082FECE2D900DA1D67 /* PhotoStitchControl.swift in Sources */,
-				AF1719092FECE2D900DA1D67 /* PhotoStitchLiveActivity.swift in Sources */,
+				CED999FA2FED8F180003577B /* MainGlass.swift in Sources */,
+				CED999F62FED873F0003577B /* ViewHelpers.swift in Sources */,
+				CED999F72FED873F0003577B /* GestureHelpers.swift in Sources */,
+				CED999F82FED873F0003577B /* GlassModifier.swift in Sources */,
+				CED999EF2FED6A310003577B /* Color.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -835,6 +851,7 @@
 				CE4231992FA9773400701039 /* AssetLibrary.swift in Sources */,
 				CE4231B02FACEBA400701039 /* Stitch.swift in Sources */,
 				CE4231932FA78CF800701039 /* HomeTop.swift in Sources */,
+				CED999F22FED6CB10003577B /* Support.swift in Sources */,
 				CE7516592FCA6F36002C4625 /* EditCut.swift in Sources */,
 				CE4231B62FACFBCE00701039 /* Loading.swift in Sources */,
 				CE87FFF12FB0223800061801 /* OpenCVWrapper.mm in Sources */,
@@ -857,6 +874,7 @@
 				CE8700472FB039E200061801 /* UIScrollViewPointOut.swift in Sources */,
 				CE8700482FB039E200061801 /* UIButtonPro.swift in Sources */,
 				CE8700492FB039E200061801 /* UIStackViewShadow.swift in Sources */,
+				CED999F52FED85D00003577B /* AppIntent.swift in Sources */,
 				CE87004A2FB039E200061801 /* ArrayHelpers.swift in Sources */,
 				CE75165F2FCC3415002C4625 /* EdgeModifier.swift in Sources */,
 				CE87004B2FB039E200061801 /* OptionalHelpers.swift in Sources */,
@@ -983,16 +1001,16 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 83J75ZCYJZ;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = PhotoStitch/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = PhotoStitch;
+				INFOPLIST_FILE = PhotoStitchExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = PhotoStitchExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.azubylabs.photostitch.intents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1014,16 +1032,16 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 83J75ZCYJZ;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = PhotoStitch/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = PhotoStitch;
+				INFOPLIST_FILE = PhotoStitchExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = PhotoStitchExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.azubylabs.photostitch.intents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1065,6 +1083,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.azubylabs.photostitch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1105,6 +1124,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.azubylabs.photostitch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1169,7 +1189,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -1228,7 +1248,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;

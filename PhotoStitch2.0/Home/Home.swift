@@ -57,6 +57,7 @@ struct Home: View {
                 if !SHOW_ONBOARDING {
                     try? await homeUpdater.registerChange()
                     addNoti()
+                    try? await StitchIntent.shared.trigger()
                 }
             }
         })
@@ -64,6 +65,7 @@ struct Home: View {
             Task {
                 if !SHOW_ONBOARDING {
                     try? await homeUpdater.requestLibraryAccess()
+                    try? await StitchIntent.shared.trigger()
                 }
             }
         })
@@ -85,6 +87,7 @@ struct Home: View {
                 SHOW_ONBOARDING = false
                 try? await homeUpdater.registerChange()
                 addNoti()
+                try? await StitchIntent.shared.trigger()
             }
         }) {
             Onboarding()
@@ -94,6 +97,44 @@ struct Home: View {
         }
         .sheet(isPresented: $homeUpdater.showInstruction, content: {
             VideoInstruction()
+        })
+        .onReceive(NotificationCenter.default.publisher(for: StitchIntent.IMAGE_NOTI), perform: { _ in
+            guard !homeUpdater.showEdit, let firstAsset = homeUpdater.filterAssets()?.first(where: { $0.mediaType == .image }) else { return }
+            
+            if let screenshotAlbum = homeUpdater.getAllAlbum().first(where: { $0.localizedTitle.contains("Screenshots") == true }) {
+                homeUpdater.selectAlbum(screenshotAlbum)
+            }
+            
+            homeUpdater.select(firstAsset, maxCount: 30)
+            
+            Task {
+                do {
+                    homeUpdater.items = try await homeUpdater.getItems()
+                    homeUpdater.axis = .vertical
+                    homeUpdater.showEdit = true
+                } catch {
+                    print(error)
+                }
+            }
+        })
+        .onReceive(NotificationCenter.default.publisher(for: StitchIntent.VIDEO_NOTI), perform: { _ in
+            guard !homeUpdater.showEdit, let firstAsset = homeUpdater.filterAssets()?.first(where: { $0.mediaType == .video }) else { return }
+            
+            if let screenshotAlbum = homeUpdater.getAllAlbum().first(where: { $0.localizedTitle.contains("Screenshots") == true }) {
+                homeUpdater.selectAlbum(screenshotAlbum)
+            }
+            
+            homeUpdater.select(firstAsset)
+            
+            Task {
+                do {
+                    homeUpdater.items = try await homeUpdater.getItems()
+                    homeUpdater.axis = .vertical
+                    homeUpdater.showEdit = true
+                } catch {
+                    print(error)
+                }
+            }
         })
         .environment(homeUpdater)
     }
@@ -172,7 +213,7 @@ struct Home: View {
     @ObservationIgnored var items: [StitchItem] = []
     @ObservationIgnored var axis: NSLayoutConstraint.Axis = .vertical
     
-    func select(_ asset: PHAsset) {
+    func select(_ asset: PHAsset, maxCount: Int = 4) {
         if selecteds.contains(where: { $0.mediaType == .video }),
            asset.mediaType == .video {
             warningAlert("Only one video can be selected at a time.")
@@ -180,7 +221,7 @@ struct Home: View {
         }
         
         do {
-            try autoSelection(for: asset)
+            try autoSelection(for: asset, maxCount: maxCount)
         } catch {
             print(error)
         }
@@ -243,7 +284,7 @@ struct Home: View {
         return begin != total
     }
     
-    private func autoSelection(for asset: PHAsset) throws {
+    private func autoSelection(for asset: PHAsset, maxCount: Int) throws {
         guard var currDate = asset.creationDate,
               let assets = filterAssets(),
               let firstIndex = assets.firstIndex(of: asset)
@@ -266,7 +307,7 @@ struct Home: View {
                   asset.mediaType != .video
             else { continue }
             
-            if calendar.isDate(currDate, inSameDayAs: date), abs(date.timeIntervalSince(currDate)) < INTERVAL_AUTO, pendingSelecteds.count < 4 {
+            if calendar.isDate(currDate, inSameDayAs: date), abs(date.timeIntervalSince(currDate)) < INTERVAL_AUTO, pendingSelecteds.count < maxCount {
                 pendingSelecteds.append(asset)
                 currAsset = asset
                 currDate = date
@@ -328,6 +369,60 @@ extension HomeUpdater {
                 photofilter = .all
             }
         }
+    }
+}
+
+extension HomeUpdater {
+    func getItems() async throws -> [StitchItem] {
+        VIEW_CONTROLLER.startLoading("Loading 0 / \(selecteds.count) Photos...")
+        
+        let items = await withTaskGroup(of: Optional<StitchItem>.self) { group in
+            var items = [StitchItem]()
+            
+            for asset in selecteds {
+                group.addTask {
+                    let item: StitchItem?
+                    
+                    do {
+                        if asset.mediaType == .image {
+                            item = try await PIPELINE.assetImageToItem(asset)
+                        } else {
+                            item = try await PIPELINE.assetVideoToItem(asset) { progress in
+                                print(progress)
+                            }
+                        }
+                    } catch {
+                        print(error)
+                        item = nil
+                    }
+                    
+                    return item
+                }
+            }
+            
+            for await item in group {
+                if let item = item {
+                    items.append(item)
+                    
+                    VIEW_CONTROLLER.startLoading("Loading \(items.count) / \(selecteds.count) Photos...")
+                }
+            }
+            
+            return try? items.sorted(by: { (selecteds.firstIndex(of: try $0.asset.unwrap()) ?? 0) < (selecteds.firstIndex(of: try $1.asset.unwrap()) ?? 0) })
+        }
+        
+        guard let items = items else {
+            throw MainError.error("No Items")
+        }
+        
+        if autoStitch {
+            VIEW_CONTROLLER.startLoading("Auto Stitch...")
+            try await PIPELINE.autoStitch(items)
+        }
+        
+        await withCheckedContinuation { continuation in VIEW_CONTROLLER.stopLoading { continuation.resume() } }
+        
+        return items
     }
 }
 

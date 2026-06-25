@@ -47,22 +47,6 @@ extension UIViewController {
             alert.dismiss(animated: true)
         }
     }
-    
-    func shareItems(_ items: [ShareItem]) {
-        let controller = UIActivityViewController(activityItems: items, applicationActivities: nil)
-        controller.popoverPresentationController?.sourceView = view
-        controller.popoverPresentationController?.sourceRect = view.bounds
-        controller.popoverPresentationController?.permittedArrowDirections = []
-        #if MAIN_APP
-        controller.completionWithItemsHandler = { [self] _, _, _, _ in
-            if !(UserDefaults.standard.object(forKey: "99c8c3562a5bff1f") as? Bool ?? false) {
-                view.pageup(Rating.self, supportOrientation: false)
-            }
-        }
-        #endif
-        
-        present(controller, animated: true)
-    }
 }
 
 protocol ShareItem: NSObject, UIActivityItemSource {

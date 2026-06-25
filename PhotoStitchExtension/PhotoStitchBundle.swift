@@ -11,8 +11,8 @@ import SwiftUI
 @main
 struct PhotoStitchBundle: WidgetBundle {
     var body: some Widget {
-        PhotoStitch()
+        StitchPhotosWidget()
+        StitchVideosWidget()
         PhotoStitchControl()
-        PhotoStitchLiveActivity()
     }
 }
