@@ -108,7 +108,7 @@ struct Home: View {
             ]
             
             if bool, let noti = notis.randomElement() {
-                NotificationHelpers.scheduleNotification(title: noti.0, body: noti.1, id: "notification", dateComponents: .init(weekday: .random(in: (1...5).difference(from: 1)))) { }
+                NotificationHelpers.scheduleNotification(title: noti.0, body: noti.1, id: "notification", dateComponents: .init(weekday: .random(in: 1...5))) { }
             }
         }
     }
