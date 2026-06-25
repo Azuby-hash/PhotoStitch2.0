@@ -56,19 +56,7 @@ struct Home: View {
             Task {
                 if !SHOW_ONBOARDING {
                     try? await homeUpdater.registerChange()
-                    
-                    NotificationHelpers.requestForPushNotification { bool in
-                        let notis = [
-                            ("Time to stitch?", "Stop sending 5 separate screenshots. Combine them into one now!"),
-                            ("Ready for your next stitch?", "Your scrolling captures are waiting. Tap to make a long screenshot!"),
-                            ("Got a video scrollshot?", "Stitch it into a single clean image now!"),
-                            ("Long webpage capture?", "Stitch the whole page together now!"),
-                        ]
-                        
-                        if bool, let noti = notis.randomElement() {
-                            NotificationHelpers.scheduleNotification(title: noti.0, body: noti.1, id: "notification", dateComponents: .init(weekday: .random(in: 1...5))) { }
-                        }
-                    }
+                    addNoti()
                 }
             }
         })
@@ -96,6 +84,7 @@ struct Home: View {
             Task {
                 SHOW_ONBOARDING = false
                 try? await homeUpdater.registerChange()
+                addNoti()
             }
         }) {
             Onboarding()
@@ -107,6 +96,21 @@ struct Home: View {
             VideoInstruction()
         })
         .environment(homeUpdater)
+    }
+    
+    private func addNoti() {
+        NotificationHelpers.requestForPushNotification { bool in
+            let notis = [
+                ("Time to stitch?", "Stop sending 5 separate screenshots. Combine them into one now!"),
+                ("Ready for your next stitch?", "Your scrolling captures are waiting. Tap to make a long screenshot!"),
+                ("Got a video scrollshot?", "Stitch it into a single clean image now!"),
+                ("Long webpage capture?", "Stitch the whole page together now!"),
+            ]
+            
+            if bool, let noti = notis.randomElement() {
+                NotificationHelpers.scheduleNotification(title: noti.0, body: noti.1, id: "notification", dateComponents: .init(weekday: .random(in: (1...5).difference(from: 1)))) { }
+            }
+        }
     }
 }
 
