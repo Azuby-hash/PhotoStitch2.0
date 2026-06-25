@@ -55,14 +55,27 @@ struct Home: View {
         .onAppear(perform: {
             Task {
                 if !SHOW_ONBOARDING {
-                    try await homeUpdater.registerChange()
+                    try? await homeUpdater.registerChange()
+                    
+                    NotificationHelpers.requestForPushNotification { bool in
+                        let notis = [
+                            ("Time to stitch?", "Stop sending 5 separate screenshots. Combine them into one now!"),
+                            ("Ready for your next stitch?", "Your scrolling captures are waiting. Tap to make a long screenshot!"),
+                            ("Got a video scrollshot?", "Stitch it into a single clean image now!"),
+                            ("Long webpage capture?", "Stitch the whole page together now!"),
+                        ]
+                        
+                        if bool, let noti = notis.randomElement() {
+                            NotificationHelpers.scheduleNotification(title: noti.0, body: noti.1, id: "notification", dateComponents: .init(weekday: .random(in: 1...5))) { }
+                        }
+                    }
                 }
             }
         })
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification), perform: { _ in
             Task {
                 if !SHOW_ONBOARDING {
-                    try await homeUpdater.requestLibraryAccess()
+                    try? await homeUpdater.requestLibraryAccess()
                 }
             }
         })
@@ -82,7 +95,7 @@ struct Home: View {
         .fullScreenCover(isPresented: $homeUpdater.showOnboarding, onDismiss: {
             Task {
                 SHOW_ONBOARDING = false
-                try await homeUpdater.registerChange()
+                try? await homeUpdater.registerChange()
             }
         }) {
             Onboarding()
@@ -281,7 +294,7 @@ extension HomeUpdater: PHPhotoLibraryChangeObserver {
     }
     
     func photoLibraryDidChange(_ changeInstance: PHChange) {
-        Task { try await requestLibraryAccess() }
+        Task { try? await requestLibraryAccess() }
     }
     
     func requestLibraryAccess() async throws {
