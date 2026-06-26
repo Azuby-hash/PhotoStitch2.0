@@ -51,8 +51,12 @@ struct EditSortTool: View {
                 .animation(.smooth(duration: ANIM_DURATION), value: opacity)
             } else {
                 Button {
-                    editUpdater.sortUpdater?.photoPosition = .before
-                    editUpdater.sortUpdater?.showPhotoPicker = true
+                    if MAX_SELECTION - editUpdater.items.count > 0 {
+                        editUpdater.sortUpdater?.photoPosition = .before
+                        editUpdater.sortUpdater?.showPhotoPicker = true
+                    } else {
+                        editUpdater.warningAlert("Maximum number of items reached.")
+                    }
                 } label: {
                     HStack {
                         Image("rectangle.arrowtriangle.2.top.badge.plus")
@@ -66,8 +70,12 @@ struct EditSortTool: View {
                 }
                 
                 Button {
-                    editUpdater.sortUpdater?.photoPosition = .after
-                    editUpdater.sortUpdater?.showPhotoPicker = true
+                    if MAX_SELECTION - editUpdater.items.count > 0 {
+                        editUpdater.sortUpdater?.photoPosition = .after
+                        editUpdater.sortUpdater?.showPhotoPicker = true
+                    } else {
+                        editUpdater.warningAlert("Maximum number of items reached.")
+                    }
                 } label: {
                     HStack {
                         Image("rectangle.arrowtriangle.2.bottom.badge.plus")
