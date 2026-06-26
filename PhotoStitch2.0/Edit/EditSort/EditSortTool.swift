@@ -24,6 +24,11 @@ struct EditSortTool: View {
             set: { editUpdater.sortUpdater?.photoItem = $0 }
         )
         
+        let photoItems = Binding(
+            get: { editUpdater.sortUpdater?.photoItems ?? [] },
+            set: { editUpdater.sortUpdater?.photoItems = $0 }
+        )
+        
         HStack {
             if editUpdater.sortUpdater?.selectionMode == true {
                 let opacity = editUpdater.sortUpdater?.selectItems.isEmpty == false ? 1 : 0.3
@@ -95,26 +100,54 @@ struct EditSortTool: View {
             }
         }
         .sheet(isPresented: showPhotoPicker, content: {
-            PhotosPicker(selection: photoItem, matching: .images, photoLibrary: .shared()) {
-                if let position = editUpdater.sortUpdater?.photoPosition {
-                    if case .before = position {
-                        Text("Select a photo to add to first of list")
-                    }
-                    
-                    if case .after = position {
-                        Text("Select a photo to add to last of list")
-                    }
-                    
-                    if case .mid = position {
-                        Text("Select a photo to add to current position of list")
-                    }
-                    
-                    if case .replace = position {
-                        Text("Select a photo to replace item")
+            if case .replace = editUpdater.sortUpdater?.photoPosition {
+                PhotosPicker(selection: photoItem, matching: .images, photoLibrary: .shared()) {
+                    if let position = editUpdater.sortUpdater?.photoPosition {
+                        if case .before = position {
+                            Text("Select a photo to add to first of list")
+                        }
+                        
+                        if case .after = position {
+                            Text("Select a photo to add to last of list")
+                        }
+                        
+                        if case .mid = position {
+                            Text("Select a photo to add to current position of list")
+                        }
+                        
+                        if case .replace = position {
+                            Text("Select a photo to replace item")
+                        }
                     }
                 }
+                .photosPickerStyle(.inline)
+            } else {
+                PhotosPicker(selection: photoItems, matching: .images, photoLibrary: .shared()) {
+                    if let position = editUpdater.sortUpdater?.photoPosition {
+                        if case .before = position {
+                            Text("Select a photo to add to first of list")
+                        }
+                        
+                        if case .after = position {
+                            Text("Select a photo to add to last of list")
+                        }
+                        
+                        if case .mid = position {
+                            Text("Select a photo to add to current position of list")
+                        }
+                        
+                        if case .replace = position {
+                            Text("Select a photo to replace item")
+                        }
+                    }
+                }
+                .photosPickerStyle(.inline)
             }
-            .photosPickerStyle(.inline)
+        })
+        .onChange(photoItems.wrappedValue, perform: { _ in
+            if case .replace = editUpdater.sortUpdater?.photoPosition, !photoItems.isEmpty {
+                showPhotoPicker.wrappedValue = false
+            }
         })
         .onChange(showPhotoPicker.wrappedValue) { _ in
             if showPhotoPicker.wrappedValue { return }
@@ -123,24 +156,22 @@ struct EditSortTool: View {
                 editUpdater.undoRedoBegin()
                 
                 do {
-                    if let position = editUpdater.sortUpdater?.photoPosition, let data = try await photoItem.wrappedValue.unwrap().loadTransferable(type: Data.self), let image = UIImage(data: data) {
-                        let image = PIPELINE.fixImageForOpenCV(image)
-                        print(try photoItem.wrappedValue.unwrap())
-                        let newItem = try StitchItem(asset: PHAsset.fetchAssets(withLocalIdentifiers: [photoItem.wrappedValue.unwrap().itemIdentifier.unwrap()], options: nil).object(at: 0), size: image.size, image: image.jpegData(), clean: image.processClean(), process: StitchProcess().setup(image: CIImage(image: image).unwrap(), config: Stitch.getConfig(mode: .image)))
-                        
+                    if let position = editUpdater.sortUpdater?.photoPosition {
+                        let items = try await getItems()
+
                         if case .before = position {
-                            editUpdater.items.insert(newItem, at: 0)
+                            editUpdater.items.insert(contentsOf: items, at: 0)
                         }
                         
                         if case .after = position {
-                            editUpdater.items.insert(newItem, at: editUpdater.items.count)
+                            editUpdater.items.insert(contentsOf: items, at: editUpdater.items.count)
                         }
                         
                         if case let .mid(item) = position, let index = editUpdater.items.firstIndex(of: item) {
-                            editUpdater.items.insert(newItem, at: index + 1)
+                            editUpdater.items.insert(contentsOf: items, at: index + 1)
                         }
                         
-                        if case let .replace(item) = position, let index = editUpdater.items.firstIndex(of: item) {
+                        if case let .replace(item) = position, let index = editUpdater.items.firstIndex(of: item), let newItem = items.first {
                             newItem.id = editUpdater.items[index].id
                             editUpdater.items[index] = newItem
                         }
@@ -153,6 +184,60 @@ struct EditSortTool: View {
             }
         }
     }
+    
+    func getItems() async throws -> [StitchItem] {
+        guard let sortUpdater = editUpdater.sortUpdater else {
+            throw MainError.error("No sort updater")
+        }
+        
+        VIEW_CONTROLLER.startLoading("Loading 0 / \(sortUpdater.photoItems.count) Photos...")
+        
+        let items = await withTaskGroup(of: Optional<StitchItem>.self) { group in
+            var items = [StitchItem]()
+            
+            for photoItem in sortUpdater.photoItems {
+                group.addTask {
+                    var item: StitchItem?
+                    
+                    do {
+                        if let data = try await photoItem.loadTransferable(type: Data.self), let image = UIImage(data: data) {
+                            let image = await PIPELINE.fixImageForOpenCV(image)
+                            item = try await StitchItem(asset: PHAsset.fetchAssets(withLocalIdentifiers: [photoItem.itemIdentifier.unwrap()], options: nil).object(at: 0), size: image.size, image: image.jpegData(), clean: image.processClean(), process: StitchProcess().setup(image: CIImage(image: image).unwrap(), config: Stitch.getConfig(mode: .image)))
+                        }
+                    } catch {
+                        print(error)
+                    }
+                    
+                    return item
+                }
+            }
+            
+            for await item in group {
+                if let item = item {
+                    items.append(item)
+                    
+                    VIEW_CONTROLLER.startLoading("Loading \(items.count) / \(sortUpdater.photoItems.count) Photos...")
+                }
+            }
+            
+            return items.sorted(by: { (item1, item2) in (sortUpdater.photoItems.firstIndex(where: { $0.itemIdentifier == item1.asset?.localIdentifier }) ?? 0) < (sortUpdater.photoItems.firstIndex(where: { $0.itemIdentifier == item2.asset?.localIdentifier }) ?? 0) })
+        }
+        
+        guard !items.isEmpty else {
+            throw MainError.error("No Items")
+        }
+        
+        if AUTO_STITCH, items.count >= 2 {
+            VIEW_CONTROLLER.startLoading("Auto Stitch...")
+            try await PIPELINE.autoStitch(items)
+        }
+        
+        await withCheckedContinuation { continuation in VIEW_CONTROLLER.stopLoading { continuation.resume() } }
+        
+        sortUpdater.photoItems = []
+        
+        return items
+    }
 }
 
 @Observable class EditSortUpdater {
@@ -161,6 +246,7 @@ struct EditSortTool: View {
     var selectItems: [StitchItem] = []
     var selectionMode = false
     
+    var photoItems: [PhotosPickerItem] = []
     var photoItem: PhotosPickerItem?
     var photoPosition: SortPosition = .before
     var showPhotoPicker: Bool = false
