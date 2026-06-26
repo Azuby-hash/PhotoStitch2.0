@@ -18,12 +18,7 @@ struct EditSortTool: View {
             get: { editUpdater.sortUpdater?.showPhotoPicker == true },
             set: { editUpdater.sortUpdater?.showPhotoPicker = $0 }
         )
-        
-        let photoItem = Binding(
-            get: { editUpdater.sortUpdater?.photoItem },
-            set: { editUpdater.sortUpdater?.photoItem = $0 }
-        )
-        
+
         let photoItems = Binding(
             get: { editUpdater.sortUpdater?.photoItems ?? [] },
             set: { editUpdater.sortUpdater?.photoItems = $0 }
@@ -100,54 +95,35 @@ struct EditSortTool: View {
             }
         }
         .sheet(isPresented: showPhotoPicker, content: {
-            if case .replace = editUpdater.sortUpdater?.photoPosition {
-                PhotosPicker(selection: photoItem, matching: .images, photoLibrary: .shared()) {
-                    if let position = editUpdater.sortUpdater?.photoPosition {
-                        if case .before = position {
-                            Text("Select a photo to add to first of list")
-                        }
-                        
-                        if case .after = position {
-                            Text("Select a photo to add to last of list")
-                        }
-                        
-                        if case .mid = position {
-                            Text("Select a photo to add to current position of list")
-                        }
-                        
-                        if case .replace = position {
-                            Text("Select a photo to replace item")
-                        }
+            let maxSelectionCount: Int? = {
+                switch editUpdater.sortUpdater?.photoPosition {
+                case .replace:
+                    return 1
+                default:
+                    return MAX_SELECTION - editUpdater.items.count
+                }
+            }()
+            
+            PhotosPicker(selection: photoItems, maxSelectionCount: maxSelectionCount, matching: .images, photoLibrary: .shared()) {
+                if let position = editUpdater.sortUpdater?.photoPosition {
+                    if case .before = position {
+                        Text("Select a photo to add to first of list")
+                    }
+                    
+                    if case .after = position {
+                        Text("Select a photo to add to last of list")
+                    }
+                    
+                    if case .mid = position {
+                        Text("Select a photo to add to current position of list")
+                    }
+                    
+                    if case .replace = position {
+                        Text("Select a photo to replace item")
                     }
                 }
-                .photosPickerStyle(.inline)
-            } else {
-                PhotosPicker(selection: photoItems, matching: .images, photoLibrary: .shared()) {
-                    if let position = editUpdater.sortUpdater?.photoPosition {
-                        if case .before = position {
-                            Text("Select a photo to add to first of list")
-                        }
-                        
-                        if case .after = position {
-                            Text("Select a photo to add to last of list")
-                        }
-                        
-                        if case .mid = position {
-                            Text("Select a photo to add to current position of list")
-                        }
-                        
-                        if case .replace = position {
-                            Text("Select a photo to replace item")
-                        }
-                    }
-                }
-                .photosPickerStyle(.inline)
             }
-        })
-        .onChange(photoItems.wrappedValue, perform: { _ in
-            if case .replace = editUpdater.sortUpdater?.photoPosition, !photoItems.isEmpty {
-                showPhotoPicker.wrappedValue = false
-            }
+            .photosPickerStyle(.inline)
         })
         .onChange(showPhotoPicker.wrappedValue) { _ in
             if showPhotoPicker.wrappedValue { return }
@@ -247,7 +223,6 @@ struct EditSortTool: View {
     var selectionMode = false
     
     var photoItems: [PhotosPickerItem] = []
-    var photoItem: PhotosPickerItem?
     var photoPosition: SortPosition = .before
     var showPhotoPicker: Bool = false
 }
