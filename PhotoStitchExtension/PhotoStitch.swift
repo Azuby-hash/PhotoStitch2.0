@@ -31,35 +31,38 @@ struct StitchProvider: TimelineProvider {
 
 fileprivate struct StitchPhotosView: View {
     var body: some View {
-        VStack {
-            VStack(spacing: 8) {
-                HStack(spacing: 4) {
-                    Image("sparkles")
-                        .font(.system(size: 18, weight: .bold, design: .rounded))
-                    Text("Quick Stitch")
-                        .font(.system(size: 16, weight: .bold, design: .rounded))
-                }
-                .foregroundStyle(Color.primary)
-                
-                Rectangle()
-                    .fill(Color.primary)
-                    .frame(width: 60, height: 3)
-                    .clipShape(.capsule)
+        VStack(alignment: .leading) {
+            HStack {
+                Image("photo.on.rectangle.angled")
+                    .font(.system(size: 12, weight: .bold, design: .rounded))
+                    .foregroundStyle(Color._primary)
+                    .frame(width: 28, height: 28)
+                    .background(Color._white, in: RoundedRectangle(cornerRadius: 9, style: .continuous))
+
+                Text("Photos")
+                    .font(.system(size: 20, weight: .bold, design: .rounded))
+                    .foregroundStyle(Color._white)
             }
-            
+
+            Text("Stitch screenshots into long image.")
+                .font(.system(size: 12, weight: .semibold, design: .rounded))
+                .foregroundStyle(Color._white.opacity(0.9))
+                .multilineTextAlignment(.leading)
+                .fixedSize(horizontal: false, vertical: true)
+
             Spacer()
-            
+
             Button(intent: StitchPhotosIntent()) {
-                VStack {
-                    Image(.vertical)
-                    Text("Photos")
-                        .font(.system(size: 13, weight: .bold))
+                HStack(spacing: 6) {
+                    Image("sparkles")
+                        .font(.system(size: 12, weight: .bold, design: .rounded))
+                    Text("Quick Stitch")
+                        .font(.system(size: 14, weight: .bold, design: .rounded))
                 }
-                .foregroundStyle(Color._white)
-                .padding(.horizontal, 20)
-                .padding(.vertical, 8)
-                .background(Color._primary.clipShape(RoundedRectangle(cornerRadius: 20)))
-                .shadow(color: ._primary.opacity(0.7), radius: 10, x: 0, y: 8)
+                .foregroundStyle(Color._primary)
+                .frame(maxWidth: .infinity)
+                .frame(height: 36)
+                .background(Color._white, in: Capsule())
             }
             .buttonStyle(.plain)
         }
@@ -69,35 +72,38 @@ fileprivate struct StitchPhotosView: View {
 
 fileprivate struct StitchVideosView: View {
     var body: some View {
-        VStack {
-            VStack(spacing: 8) {
-                HStack(spacing: 4) {
-                    Image("sparkles")
-                        .font(.system(size: 18, weight: .bold, design: .rounded))
-                    Text("Quick Stitch")
-                        .font(.system(size: 16, weight: .bold, design: .rounded))
-                }
-                .foregroundStyle(Color.primary)
-                
-                Rectangle()
-                    .fill(Color.primary)
-                    .frame(width: 60, height: 3)
-                    .clipShape(.capsule)
+        VStack(alignment: .leading) {
+            HStack {
+                Image("play.fill")
+                    .font(.system(size: 12, weight: .bold, design: .rounded))
+                    .foregroundStyle(Color._primary)
+                    .frame(width: 28, height: 28)
+                    .background(Color._white, in: RoundedRectangle(cornerRadius: 9, style: .continuous))
+
+                Text("Video")
+                    .font(.system(size: 20, weight: .bold, design: .rounded))
+                    .foregroundStyle(Color._white)
             }
-            
+
+            Text("Convert recording into long image.")
+                .font(.system(size: 12, weight: .semibold, design: .rounded))
+                .foregroundStyle(Color._white.opacity(0.9))
+                .multilineTextAlignment(.leading)
+                .fixedSize(horizontal: false, vertical: true)
+
             Spacer()
-            
+
             Button(intent: StitchVideosIntent()) {
-                VStack {
-                    Image(.vertical)
-                    Text("Video")
-                        .font(.system(size: 13, weight: .bold))
+                HStack(spacing: 6) {
+                    Image("sparkles")
+                        .font(.system(size: 12, weight: .bold, design: .rounded))
+                    Text("Quick Stitch")
+                        .font(.system(size: 14, weight: .bold, design: .rounded))
                 }
-                .foregroundStyle(Color._white)
-                .padding(.horizontal, 20)
-                .padding(.vertical, 8)
-                .background(Color._primary.clipShape(RoundedRectangle(cornerRadius: 20)))
-                .shadow(color: ._primary.opacity(0.7), radius: 10, x: 0, y: 8)
+                .foregroundStyle(Color._primary)
+                .frame(maxWidth: .infinity)
+                .frame(height: 36)
+                .background(Color._white, in: Capsule())
             }
             .buttonStyle(.plain)
         }
@@ -108,20 +114,23 @@ fileprivate struct StitchVideosView: View {
 fileprivate struct StitchBothView: View {
     var body: some View {
         VStack {
-            VStack(spacing: 8) {
-                HStack(spacing: 4) {
-                    Image("sparkles")
-                        .font(.system(size: 18, weight: .bold, design: .rounded))
-                    Text("Quick Stitch")
-                        .font(.system(size: 16, weight: .bold, design: .rounded))
-                }
-                .foregroundStyle(Color.primary)
-                
-                Rectangle()
-                    .fill(Color.primary)
-                    .frame(width: 60, height: 3)
-                    .clipShape(.capsule)
+            HStack {
+                Image("sparkles")
+                    .font(.system(size: 12, weight: .bold, design: .rounded))
+                    .foregroundStyle(Color._primary)
+                    .frame(width: 28, height: 28)
+                    .background(Color._white, in: RoundedRectangle(cornerRadius: 9, style: .continuous))
+
+            Text("Quick Stitch")
+                    .font(.system(size: 20, weight: .bold, design: .rounded))
+                    .foregroundStyle(Color._white)
             }
+
+            Text("Convert recording or stitch screenshots\ninto long image.")
+                .font(.system(size: 12, weight: .semibold, design: .rounded))
+                .foregroundStyle(Color._white.opacity(0.9))
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
             
             Spacer()
             
@@ -132,11 +141,10 @@ fileprivate struct StitchBothView: View {
                         Text("Photos")
                             .font(.system(size: 13, weight: .bold))
                     }
-                    .foregroundStyle(Color._white)
-                    .padding(.horizontal, 20)
+                    .foregroundStyle(Color._primary)
+                    .frame(width: 100)
                     .padding(.vertical, 8)
-                    .background(Color._primary.clipShape(RoundedRectangle(cornerRadius: 20)))
-                    .shadow(color: ._primary.opacity(0.7), radius: 10, x: 0, y: 8)
+                    .background(Color._white.clipShape(RoundedRectangle(cornerRadius: 20)))
                 }
                 .buttonStyle(.plain)
                 
@@ -146,11 +154,10 @@ fileprivate struct StitchBothView: View {
                         Text("Video")
                             .font(.system(size: 13, weight: .bold))
                     }
-                    .foregroundStyle(Color._white)
-                    .padding(.horizontal, 20)
+                    .foregroundStyle(Color._primary)
+                    .frame(width: 100)
                     .padding(.vertical, 8)
-                    .background(Color._primary.clipShape(RoundedRectangle(cornerRadius: 20)))
-                    .shadow(color: ._primary.opacity(0.7), radius: 10, x: 0, y: 8)
+                    .background(Color._white.clipShape(RoundedRectangle(cornerRadius: 20)))
                 }
                 .buttonStyle(.plain)
             }
@@ -196,7 +203,12 @@ struct StitchPhotosWidget: Widget {
         StaticConfiguration(kind: kind, provider: StitchProvider()) { _ in
             StitchPhotosEntryView()
                 .containerBackground(for: .widget) {
-                    Color._whiteVert
+                    Color.white
+                    LinearGradient(
+                        colors: [Color._primary.opacity(0.85), Color._primary],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
                 }
         }
         .configurationDisplayName("Stitch Photos")
@@ -212,7 +224,12 @@ struct StitchVideosWidget: Widget {
         StaticConfiguration(kind: kind, provider: StitchProvider()) { _ in
             StitchVideosEntryView()
                 .containerBackground(for: .widget) {
-                    Color._whiteVert
+                    Color.white
+                    LinearGradient(
+                        colors: [Color._primary.opacity(0.85), Color._primary],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
                 }
         }
         .configurationDisplayName("Stitch Video")

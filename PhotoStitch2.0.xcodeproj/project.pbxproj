@@ -350,10 +350,10 @@
 			isa = PBXGroup;
 			children = (
 				AF1718FD2FECE2D900DA1D67 /* AppIntent.swift */,
+				AF1719012FECE2D900DA1D67 /* PhotoStitchBundle.swift */,
 				AF1718FE2FECE2D900DA1D67 /* Assets.xcassets */,
 				AF1718FF2FECE2D900DA1D67 /* Info.plist */,
 				AF1719002FECE2D900DA1D67 /* PhotoStitch.swift */,
-				AF1719012FECE2D900DA1D67 /* PhotoStitchBundle.swift */,
 				AF1719022FECE2D900DA1D67 /* PhotoStitchControl.swift */,
 			);
 			path = PhotoStitchExtension;
