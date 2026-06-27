@@ -47,6 +47,7 @@ struct Onboarding: View {
                 .padding(.horizontal, 16)
         }
         .animation(.smooth(duration: ANIM_DURATION), value: currentPage)
+        .frame(maxWidth: 450)
     }
 
     // MARK: - Pages

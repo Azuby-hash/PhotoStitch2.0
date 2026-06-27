@@ -147,6 +147,15 @@
 		CED999F92FED8CC80003577B /* Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEBD6BF92F9D1CC400E176D7 /* Icons.xcassets */; };
 		CED999FA2FED8F180003577B /* MainGlass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231902F9E834400701039 /* MainGlass.swift */; };
 		CED999FB2FED94520003577B /* Symbols.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE7516602FCDCA84002C4625 /* Symbols.xcassets */; };
+		CED99A0A2FEFE4F50003577B /* PhotoStitchShare.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = CED99A002FEFE4F50003577B /* PhotoStitchShare.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		CED99A142FEFE5070003577B /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED99A122FEFE5070003577B /* ShareViewController.swift */; };
+		CED99A162FEFE5070003577B /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CED99A112FEFE5070003577B /* MainInterface.storyboard */; };
+		CED99A1A2FEFE9E60003577B /* StitchIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED99A192FEFE9E20003577B /* StitchIntent.swift */; };
+		CED99A1B2FEFEA040003577B /* StitchIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED99A192FEFE9E20003577B /* StitchIntent.swift */; };
+		CED99A1C2FEFEA040003577B /* StitchIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED99A192FEFE9E20003577B /* StitchIntent.swift */; };
+		CED99A1E2FF01F870003577B /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6BEB2F9D1CC400E176D7 /* Config.swift */; };
+		CED99A1F2FF01F9B0003577B /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C9C2F9D1D7C00E176D7 /* Color.swift */; };
+		CED99A202FF020880003577B /* OptionalHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700412FB039E200061801 /* OptionalHelpers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -157,6 +166,13 @@
 			remoteGlobalIDString = AF1718E12FECE2CA00DA1D67;
 			remoteInfo = PhotoStitchExtension;
 		};
+		CED99A082FEFE4F50003577B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CE1FDC562F9D180400460178 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CED999FF2FEFE4F50003577B;
+			remoteInfo = PhotoStitch;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -166,6 +182,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				CED99A0A2FEFE4F50003577B /* PhotoStitchShare.appex in Embed Foundation Extensions */,
 				AF1718F72FECE2CC00DA1D67 /* PhotoStitchExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
@@ -184,7 +201,6 @@
 		AF1719002FECE2D900DA1D67 /* PhotoStitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoStitch.swift; sourceTree = "<group>"; };
 		AF1719012FECE2D900DA1D67 /* PhotoStitchBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoStitchBundle.swift; sourceTree = "<group>"; };
 		AF1719022FECE2D900DA1D67 /* PhotoStitchControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoStitchControl.swift; sourceTree = "<group>"; };
-		AF4637672FECBC6F00277245 /* PhotoStitch2.0.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PhotoStitch2.0.entitlements; sourceTree = "<group>"; };
 		CE1FDC5E2F9D180400460178 /* PhotoStitch2.0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoStitch2.0.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE1FDC762F9D181000460178 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE1FDC772F9D181000460178 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -311,6 +327,12 @@
 		CEBD6C9A2F9D1D6A00E176D7 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		CEBD6C9C2F9D1D7C00E176D7 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		CED999F12FED6CAD0003577B /* Support.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Support.swift; sourceTree = "<group>"; };
+		CED99A002FEFE4F50003577B /* PhotoStitchShare.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PhotoStitchShare.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		CED99A0F2FEFE5070003577B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CED99A102FEFE5070003577B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		CED99A122FEFE5070003577B /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
+		CED99A192FEFE9E20003577B /* StitchIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StitchIntent.swift; sourceTree = "<group>"; };
+		CED99A912FF02C390003577B /* PhotoStitchShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PhotoStitchShare.entitlements; sourceTree = "<group>"; };
 		D4AAEC8C621ECAB52E001FBA /* Pods_PhotoStitch2_0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PhotoStitch2_0.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9BB7334FDF3F5D98FBC647E /* Pods-PhotoStitch2.0.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotoStitch2.0.release.xcconfig"; path = "Target Support Files/Pods-PhotoStitch2.0/Pods-PhotoStitch2.0.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -331,6 +353,13 @@
 			files = (
 				CE4231A02FAB46A900701039 /* PhotosUI.framework in Frameworks */,
 				8283F3DCF15DFE99BB0325B0 /* Pods_PhotoStitch2_0.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CED999FD2FEFE4F50003577B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -364,6 +393,7 @@
 			children = (
 				CE1FDC7F2F9D181000460178 /* PhotoStitch2.0 */,
 				AF1719042FECE2D900DA1D67 /* PhotoStitchExtension */,
+				CED99A132FEFE5070003577B /* PhotoStitchShare */,
 				CE42319E2FAB46A900701039 /* Frameworks */,
 				CE1FDC5F2F9D180400460178 /* Products */,
 				6C7FCB7654A1878DB20D6ADA /* Pods */,
@@ -375,6 +405,7 @@
 			children = (
 				CE1FDC5E2F9D180400460178 /* PhotoStitch2.0.app */,
 				AF1718E22FECE2CA00DA1D67 /* PhotoStitchExtension.appex */,
+				CED99A002FEFE4F50003577B /* PhotoStitchShare.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -382,7 +413,6 @@
 		CE1FDC7F2F9D181000460178 /* PhotoStitch2.0 */ = {
 			isa = PBXGroup;
 			children = (
-				AF4637672FECBC6F00277245 /* PhotoStitch2.0.entitlements */,
 				CE1FDC762F9D181000460178 /* AppDelegate.swift */,
 				CE1FDC7D2F9D181000460178 /* SceneDelegate.swift */,
 				CE1FDC7C2F9D181000460178 /* Main.storyboard */,
@@ -664,6 +694,7 @@
 		CEBD6BFF2F9D1CC400E176D7 /* Package */ = {
 			isa = PBXGroup;
 			children = (
+				CED99A192FEFE9E20003577B /* StitchIntent.swift */,
 				CEBD6BFD2F9D1CC400E176D7 /* Geometry.swift */,
 				CEBD6BFE2F9D1CC400E176D7 /* Updater.swift */,
 				CE4231902F9E834400701039 /* MainGlass.swift */,
@@ -688,6 +719,17 @@
 				CE4231B52FACFBCE00701039 /* Loading.swift */,
 			);
 			path = Module;
+			sourceTree = "<group>";
+		};
+		CED99A132FEFE5070003577B /* PhotoStitchShare */ = {
+			isa = PBXGroup;
+			children = (
+				CED99A0F2FEFE5070003577B /* Info.plist */,
+				CED99A112FEFE5070003577B /* MainInterface.storyboard */,
+				CED99A122FEFE5070003577B /* ShareViewController.swift */,
+				CED99A912FF02C390003577B /* PhotoStitchShare.entitlements */,
+			);
+			path = PhotoStitchShare;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -726,11 +768,31 @@
 			);
 			dependencies = (
 				AF1718F62FECE2CC00DA1D67 /* PBXTargetDependency */,
+				CED99A092FEFE4F50003577B /* PBXTargetDependency */,
 			);
 			name = PhotoStitch2.0;
 			productName = PhotoStitch2.0;
 			productReference = CE1FDC5E2F9D180400460178 /* PhotoStitch2.0.app */;
 			productType = "com.apple.product-type.application";
+		};
+		CED999FF2FEFE4F50003577B /* PhotoStitchShare */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CED99A0C2FEFE4F50003577B /* Build configuration list for PBXNativeTarget "PhotoStitchShare" */;
+			buildPhases = (
+				CED999FC2FEFE4F50003577B /* Sources */,
+				CED999FD2FEFE4F50003577B /* Frameworks */,
+				CED999FE2FEFE4F50003577B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PhotoStitchShare;
+			packageProductDependencies = (
+			);
+			productName = PhotoStitch;
+			productReference = CED99A002FEFE4F50003577B /* PhotoStitchShare.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -739,7 +801,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 2630;
+				LastSwiftUpdateCheck = 2700;
 				LastUpgradeCheck = 2610;
 				TargetAttributes = {
 					AF1718E12FECE2CA00DA1D67 = {
@@ -747,6 +809,9 @@
 					};
 					CE1FDC5D2F9D180400460178 = {
 						CreatedOnToolsVersion = 26.1;
+					};
+					CED999FF2FEFE4F50003577B = {
+						CreatedOnToolsVersion = 27.0;
 					};
 				};
 			};
@@ -766,6 +831,7 @@
 			targets = (
 				CE1FDC5D2F9D180400460178 /* PhotoStitch2.0 */,
 				AF1718E12FECE2CA00DA1D67 /* PhotoStitchExtension */,
+				CED999FF2FEFE4F50003577B /* PhotoStitchShare */,
 			);
 		};
 /* End PBXProject section */
@@ -794,6 +860,14 @@
 				CEBD6C9B2F9D1D6A00E176D7 /* Colors.xcassets in Resources */,
 				CE1FDC852F9D181000460178 /* LaunchScreen.storyboard in Resources */,
 				CE1FDC862F9D181000460178 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CED999FE2FEFE4F50003577B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CED99A162FEFE5070003577B /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -830,6 +904,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AF1719052FECE2D900DA1D67 /* AppIntent.swift in Sources */,
+				CED99A1B2FEFEA040003577B /* StitchIntent.swift in Sources */,
 				AF1719062FECE2D900DA1D67 /* PhotoStitch.swift in Sources */,
 				AF1719072FECE2D900DA1D67 /* PhotoStitchBundle.swift in Sources */,
 				AF1719082FECE2D900DA1D67 /* PhotoStitchControl.swift in Sources */,
@@ -886,6 +961,7 @@
 				CE8700512FB039E200061801 /* WKSWebView.swift in Sources */,
 				CE8700522FB039E200061801 /* UISImageView.swift in Sources */,
 				CE25DA262FE4432300DE2E22 /* UndoRedo.swift in Sources */,
+				CED99A1A2FEFE9E60003577B /* StitchIntent.swift in Sources */,
 				CE8700532FB039E200061801 /* UIStackViewHighlight.swift in Sources */,
 				CE8700A52FBCB5F800061801 /* EditStitchControl.swift in Sources */,
 				CE8700542FB039E200061801 /* UIViewPointDetect.swift in Sources */,
@@ -962,6 +1038,18 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CED999FC2FEFE4F50003577B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CED99A142FEFE5070003577B /* ShareViewController.swift in Sources */,
+				CED99A1F2FF01F9B0003577B /* Color.swift in Sources */,
+				CED99A202FF020880003577B /* OptionalHelpers.swift in Sources */,
+				CED99A1C2FEFEA040003577B /* StitchIntent.swift in Sources */,
+				CED99A1E2FF01F870003577B /* Config.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -969,6 +1057,11 @@
 			isa = PBXTargetDependency;
 			target = AF1718E12FECE2CA00DA1D67 /* PhotoStitchExtension */;
 			targetProxy = AF1718F52FECE2CC00DA1D67 /* PBXContainerItemProxy */;
+		};
+		CED99A092FEFE4F50003577B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CED999FF2FEFE4F50003577B /* PhotoStitchShare */;
+			targetProxy = CED99A082FEFE4F50003577B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -987,6 +1080,14 @@
 				CE1FDC7B2F9D181000460178 /* Base */,
 			);
 			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		CED99A112FEFE5070003577B /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CED99A102FEFE5070003577B /* Base */,
+			);
+			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -1259,6 +1360,68 @@
 			};
 			name = Release;
 		};
+		CED99A0D2FEFE4F50003577B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = PhotoStitchShare/PhotoStitchShare.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 83J75ZCYJZ;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PhotoStitchShare/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = PhotoStitchShare;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.azubylabs.photostitch.share;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CED99A0E2FEFE4F50003577B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = PhotoStitchShare/PhotoStitchShare.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 83J75ZCYJZ;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PhotoStitchShare/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = PhotoStitchShare;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.azubylabs.photostitch.share;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1285,6 +1448,15 @@
 			buildConfigurations = (
 				CE1FDC722F9D180600460178 /* Debug */,
 				CE1FDC732F9D180600460178 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CED99A0C2FEFE4F50003577B /* Build configuration list for PBXNativeTarget "PhotoStitchShare" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CED99A0D2FEFE4F50003577B /* Debug */,
+				CED99A0E2FEFE4F50003577B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
