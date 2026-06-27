@@ -35,18 +35,18 @@ fileprivate struct StitchPhotosView: View {
             HStack {
                 Image("photo.on.rectangle.angled")
                     .font(.system(size: 12, weight: .bold, design: .rounded))
-                    .foregroundStyle(Color._primary)
+                    .foregroundStyle(Color._white)
                     .frame(width: 28, height: 28)
-                    .background(Color._white, in: RoundedRectangle(cornerRadius: 9, style: .continuous))
+                    .background(Color._black, in: RoundedRectangle(cornerRadius: 9, style: .continuous))
 
                 Text("Photos")
                     .font(.system(size: 20, weight: .bold, design: .rounded))
-                    .foregroundStyle(Color._white)
+                    .foregroundStyle(Color._black)
             }
 
             Text("Stitch screenshots into long image.")
                 .font(.system(size: 12, weight: .semibold, design: .rounded))
-                .foregroundStyle(Color._white.opacity(0.9))
+                .foregroundStyle(Color._black.opacity(0.5))
                 .multilineTextAlignment(.leading)
                 .fixedSize(horizontal: false, vertical: true)
 
@@ -59,10 +59,10 @@ fileprivate struct StitchPhotosView: View {
                     Text("Quick Stitch")
                         .font(.system(size: 14, weight: .bold, design: .rounded))
                 }
-                .foregroundStyle(Color._primary)
+                .foregroundStyle(Color._white)
                 .frame(maxWidth: .infinity)
                 .frame(height: 36)
-                .background(Color._white, in: Capsule())
+                .background(Color._primary, in: Capsule())
             }
             .buttonStyle(.plain)
         }
@@ -76,18 +76,18 @@ fileprivate struct StitchVideosView: View {
             HStack {
                 Image("play.fill")
                     .font(.system(size: 12, weight: .bold, design: .rounded))
-                    .foregroundStyle(Color._primary)
+                    .foregroundStyle(Color._white)
                     .frame(width: 28, height: 28)
-                    .background(Color._white, in: RoundedRectangle(cornerRadius: 9, style: .continuous))
+                    .background(Color._black, in: RoundedRectangle(cornerRadius: 9, style: .continuous))
 
                 Text("Video")
                     .font(.system(size: 20, weight: .bold, design: .rounded))
-                    .foregroundStyle(Color._white)
+                    .foregroundStyle(Color._black)
             }
 
             Text("Convert recording into long image.")
                 .font(.system(size: 12, weight: .semibold, design: .rounded))
-                .foregroundStyle(Color._white.opacity(0.9))
+                .foregroundStyle(Color._black.opacity(0.5))
                 .multilineTextAlignment(.leading)
                 .fixedSize(horizontal: false, vertical: true)
 
@@ -100,10 +100,10 @@ fileprivate struct StitchVideosView: View {
                     Text("Quick Stitch")
                         .font(.system(size: 14, weight: .bold, design: .rounded))
                 }
-                .foregroundStyle(Color._primary)
+                .foregroundStyle(Color._white)
                 .frame(maxWidth: .infinity)
                 .frame(height: 36)
-                .background(Color._white, in: Capsule())
+                .background(Color._primary, in: Capsule())
             }
             .buttonStyle(.plain)
         }
@@ -117,47 +117,49 @@ fileprivate struct StitchBothView: View {
             HStack {
                 Image("sparkles")
                     .font(.system(size: 12, weight: .bold, design: .rounded))
-                    .foregroundStyle(Color._primary)
+                    .foregroundStyle(Color._white)
                     .frame(width: 28, height: 28)
-                    .background(Color._white, in: RoundedRectangle(cornerRadius: 9, style: .continuous))
+                    .background(Color._black, in: RoundedRectangle(cornerRadius: 9, style: .continuous))
 
             Text("Quick Stitch")
                     .font(.system(size: 20, weight: .bold, design: .rounded))
-                    .foregroundStyle(Color._white)
+                    .foregroundStyle(Color._black)
             }
 
             Text("Convert recording or stitch screenshots\ninto long image.")
                 .font(.system(size: 12, weight: .semibold, design: .rounded))
-                .foregroundStyle(Color._white.opacity(0.9))
+                .foregroundStyle(Color._black.opacity(0.5))
                 .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
             
             Spacer()
             
             HStack(spacing: 16) {
-                Button(intent: StitchPhotosIntent()) {
-                    VStack {
-                        Image(.vertical)
-                        Text("Photos")
-                            .font(.system(size: 13, weight: .bold))
-                    }
-                    .foregroundStyle(Color._primary)
-                    .frame(width: 100)
-                    .padding(.vertical, 8)
-                    .background(Color._white.clipShape(RoundedRectangle(cornerRadius: 20)))
-                }
-                .buttonStyle(.plain)
-                
                 Button(intent: StitchVideosIntent()) {
-                    VStack {
-                        Image(.vertical)
+                    VStack(spacing: 6) {
+                        Image("phay.fill")
+                            .font(.system(size: 16, weight: .bold))
                         Text("Video")
                             .font(.system(size: 13, weight: .bold))
                     }
-                    .foregroundStyle(Color._primary)
+                    .foregroundStyle(Color._white)
                     .frame(width: 100)
                     .padding(.vertical, 8)
-                    .background(Color._white.clipShape(RoundedRectangle(cornerRadius: 20)))
+                    .background(Color._primary.clipShape(RoundedRectangle(cornerRadius: 20)))
+                }
+                .buttonStyle(.plain)
+                
+                Button(intent: StitchPhotosIntent()) {
+                    VStack(spacing: 6) {
+                        Image("photo.on.rectangle.angled")
+                            .font(.system(size: 16, weight: .bold))
+                        Text("Photos")
+                            .font(.system(size: 13, weight: .bold))
+                    }
+                    .foregroundStyle(Color._white)
+                    .frame(width: 100)
+                    .padding(.vertical, 8)
+                    .background(Color._primary.clipShape(RoundedRectangle(cornerRadius: 20)))
                 }
                 .buttonStyle(.plain)
             }
@@ -203,12 +205,9 @@ struct StitchPhotosWidget: Widget {
         StaticConfiguration(kind: kind, provider: StitchProvider()) { _ in
             StitchPhotosEntryView()
                 .containerBackground(for: .widget) {
-                    Color.white
-                    LinearGradient(
-                        colors: [Color._primary.opacity(0.85), Color._primary],
-                        startPoint: .top,
-                        endPoint: .bottom
-                    )
+                    Image("Background")
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
                 }
         }
         .configurationDisplayName("Stitch Photos")
@@ -224,12 +223,9 @@ struct StitchVideosWidget: Widget {
         StaticConfiguration(kind: kind, provider: StitchProvider()) { _ in
             StitchVideosEntryView()
                 .containerBackground(for: .widget) {
-                    Color.white
-                    LinearGradient(
-                        colors: [Color._primary.opacity(0.85), Color._primary],
-                        startPoint: .top,
-                        endPoint: .bottom
-                    )
+                    Image("Background")
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
                 }
         }
         .configurationDisplayName("Stitch Video")
