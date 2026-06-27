@@ -171,7 +171,7 @@ struct Home: View {
     private(set) var selecteds: [PHAsset] = []
     
     var showMenu = MenuType.none
-    var showOnboarding = SHOW_ONBOARDING
+    var showOnboarding = true
     var showSubscription = false
     var showInstruction = false {
         didSet {
