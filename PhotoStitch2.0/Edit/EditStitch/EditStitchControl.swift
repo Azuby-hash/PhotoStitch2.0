@@ -696,11 +696,14 @@ extension EditStitchControl {
     
     private func beginDrag() {
         editUpdater?.anim = false
+        editUpdater?.lockSheetGestures(from: self)
     }
-    
+
     private func endDrag() {
+        editUpdater?.unlockSheetGestures()
+
         guard let editUpdater = editUpdater else { return }
-        
+
         editUpdater.anim = true
         
         if beginNorFrameBefores != nil || beginNorFrameAfters != nil {
@@ -714,7 +717,7 @@ extension EditStitchControl {
         
         UIView.animate(withDuration: ANIM_DURATION, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in
             context?.coordinator.view?.layoutIfNeeded()
-            
+
             if let context = context {
                 contentUpdate(editUpdater: editUpdater, context: context)
             }

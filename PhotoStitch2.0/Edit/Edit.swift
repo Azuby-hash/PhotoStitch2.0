@@ -95,8 +95,10 @@ enum EditTab: String, CaseIterable {
     @ObservationIgnored private var warningTask: Task<Void, Never>?
     
     let tapOutside: PassthroughSubject<Void, Never> = .init()
-    
+
     let shareVer: Bool
+
+    @ObservationIgnored private var disabledSheetGestures = [UIGestureRecognizer]()
     
     init(items: [StitchItem], axis: NSLayoutConstraint.Axis, shareVer: Bool = false) {
         self.items = items
@@ -154,6 +156,34 @@ enum EditTab: String, CaseIterable {
 }
 
 extension EditUpdater {
+    /// In the share extension the content lives inside a system sheet whose
+    /// interactive-dismiss pan gesture (on an ancestor container) competes with
+    /// the raw-touch drags in the edit controls. The small edge handles never
+    /// cross its threshold, but a full-area drag does, so the sheet steals it.
+    /// Disable any ancestor pan gestures for the duration of the drag (the scroll
+    /// view's own pan is a sibling and stays untouched), then restore them.
+    func lockSheetGestures(from view: UIView) {
+        guard shareVer else { return }
+
+        var current: UIView? = view
+
+        while let view = current {
+            view.gestureRecognizers?.forEach { gesture in
+                if gesture is UIPanGestureRecognizer, gesture.isEnabled {
+                    gesture.isEnabled = false
+                    disabledSheetGestures.append(gesture)
+                }
+            }
+
+            current = view.superview
+        }
+    }
+
+    func unlockSheetGestures() {
+        disabledSheetGestures.forEach { $0.isEnabled = true }
+        disabledSheetGestures.removeAll()
+    }
+
     func warningAlert(_ string: String) {
         warningTask?.cancel()
         warningText = string
