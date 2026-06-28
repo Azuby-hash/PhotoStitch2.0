@@ -217,6 +217,12 @@
 		CED99AD32FF0C2380003577B /* CGImageHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700362FB039E200061801 /* CGImageHelpers.swift */; };
 		CED99AD52FF1549C0003577B /* Rating.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CED99AD42FF1549C0003577B /* Rating.xcassets */; };
 		CED99AD82FF156920003577B /* Rating.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED99AD72FF156920003577B /* Rating.swift */; };
+		CED99ADB2FF18B170003577B /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = CED99ADA2FF18B170003577B /* Localizable.xcstrings */; };
+		CED99ADC2FF18B170003577B /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = CED99AD92FF18B170003577B /* InfoPlist.xcstrings */; };
+		CED99ADD2FF18B170003577B /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = CED99ADA2FF18B170003577B /* Localizable.xcstrings */; };
+		CED99ADE2FF18B170003577B /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = CED99ADA2FF18B170003577B /* Localizable.xcstrings */; };
+		CED99AE02FF18B170003577B /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = CED99ADF2FF18B170003577B /* InfoPlist.xcstrings */; };
+		CED99AE22FF18B170003577B /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = CED99AE12FF18B170003577B /* InfoPlist.xcstrings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -396,6 +402,10 @@
 		CED99A912FF02C390003577B /* PhotoStitchShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PhotoStitchShare.entitlements; sourceTree = "<group>"; };
 		CED99AD42FF1549C0003577B /* Rating.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Rating.xcassets; sourceTree = "<group>"; };
 		CED99AD72FF156920003577B /* Rating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rating.swift; sourceTree = "<group>"; };
+		CED99AD92FF18B170003577B /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
+		CED99ADA2FF18B170003577B /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		CED99ADF2FF18B170003577B /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
+		CED99AE12FF18B170003577B /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		D4AAEC8C621ECAB52E001FBA /* Pods_PhotoStitch2_0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PhotoStitch2_0.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9BB7334FDF3F5D98FBC647E /* Pods-PhotoStitch2.0.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotoStitch2.0.release.xcconfig"; path = "Target Support Files/Pods-PhotoStitch2.0/Pods-PhotoStitch2.0.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -441,6 +451,7 @@
 		AF1719042FECE2D900DA1D67 /* PhotoStitchExtension */ = {
 			isa = PBXGroup;
 			children = (
+				CED99ADF2FF18B170003577B /* InfoPlist.xcstrings */,
 				AF1718FD2FECE2D900DA1D67 /* AppIntent.swift */,
 				AF1719012FECE2D900DA1D67 /* PhotoStitchBundle.swift */,
 				AF1718FE2FECE2D900DA1D67 /* Assets.xcassets */,
@@ -476,6 +487,8 @@
 		CE1FDC7F2F9D181000460178 /* PhotoStitch2.0 */ = {
 			isa = PBXGroup;
 			children = (
+				CED99AD92FF18B170003577B /* InfoPlist.xcstrings */,
+				CED99ADA2FF18B170003577B /* Localizable.xcstrings */,
 				CE1FDC762F9D181000460178 /* AppDelegate.swift */,
 				CE1FDC7D2F9D181000460178 /* SceneDelegate.swift */,
 				CE1FDC7C2F9D181000460178 /* Main.storyboard */,
@@ -788,6 +801,7 @@
 		CED99A132FEFE5070003577B /* PhotoStitchShare */ = {
 			isa = PBXGroup;
 			children = (
+				CED99AE12FF18B170003577B /* InfoPlist.xcstrings */,
 				CED99A0F2FEFE5070003577B /* Info.plist */,
 				CED99A112FEFE5070003577B /* MainInterface.storyboard */,
 				CED99A122FEFE5070003577B /* ShareViewController.swift */,
@@ -894,6 +908,10 @@
 			knownRegions = (
 				en,
 				Base,
+				ko,
+				"zh-Hant",
+				"zh-Hans",
+				ar,
 			);
 			mainGroup = CE1FDC552F9D180400460178;
 			minimizedProjectReferenceProxies = 1;
@@ -914,7 +932,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CED99AE02FF18B170003577B /* InfoPlist.xcstrings in Resources */,
 				AF17190A2FECE2D900DA1D67 /* Assets.xcassets in Resources */,
+				CED99ADD2FF18B170003577B /* Localizable.xcstrings in Resources */,
 				CED999FB2FED94520003577B /* Symbols.xcassets in Resources */,
 				CED999F92FED8CC80003577B /* Icons.xcassets in Resources */,
 				CED999EC2FED67AD0003577B /* Colors.xcassets in Resources */,
@@ -925,6 +945,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CED99ADB2FF18B170003577B /* Localizable.xcstrings in Resources */,
+				CED99ADC2FF18B170003577B /* InfoPlist.xcstrings in Resources */,
 				CE7516612FCDCA84002C4625 /* Symbols.xcassets in Resources */,
 				CED99AD52FF1549C0003577B /* Rating.xcassets in Resources */,
 				CE1FDC832F9D181000460178 /* Assets.xcassets in Resources */,
@@ -941,7 +963,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CED99AE22FF18B170003577B /* InfoPlist.xcstrings in Resources */,
 				CED99ACF2FF040E70003577B /* Symbols.xcassets in Resources */,
+				CED99ADE2FF18B170003577B /* Localizable.xcstrings in Resources */,
 				CED99AD02FF040E70003577B /* Icons.xcassets in Resources */,
 				CED99AD12FF040E70003577B /* Colors.xcassets in Resources */,
 				CED99A162FEFE5070003577B /* MainInterface.storyboard in Resources */,

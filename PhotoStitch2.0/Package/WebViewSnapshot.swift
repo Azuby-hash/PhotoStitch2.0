@@ -38,7 +38,7 @@ class WebViewSnapshot {
             webView.scrollView.rightEdgeEffect.isHidden = true
         }
 
-        VIEW_CONTROLLER.startLoading("Website Capturing...   0%")
+        VIEW_CONTROLLER.startLoading(String(localized: "Website Capturing...   \(0)%"))
 
         webView.evaluateJavaScript("document.documentElement.style.overflow = 'hidden'; document.body.style.overflow = 'hidden';")
 
@@ -52,7 +52,7 @@ class WebViewSnapshot {
         
         func snapshot(at index: Int) {
             DispatchQueue.main.async {
-                VIEW_CONTROLLER.startLoading("Website Capturing...   \(index * 100 / count)%")
+                VIEW_CONTROLLER.startLoading(String(localized: "Website Capturing...   \(index * 100 / count)%"))
             }
             
             if index == count {

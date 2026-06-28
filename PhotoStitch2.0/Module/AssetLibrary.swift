@@ -75,6 +75,7 @@ class ALInfo {
 class AssetLibrary {
     private var albums: [ALInfo] = []
     private var didFetch = false
+    private(set) var screenshots: ALInfo?
     
     /**
      Request user permisstion and fetch data
@@ -232,17 +233,18 @@ extension AssetLibrary {
             }
         })
         
-        if let recents = albums.first(where: { $0.getName().lowercased().contains("recents") }) {
+        if let recents = albums.max(by: { $0.getCount() < $1.getCount() }) {
             albums = [recents] + albums.filter({ $0.getName() != recents.getName() })
         }
         
         let screenshotAssets = albums.filter({ $0.subType == .smartAlbumScreenshots || $0.subType == .smartAlbumScreenRecordings }).flatMap({ $0.assets }).sorted(by: { a, _ in a.mediaType == .video })
-        let screenshotInfo = ALInfo(assets: screenshotAssets, localizedTitle: "Screenshots", subType: .smartAlbumScreenshots)
+        let screenshotInfo = ALInfo(assets: screenshotAssets, localizedTitle: (albums.first(where: { $0.subType == .smartAlbumScreenshots }) ?? albums.first(where: { $0.subType == .smartAlbumScreenRecordings }))?.localizedTitle ?? "Screenshots", subType: .smartAlbumScreenshots)
         
         albums = albums.filter({ $0.subType != .smartAlbumScreenshots && $0.subType != .smartAlbumScreenRecordings })
         
         if screenshotAssets.count > 0 {
             albums.insert(screenshotInfo, at: 0)
+            screenshots = screenshotInfo
         }
     }
 }

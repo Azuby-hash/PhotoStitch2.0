@@ -93,7 +93,7 @@ private struct StepRow: View {
                 .frame(width: 24, height: 24)
                 .background(Circle().fill(Color(uiColor: .label)))
 
-            Text(text)
+            Text(LocalizedStringKey(text))
                 .font(.system(size: 15))
                 .foregroundStyle(Color(uiColor: .secondaryLabel))
                 .fixedSize(horizontal: false, vertical: true)

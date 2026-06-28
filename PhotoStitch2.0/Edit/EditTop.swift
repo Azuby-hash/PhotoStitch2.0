@@ -225,14 +225,14 @@ struct EditTop: View {
                                         DispatchQueue.main.async {
                                             if status == .denied {
                                                 showAlert(title: "Saved", message: "Image successfully saved to Library.", actions: [
-                                                    UIAlertAction(title: "OK", style: .default)
+                                                    UIAlertAction(title: String(localized: "OK"), style: .default)
                                                 ])
                                             } else {
                                                 let assets = editUpdater.items.compactMap({ $0.asset })
                                                 
                                                 if homeUpdater.removeOriginals == .ask {
                                                     showAlert(title: "Saved", message: "Image successfully saved to Library.", actions: [
-                                                        UIAlertAction(title: "Delete Original Photos", style: .destructive, handler: { _ in
+                                                        UIAlertAction(title: String(localized: "Delete Original Photos"), style: .destructive, handler: { _ in
                                                             PHPhotoLibrary.shared().performChanges {
                                                                 PHAssetChangeRequest.deleteAssets(assets as NSFastEnumeration)
                                                             } completionHandler: { success, _ in
@@ -241,13 +241,13 @@ struct EditTop: View {
                                                                 }
                                                             }
                                                         }),
-                                                        UIAlertAction(title: "Keep Original Photos", style: .default)
+                                                        UIAlertAction(title: String(localized: "Keep Original Photos"), style: .default)
                                                     ])
                                                 }
                                                 
                                                 if homeUpdater.removeOriginals == .always {
                                                     showAlert(title: "Saved", message: "Image successfully saved to Library.", actions: [
-                                                        UIAlertAction(title: "OK", style: .default, handler: { _ in
+                                                        UIAlertAction(title: String(localized: "OK"), style: .default, handler: { _ in
                                                             PHPhotoLibrary.shared().performChanges {
                                                                 PHAssetChangeRequest.deleteAssets(assets as NSFastEnumeration)
                                                             } completionHandler: { success, _ in
@@ -261,7 +261,7 @@ struct EditTop: View {
                                                 
                                                 if homeUpdater.removeOriginals == .never {
                                                     showAlert(title: "Saved", message: "Image successfully saved to Library.", actions: [
-                                                        UIAlertAction(title: "OK", style: .default)
+                                                        UIAlertAction(title: String(localized: "OK"), style: .default)
                                                     ])
                                                 }
                                             }
@@ -421,9 +421,9 @@ struct EditTop: View {
         }
     }
     
-    private func showAlert(title: String, message: String, actions: [UIAlertAction] = [UIAlertAction(title: "OK", style: .default)]) {
+    private func showAlert(title: String, message: String, actions: [UIAlertAction] = [UIAlertAction(title: String(localized: "OK"), style: .default)]) {
         DispatchQueue.main.async {
-            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            let alert = UIAlertController(title: String(localized: String.LocalizationValue(title)), message: String(localized: String.LocalizationValue(message)), preferredStyle: .alert)
             actions.forEach({ alert.addAction($0) })
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {

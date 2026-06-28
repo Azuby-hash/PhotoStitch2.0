@@ -457,7 +457,7 @@ extension EditCutControl: ForwardScrollProtocol {
                 
                 editUpdater.undoRedoCommit()
             } catch {
-                editUpdater.warningAlert("Exceed max items, can't \(editUpdater.cutUpdater?.mode == .single ? "split" : "cut")")
+                editUpdater.warningAlert(editUpdater.cutUpdater?.mode == .single ? "Can't split, maximum number of items reached." : "Can't cut, maximum number of items reached.")
             }
             
             UIView.animate(withDuration: ANIM_DURATION, delay: 0.25, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut) { [self] in

@@ -372,36 +372,36 @@ enum SubscriptionPlan {
     // TODO: wire these up to your real StoreKit product prices
     var title: String {
         switch self {
-        case .weekly: return "Weekly"
-        case .yearly: return "Yearly"
+        case .weekly: return String(localized: "Weekly")
+        case .yearly: return String(localized: "Yearly")
         }
     }
-    
+
     var price: String {
         switch self {
         case .weekly: return "$4.99"
         case .yearly: return "$39.99"
         }
     }
-    
+
     var period: String {
         switch self {
-        case .weekly: return "/ week"
-        case .yearly: return "/ year"
+        case .weekly: return String(localized: "/ week")
+        case .yearly: return String(localized: "/ year")
         }
     }
-    
+
     var badge: String? {
         switch self {
         case .weekly: return nil
-        case .yearly: return "Best Value"
+        case .yearly: return String(localized: "Best Value")
         }
     }
     
     var footnote: String {
         switch self {
-        case .weekly: return "Cancel anytime."
-        case .yearly: return "Just $0.77/week, billed annually. Cancel anytime."
+        case .weekly: return String(localized: "Cancel anytime.")
+        case .yearly: return String(localized: "Just $0.77/week, billed annually. Cancel anytime.")
         }
     }
 }
@@ -414,12 +414,12 @@ enum SubscriptionPlan {
     
     // TODO: replace with your real 6 benefits
     var benefits: [SubscriptionBenefit] = [
-        SubscriptionBenefit(title: "No Watermarks"),
-        SubscriptionBenefit(title: "No Ads"),
-        SubscriptionBenefit(title: "No Limits"),
-        SubscriptionBenefit(title: "High Quality Export"),
-        SubscriptionBenefit(title: "Smart Auto Stitch"),
-        SubscriptionBenefit(title: "More Features")
+        SubscriptionBenefit(title: String(localized: "No Watermarks")),
+        SubscriptionBenefit(title: String(localized: "No Ads")),
+        SubscriptionBenefit(title: String(localized: "No Limits")),
+        SubscriptionBenefit(title: String(localized: "High Quality Export")),
+        SubscriptionBenefit(title: String(localized: "Smart Auto Stitch")),
+        SubscriptionBenefit(title: String(localized: "More Features"))
     ]
     
     @ObservationIgnored private var loopTask: Task<Void, Never>?

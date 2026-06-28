@@ -186,7 +186,7 @@ extension EditUpdater {
 
     func warningAlert(_ string: String) {
         warningTask?.cancel()
-        warningText = string
+        warningText = String(localized: String.LocalizationValue(string))
         warningTask = Task {
             try? await Task.sleep(for: .seconds(2))
 

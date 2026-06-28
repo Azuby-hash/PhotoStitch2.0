@@ -10,7 +10,7 @@ import LinkPresentation
 import UniformTypeIdentifiers
 
 extension UIViewController {
-    func startLoading(_ title: String? = "Loading...") {
+    func startLoading(_ title: String? = String(localized: "Loading...")) {
         if let loading = presentedViewController as? UIAlertController {
             loading.title = title
             return
@@ -29,8 +29,8 @@ extension UIViewController {
     
     func startAlert(_ title: String? = nil, _ message: String? = nil, _ primary: String? = nil, primaryAction: @escaping () -> Void) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
-        
+        alert.addAction(UIAlertAction(title: String(localized: "OK"), style: .default))
+
         if let primary = primary {
             alert.addAction(UIAlertAction(title: primary, style: .default, handler: { _ in primaryAction() }))
         }

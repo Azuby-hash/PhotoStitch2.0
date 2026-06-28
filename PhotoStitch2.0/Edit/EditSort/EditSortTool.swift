@@ -174,7 +174,7 @@ struct EditSortTool: View {
             throw MainError.error("No sort updater")
         }
         
-        VIEW_CONTROLLER.startLoading("Loading 0 / \(sortUpdater.photoItems.count) Photos...")
+        VIEW_CONTROLLER.startLoading(String(localized: "Loading \(0) / \(sortUpdater.photoItems.count) Photos..."))
         
         let items = await withTaskGroup(of: Optional<StitchItem>.self) { group in
             var items = [StitchItem]()
@@ -200,7 +200,7 @@ struct EditSortTool: View {
                 if let item = item {
                     items.append(item)
                     
-                    VIEW_CONTROLLER.startLoading("Loading \(items.count) / \(sortUpdater.photoItems.count) Photos...")
+                    VIEW_CONTROLLER.startLoading(String(localized: "Loading \(items.count) / \(sortUpdater.photoItems.count) Photos..."))
                 }
             }
             
@@ -212,7 +212,7 @@ struct EditSortTool: View {
         }
         
         if AUTO_STITCH, items.count >= 2 {
-            VIEW_CONTROLLER.startLoading("Auto Stitch...")
+            VIEW_CONTROLLER.startLoading(String(localized: "Auto Stitch..."))
             try await PIPELINE.autoStitch(items)
         }
         

@@ -126,7 +126,7 @@ struct Home: View {
         .onReceive(NotificationCenter.default.publisher(for: StitchIntent.IMAGE_NOTI), perform: { _ in
             guard !homeUpdater.showEdit, let firstAsset = homeUpdater.filterAssets()?.first(where: { $0.mediaType == .image }) else { return }
             
-            if let screenshotAlbum = homeUpdater.getAllAlbum().first(where: { $0.localizedTitle.contains("Screenshots") == true }) {
+            if let screenshotAlbum = homeUpdater.getScreenshots() {
                 homeUpdater.selectAlbum(screenshotAlbum)
             }
             
@@ -145,7 +145,7 @@ struct Home: View {
         .onReceive(NotificationCenter.default.publisher(for: StitchIntent.VIDEO_NOTI), perform: { _ in
             guard !homeUpdater.showEdit, let firstAsset = homeUpdater.filterAssets()?.first(where: { $0.mediaType == .video }) else { return }
             
-            if let screenshotAlbum = homeUpdater.getAllAlbum().first(where: { $0.localizedTitle.contains("Screenshots") == true }) {
+            if let screenshotAlbum = homeUpdater.getScreenshots() {
                 homeUpdater.selectAlbum(screenshotAlbum)
             }
             
@@ -175,7 +175,7 @@ struct Home: View {
             
             if bool, let noti = notis.randomElement() {
                 NotificationHelpers.removeAllNotification()
-                NotificationHelpers.scheduleNotification(title: noti.0, body: noti.1, id: "notification", dateComponents: .init(hour: 20, minute: 0, second: 0, weekday: .random(in: 1...5))) { }
+                NotificationHelpers.scheduleNotification(title: String(localized: String.LocalizationValue(noti.0)), body: String(localized: String.LocalizationValue(noti.1)), id: "notification", dateComponents: .init(hour: 20, minute: 0, second: 0, weekday: .random(in: 1...5))) { }
             }
         }
     }
@@ -378,6 +378,10 @@ extension HomeUpdater: PHPhotoLibraryChangeObserver {
 }
 
 extension HomeUpdater {
+    func getScreenshots() -> ALInfo? {
+        return library.screenshots
+    }
+    
     func getAllAlbum() -> [ALInfo] {
         return library.getAllAlbum()
     }
@@ -401,7 +405,7 @@ extension HomeUpdater {
 
 extension HomeUpdater {
     func getItems() async throws -> [StitchItem] {
-        VIEW_CONTROLLER.startLoading("Loading 0 / \(selecteds.count) Photos...")
+        VIEW_CONTROLLER.startLoading(String(localized: "Loading \(0) / \(selecteds.count) Photos..."))
         
         let items = await withTaskGroup(of: Optional<StitchItem>.self) { group in
             var items = [StitchItem]()
@@ -431,7 +435,7 @@ extension HomeUpdater {
                 if let item = item {
                     items.append(item)
                     
-                    VIEW_CONTROLLER.startLoading("Loading \(items.count) / \(selecteds.count) Photos...")
+                    VIEW_CONTROLLER.startLoading(String(localized: "Loading \(items.count) / \(selecteds.count) Photos..."))
                 }
             }
             
@@ -443,7 +447,7 @@ extension HomeUpdater {
         }
         
         if autoStitch {
-            VIEW_CONTROLLER.startLoading("Auto Stitch...")
+            VIEW_CONTROLLER.startLoading(String(localized: "Auto Stitch..."))
             try await PIPELINE.autoStitch(items)
         }
         
@@ -456,7 +460,7 @@ extension HomeUpdater {
 extension HomeUpdater {
     func warningAlert(_ string: String) {
         warningTask?.cancel()
-        warningText = string
+        warningText = String(localized: String.LocalizationValue(string))
         warningTask = Task {
             try? await Task.sleep(for: .seconds(2))
 

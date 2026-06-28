@@ -88,9 +88,9 @@ enum RemoveOriginals: Int, CaseIterable {
     
     var title: String {
         switch(self) {
-        case .never: return "Never"
-        case .ask: return "Ask"
-        case .always: return "Always"
+        case .never: return String(localized: "Never")
+        case .ask: return String(localized: "Ask")
+        case .always: return String(localized: "Always")
         }
     }
     
@@ -110,9 +110,9 @@ enum PhotosFilter: Int, CaseIterable {
     
     var title: String {
         switch(self) {
-        case .images: return "Images"
-        case .videos: return "Videos"
-        case .all: return "All Photos"
+        case .images: return String(localized: "Images")
+        case .videos: return String(localized: "Videos")
+        case .all: return String(localized: "All Photos")
         }
     }
     

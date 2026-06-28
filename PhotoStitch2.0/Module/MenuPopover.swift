@@ -41,7 +41,7 @@ struct MenuPopover<Content: View>: View {
                             ForEach(items) { item in
                                 HStack {
                                     item.icon
-                                    Text(item.name); Spacer()
+                                    Text(LocalizedStringKey(item.name)); Spacer()
                                 }
                                 .padding(.horizontal, 12)
                                 .frame(height: 44)

@@ -58,7 +58,7 @@ struct Rating: View {
                     .scaledToFit()
                     .frame(width: 56, height: 56)
 
-                Text(label)
+                Text(LocalizedStringKey(label))
                     .font(.system(size: 13, weight: .semibold, design: .rounded))
                     .foregroundStyle(Color(uiColor: .secondaryLabel))
             }
@@ -70,9 +70,9 @@ struct Rating: View {
     }
 
     private func sendFeedback() {
-        let alert = UIAlertController(title: "Write Your Feedback", message: "Help us improve by sharing your experience.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Close", style: .destructive))
-        alert.addAction(UIAlertAction(title: "Feedback", style: .default, handler: { _ in
+        let alert = UIAlertController(title: String(localized: "Write Your Feedback"), message: String(localized: "Help us improve by sharing your experience."), preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: String(localized: "Close"), style: .destructive))
+        alert.addAction(UIAlertAction(title: String(localized: "Feedback"), style: .default, handler: { _ in
             let email = "azuby.dev@gmail.com"
             if let url = URL(string: "mailto:\(email)?subject=Photo Stitch Feedback") {
                 UIApplication.shared.open(url)

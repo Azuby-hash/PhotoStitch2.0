@@ -14,18 +14,18 @@ struct Onboarding: View {
     private let pages: [OnboardingPage] = [
         OnboardingPage(
             icon: "rectangle.grid.1x2.fill.2.line",
-            title: "Welcome to\nPhoto Stitch",
-            subtitle: "Combine multiple screenshots into one clean, seamless image in seconds."
+            title: String(localized: "Welcome to\nPhoto Stitch"),
+            subtitle: String(localized: "Combine multiple screenshots into one clean, seamless image in seconds.")
         ),
         OnboardingPage(
             icon: "play.rectangle.fill",
-            title: "Video to Long Image",
-            subtitle: "Record a slow scroll on your screen and import the video — Photo Stitch converts it into one seamless long screenshot."
+            title: String(localized: "Video to Long Image"),
+            subtitle: String(localized: "Record a slow scroll on your screen and import the video — Photo Stitch converts it into one seamless long screenshot.")
         ),
         OnboardingPage(
             icon: "sparkles",
-            title: "Smart Auto Stitch",
-            subtitle: "Just select your photos and the app automatically detect and stitch them together."
+            title: String(localized: "Smart Auto Stitch"),
+            subtitle: String(localized: "Just select your photos and the app automatically detect and stitch them together.")
         ),
     ]
 
