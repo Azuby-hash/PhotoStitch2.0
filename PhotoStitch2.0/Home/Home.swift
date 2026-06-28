@@ -149,6 +149,7 @@ struct Home: View {
             ]
             
             if bool, let noti = notis.randomElement() {
+                NotificationHelpers.removeAllNotification()
                 NotificationHelpers.scheduleNotification(title: noti.0, body: noti.1, id: "notification", dateComponents: .init(hour: 20, minute: 0, second: 0, weekday: .random(in: 1...5))) { }
             }
         }

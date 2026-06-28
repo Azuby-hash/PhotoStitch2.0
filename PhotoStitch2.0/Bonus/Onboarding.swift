@@ -18,14 +18,14 @@ struct Onboarding: View {
             subtitle: "Combine multiple screenshots into one clean, seamless image in seconds."
         ),
         OnboardingPage(
-            icon: "sparkles",
-            title: "Smart Auto Stitch",
-            subtitle: "Just select your photos and the app automatically detect and stitch them together."
-        ),
-        OnboardingPage(
             icon: "play.rectangle.fill",
             title: "Video to Long Image",
             subtitle: "Record a slow scroll on your screen and import the video — Photo Stitch converts it into one seamless long screenshot."
+        ),
+        OnboardingPage(
+            icon: "sparkles",
+            title: "Smart Auto Stitch",
+            subtitle: "Just select your photos and the app automatically detect and stitch them together."
         ),
     ]
 
