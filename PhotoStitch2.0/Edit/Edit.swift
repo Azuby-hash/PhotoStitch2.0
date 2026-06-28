@@ -20,7 +20,7 @@ struct Edit: View {
                 
                 EditGallery(edgeInsets: totalInset, baseInsets: bonusInset)
                     .ignoresSafeArea()
-                    .modifier(EdgeModifier(top: 44, bottom: 60))
+                    .modifier(EdgeModifier(top: 44 + (editUpdater.shareVer ? 60 : 0), bottom: 60))
     
                 ZStack {
                     EditBottom()
@@ -64,7 +64,7 @@ struct Edit: View {
         let topInset = editUpdater.axis == .horizontal ? size.height * topMultiple : 48
         let bottomInset = editUpdater.axis == .horizontal ? size.height * bottomMultiple : 48
         
-        return EdgeInsets(top: topInset + 44, leading: hozInset, bottom: bottomInset + 60, trailing: hozInset)
+        return EdgeInsets(top: topInset + 44 + (editUpdater.shareVer ? 60 : 0), leading: hozInset, bottom: bottomInset + 60, trailing: hozInset)
     }
 }
 

@@ -31,91 +31,109 @@ struct EditTop: View {
     
     var body: some View {
         ZStack {
-            GlassContainer {
-                HStack(spacing: 12) {
-                    Button {
-                        homeUpdater.showEdit = false
-                    } label: {
-                        Image(editUpdater.shareVer ? "xmark" : "chevron.left")
-                            .font(.system(size: 18, weight: .semibold, design: .rounded))
-                            .foregroundStyle(Color.primary)
+            VStack(spacing: 16) {
+                GlassContainer {
+                    HStack(spacing: 12) {
+                        Button {
+                            homeUpdater.showEdit = false
+                        } label: {
+                            Image(editUpdater.shareVer ? "xmark" : "chevron.left")
+                                .font(.system(size: 18, weight: .semibold, design: .rounded))
+                                .foregroundStyle(Color.primary)
+                                .frame(width: 44, height: 44)
+                                .modifier(MainGlass(shape: .capsule, type: .clear))
+                        }
+                        
+                        Spacer()
+                        
+                        HStack(spacing: 0) {
+                            Button {
+                                guard editUpdater.undoRedo.canUndo else { return }
+                                
+                                editUpdater.block = true
+                                
+                                Task {
+                                    do {
+                                        try await editUpdater.undoRedo.undo()
+                                    } catch {
+                                        print(error)
+                                    }
+                                    
+                                    editUpdater.block = false
+                                }
+                            } label: {
+                                Image("arrow.uturn.backward")
+                                    .font(.system(size: 18, weight: .semibold, design: .rounded))
+                                    .frame(width: 44, height: 44)
+                            }
+                            .disabled(!editUpdater.undoRedo.canUndo)
+                            .tint(Color.primary)
+                            
+                            Button {
+                                guard editUpdater.undoRedo.canRedo else { return }
+                                
+                                editUpdater.block = true
+                                
+                                Task {
+                                    do {
+                                        try await editUpdater.undoRedo.redo()
+                                    } catch {
+                                        print(error)
+                                    }
+                                    
+                                    editUpdater.block = false
+                                }
+                            } label: {
+                                Image("arrow.uturn.forward")
+                                    .font(.system(size: 18, weight: .semibold, design: .rounded))
+                                    .frame(width: 44, height: 44)
+                            }
+                            .disabled(!editUpdater.undoRedo.canRedo)
+                            .tint(Color.primary)
+                        }
+                        .modifier(MainGlass(shape: .capsule, type: .clear))
+                        
+                        if editUpdater.tab == .sort {
+                            let onSelectionMode = editUpdater.sortUpdater?.selectionMode == true
+                            
+                            Button {
+                                editUpdater.sortUpdater?.selectionMode.toggle()
+                            } label: {
+                                Text(onSelectionMode ? "Done" : "Select")
+                                    .font(.system(size: 18, weight: .semibold, design: .rounded))
+                                    .foregroundStyle(onSelectionMode ? Color._whiteVert : Color.primary)
+                                    .padding(.horizontal, 16)
+                                    .frame(height: 44)
+                                    .modifier(MainGlass(shape: .capsule, type: onSelectionMode ? .color(._blackVert) : .clear))
+                            }
+                        } else {
+                            Button {
+                                showSave = true
+                            } label: {
+                                Image("square.and.arrow.up.fill")
+                                    .font(.system(size: 18, weight: .semibold, design: .rounded))
+                            }
                             .frame(width: 44, height: 44)
-                            .modifier(MainGlass(shape: .capsule, type: .clear))
+                            .modifier(MainGlass(shape: .capsule, type: .color(._primary)))
+                            .tint(Color.white)
+                        }
                     }
-                    
-                    Spacer()
-                    
-                    HStack(spacing: 0) {
-                        Button {
-                            guard editUpdater.undoRedo.canUndo else { return }
-                            
-                            editUpdater.block = true
-                            
-                            Task {
-                                do {
-                                    try await editUpdater.undoRedo.undo()
-                                } catch {
-                                    print(error)
-                                }
-                                
-                                editUpdater.block = false
-                            }
-                        } label: {
-                            Image("arrow.uturn.backward")
-                                .font(.system(size: 18, weight: .semibold, design: .rounded))
-                                .frame(width: 44, height: 44)
-                        }
-                        .disabled(!editUpdater.undoRedo.canUndo)
-                        .tint(Color.primary)
-                        
-                        Button {
-                            guard editUpdater.undoRedo.canRedo else { return }
-                            
-                            editUpdater.block = true
-                            
-                            Task {
-                                do {
-                                    try await editUpdater.undoRedo.redo()
-                                } catch {
-                                    print(error)
-                                }
-                                
-                                editUpdater.block = false
-                            }
-                        } label: {
-                            Image("arrow.uturn.forward")
-                                .font(.system(size: 18, weight: .semibold, design: .rounded))
-                                .frame(width: 44, height: 44)
-                        }
-                        .disabled(!editUpdater.undoRedo.canRedo)
-                        .tint(Color.primary)
-                    }
-                    .modifier(MainGlass(shape: .capsule, type: .clear))
-                    
-                    if editUpdater.tab == .sort {
-                        let onSelectionMode = editUpdater.sortUpdater?.selectionMode == true
-                        
-                        Button {
-                            editUpdater.sortUpdater?.selectionMode.toggle()
-                        } label: {
-                            Text(onSelectionMode ? "Done" : "Select")
-                                .font(.system(size: 18, weight: .semibold, design: .rounded))
-                                .foregroundStyle(onSelectionMode ? Color._whiteVert : Color.primary)
-                                .padding(.horizontal, 16)
-                                .frame(height: 44)
-                                .modifier(MainGlass(shape: .capsule, type: onSelectionMode ? .color(._blackVert) : .clear))
-                        }
-                    } else {
-                        Button {
-                            showSave = true
-                        } label: {
-                            Image("square.and.arrow.up.fill")
-                                .font(.system(size: 18, weight: .semibold, design: .rounded))
-                        }
-                        .frame(width: 44, height: 44)
-                        .modifier(MainGlass(shape: .capsule, type: .color(._primary)))
-                        .tint(Color.white)
-                    }
+                }
+                
+                if editUpdater.shareVer {
+                    Text("Memory limits cap sharing at 8 images.\nOpen the app for unlimited selections.")
+                        .fixedSize(horizontal: false, vertical: true)
+                        .font(.system(size: 14, weight: .medium, design: .rounded))
+                        .multilineTextAlignment(.center)
+                        .foregroundStyle(Color._black)
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 12)
+                        .background(Color._yellow)
+                        .clipShape(RoundedRectangle(cornerRadius: 24))
+                        .padding(.horizontal, 16)
+                        .transition(.blurReplace.combined(with: .opacity))
+                        .allowsHitTesting(false)
+                        .zIndex(1000)
                 }
             }
             .padding(.horizontal, 16)

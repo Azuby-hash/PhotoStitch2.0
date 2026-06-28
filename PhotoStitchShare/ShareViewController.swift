@@ -17,6 +17,8 @@ class ShareViewController: UIViewController {
         super.viewDidLoad()
         
         VIEW_CONTROLLER = self
+        
+        isModalInPresentation = true
     }
 }
 
