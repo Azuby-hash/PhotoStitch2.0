@@ -137,7 +137,7 @@ fileprivate struct StitchBothView: View {
             HStack(spacing: 16) {
                 Button(intent: StitchVideosIntent()) {
                     VStack(spacing: 6) {
-                        Image("phay.fill")
+                        Image("play.fill")
                             .font(.system(size: 16, weight: .bold))
                         Text("Video")
                             .font(.system(size: 13, weight: .bold))

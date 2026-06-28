@@ -308,7 +308,11 @@ class EditItem: UIView {
         if data != self.data {
             self.data = data
             
-            imageView.image = UIImage(data: data)
+            if editUpdater.shareVer {
+                imageView.image = UIImage.thumbnail(from: data, fillSquareOf: THUMB_SIZE)
+            } else {
+                imageView.image = UIImage(data: data)
+            }
         }
                 
         var imageSize: CGSize

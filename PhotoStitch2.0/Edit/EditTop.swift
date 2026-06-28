@@ -36,7 +36,7 @@ struct EditTop: View {
                     Button {
                         homeUpdater.showEdit = false
                     } label: {
-                        Image("chevron.left")
+                        Image(editUpdater.shareVer ? "xmark" : "chevron.left")
                             .font(.system(size: 18, weight: .semibold, design: .rounded))
                             .foregroundStyle(Color.primary)
                             .frame(width: 44, height: 44)
@@ -125,6 +125,7 @@ struct EditTop: View {
                 save
             }
         }
+        .padding(.top, editUpdater.shareVer ? 20 : 0)
         .animation(.smooth(duration: ANIM_DURATION * 2), value: showSave)
         .animation(.smooth(duration: ANIM_DURATION), value: task)
         .animation(.smooth(duration: ANIM_DURATION), value: saveMode)
@@ -134,9 +135,16 @@ struct EditTop: View {
     
     @ViewBuilder
     var save: some View {
+        let saveMode = editUpdater.shareVer ? .jpeg : self.saveMode
+        let saveModeBinding = Binding(
+            get: { saveMode },
+            set: { self.saveMode = $0 }
+        )
+        
         // Dimmed background overlay dismiss panel
         Color.black.opacity(0.15)
             .ignoresSafeArea()
+            .padding(.top, -100)
             .onTapGesture {
                 showSave = false
             }
@@ -285,26 +293,28 @@ struct EditTop: View {
                         .tint(Color._blackVert)
                     }
                     
-                    VStack(spacing: 12) {
-                        SegmentView(selected: $saveMode, items: Mode.allCases.map({ mode in
-                            SegmentViewItem(id: mode, text: mode.rawValue)
-                        }))
-                        .frame(maxWidth: .infinity, maxHeight: 60)
-                        
-                        if saveMode == .jpeg {
-                            Slider(value: $quality, label: { }) {
-                                Text("Quality")
-                                    .font(.system(size: 16, weight: .medium, design: .rounded))
-                                    .padding(.trailing, 8)
-                            } maximumValueLabel: {
-                                Text("\(quality * 100, specifier: "%3.0f")")
-                                    .font(.system(size: 18, weight: .bold, design: .monospaced))
-                                    .padding(.leading, 8)
+                    if !editUpdater.shareVer {
+                        VStack(spacing: 12) {
+                            SegmentView(selected: saveModeBinding, items: Mode.allCases.map({ mode in
+                                SegmentViewItem(id: mode, text: mode.rawValue)
+                            }))
+                            .frame(maxWidth: .infinity, maxHeight: 60)
+                            
+                            if saveMode == .jpeg {
+                                Slider(value: $quality, label: { }) {
+                                    Text("Quality")
+                                        .font(.system(size: 16, weight: .medium, design: .rounded))
+                                        .padding(.trailing, 8)
+                                } maximumValueLabel: {
+                                    Text("\(quality * 100, specifier: "%3.0f")")
+                                        .font(.system(size: 18, weight: .bold, design: .monospaced))
+                                        .padding(.leading, 8)
+                                }
+                                .padding(.horizontal, 20)
+                                .padding(.vertical, 12)
+                                .background(Color.clear.background(.ultraThinMaterial).clipShape(.capsule))
+                                .tint(._primary)
                             }
-                            .padding(.horizontal, 20)
-                            .padding(.vertical, 12)
-                            .background(Color.clear.background(.ultraThinMaterial).clipShape(.capsule))
-                            .tint(._primary)
                         }
                     }
                 }
@@ -315,36 +325,7 @@ struct EditTop: View {
                 .modifier(MainGlass(shape: RoundedRectangle(cornerRadius: 38), type: .clear))
                 
                 Button {
-                    if task == nil {
-                        task = Task {
-                            do {
-                                let type: Pipeline.ExportType
-                                let url: URL
-                                
-                                switch(saveMode) {
-                                case .jpeg:
-                                    type = .raw(quality: quality)
-                                    url = FileManager.tempUrl(name: "\(UUID().uuidString).jpeg")
-                                case .png:
-                                    type = .raw(quality: COMPRESSION_QUALITY)
-                                    url = FileManager.tempUrl(name: "\(UUID().uuidString).png")
-                                case .pdf:
-                                    type = .pdf
-                                    url = FileManager.tempUrl(name: "\(UUID().uuidString).pdf")
-                                }
-                                
-                                try await editUpdater.export(type, progress: { pro in
-                                    progress = pro
-                                }).write(to: url)
-                                
-                                self.url = url
-                            } catch {
-                                print(error)
-                            }
-                            
-                            task = nil
-                        }
-                    }
+                    export(saveMode: saveMode)
                 } label: {
                     HStack {
                         if task == nil {
@@ -374,10 +355,52 @@ struct EditTop: View {
         .transition(.move(edge: .bottom).combined(with: .opacity))
     }
     
+    private func export(saveMode: Mode) {
+        if task == nil {
+            task = Task {
+                do {
+                    let type: Pipeline.ExportType
+                    let url: URL
+                    
+                    if editUpdater.shareVer {
+                        type = .small
+                        url = FileManager.tempUrl(name: "\(UUID().uuidString).jpeg")
+                    } else {
+                        switch(saveMode) {
+                        case .jpeg:
+                            type = .raw(quality: quality)
+                            url = FileManager.tempUrl(name: "\(UUID().uuidString).jpeg")
+                        case .png:
+                            type = .raw(quality: COMPRESSION_QUALITY)
+                            url = FileManager.tempUrl(name: "\(UUID().uuidString).png")
+                        case .pdf:
+                            type = .pdf
+                            url = FileManager.tempUrl(name: "\(UUID().uuidString).pdf")
+                        }
+                    }
+                    
+                    try await editUpdater.export(type, progress: { pro in
+                        progress = pro
+                    }).write(to: url)
+                    
+                    self.url = url
+                } catch {
+                    print(error)
+                }
+                
+                task = nil
+            }
+        }
+    }
+    
     private func saveFinish() {
         showSave = false
         url = nil
         progress = 0
+        
+        if editUpdater.shareVer {
+            homeUpdater.showEdit = false
+        }
     }
     
     private func showAlert(title: String, message: String, actions: [UIAlertAction] = [UIAlertAction(title: "OK", style: .default)]) {

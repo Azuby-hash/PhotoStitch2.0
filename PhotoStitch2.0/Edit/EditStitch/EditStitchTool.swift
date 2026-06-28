@@ -12,7 +12,7 @@ struct EditStitchTool: View {
     
     var body: some View {
         HStack {
-            if editUpdater.axis == .vertical {
+            if editUpdater.axis == .vertical && !editUpdater.shareVer {
                 Button {
                     editUpdater.block = true
                     

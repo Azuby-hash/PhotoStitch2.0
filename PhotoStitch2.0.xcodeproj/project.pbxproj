@@ -156,6 +156,65 @@
 		CED99A1E2FF01F870003577B /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6BEB2F9D1CC400E176D7 /* Config.swift */; };
 		CED99A1F2FF01F9B0003577B /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD6C9C2F9D1D7C00E176D7 /* Color.swift */; };
 		CED99A202FF020880003577B /* OptionalHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700412FB039E200061801 /* OptionalHelpers.swift */; };
+		CED99A922FF034DA0003577B /* Stitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231AF2FACEBA400701039 /* Stitch.swift */; };
+		CED99A932FF034F30003577B /* Support.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED999F12FED6CAD0003577B /* Support.swift */; };
+		CED99A962FF0352F0003577B /* CGRectHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700382FB039E200061801 /* CGRectHelpers.swift */; };
+		CED99A9C2FF03BF70003577B /* Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231B52FACFBCE00701039 /* Loading.swift */; };
+		CED99A9D2FF03D540003577B /* Pipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87FFF72FB0387800061801 /* Pipeline.swift */; };
+		CED99A9E2FF03D7B0003577B /* UIImageHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700012FB039E200061801 /* UIImageHelpers.swift */; };
+		CED99A9F2FF03DEA0003577B /* Edit.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231AD2FACE79400701039 /* Edit.swift */; };
+		CED99AA02FF03DF80003577B /* EditStitchTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7516502FC9A29C002C4625 /* EditStitchTool.swift */; };
+		CED99AA12FF03DF80003577B /* EditCutTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7516562FCA6DFA002C4625 /* EditCutTool.swift */; };
+		CED99AA22FF03DF80003577B /* EditOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87008D2FB6A60000061801 /* EditOverlay.swift */; };
+		CED99AA32FF03DF80003577B /* EditStitchControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700A42FBCB5F800061801 /* EditStitchControl.swift */; };
+		CED99AA42FF03DF80003577B /* EditContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87008E2FB6A60000061801 /* EditContent.swift */; };
+		CED99AA52FF03DF80003577B /* EditSortControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE46FBA92FDEA9F70021013C /* EditSortControl.swift */; };
+		CED99AA62FF03DF80003577B /* EditTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE75165A2FCB0255002C4625 /* EditTop.swift */; };
+		CED99AA72FF03DF80003577B /* EditCut.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7516582FCA6F33002C4625 /* EditCut.swift */; };
+		CED99AA82FF03DF80003577B /* EditSort.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE46FBA62FDEA9CD0021013C /* EditSort.swift */; };
+		CED99AA92FF03DF80003577B /* EditBottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE75165C2FCB0712002C4625 /* EditBottom.swift */; };
+		CED99AAA2FF03DF80003577B /* EditStitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700A22FBC9BF900061801 /* EditStitch.swift */; };
+		CED99AAB2FF03DF80003577B /* EditGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700872FB222C500061801 /* EditGallery.swift */; };
+		CED99AAC2FF03DF80003577B /* EditSortTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE46FBA82FDEA9F70021013C /* EditSortTool.swift */; };
+		CED99AAD2FF03DF80003577B /* EditCutControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7516542FC9F6F0002C4625 /* EditCutControl.swift */; };
+		CED99AAE2FF03E050003577B /* ForwardScroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700952FB6A61100061801 /* ForwardScroll.swift */; };
+		CED99AAF2FF03E0B0003577B /* UIViewPointSubview.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700292FB039E200061801 /* UIViewPointSubview.swift */; };
+		CED99AB02FF03E130003577B /* UIView+Constrant+Frame.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87001F2FB039E200061801 /* UIView+Constrant+Frame.swift */; };
+		CED99AB12FF03E220003577B /* GlassModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87FFFD2FB039E200061801 /* GlassModifier.swift */; };
+		CED99AB22FF03E2B0003577B /* MainGlass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4231902F9E834400701039 /* MainGlass.swift */; };
+		CED99AB32FF03E350003577B /* ViewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87FFFE2FB039E200061801 /* ViewHelpers.swift */; };
+		CED99AB42FF03E4A0003577B /* TouchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE75164A2FC5E99E002C4625 /* TouchView.swift */; };
+		CED99AB52FF03E620003577B /* UIViewFindView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700232FB039E200061801 /* UIViewFindView.swift */; };
+		CED99AB62FF03E7A0003577B /* UISToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700172FB039E200061801 /* UISToolBar.swift */; };
+		CED99AB72FF03E7A0003577B /* UIBezierPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4262622FD25214002916A4 /* UIBezierPath.swift */; };
+		CED99AB82FF03E7A0003577B /* UISScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700112FB039E200061801 /* UISScrollView.swift */; };
+		CED99AB92FF03E7A0003577B /* UISView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700182FB039E200061801 /* UISView.swift */; };
+		CED99ABA2FF03E7A0003577B /* UISControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87000E2FB039E200061801 /* UISControl.swift */; };
+		CED99ABB2FF03E7A0003577B /* UISButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87000C2FB039E200061801 /* UISButton.swift */; };
+		CED99ABC2FF03E7A0003577B /* UISSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700122FB039E200061801 /* UISSearchBar.swift */; };
+		CED99ABD2FF03E7A0003577B /* WKSWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700192FB039E200061801 /* WKSWebView.swift */; };
+		CED99ABE2FF03E7A0003577B /* UISConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87000D2FB039E200061801 /* UISConstraints.swift */; };
+		CED99ABF2FF03E7A0003577B /* UISTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700142FB039E200061801 /* UISTextField.swift */; };
+		CED99AC02FF03E7A0003577B /* UISBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87000B2FB039E200061801 /* UISBarItem.swift */; };
+		CED99AC12FF03E7A0003577B /* UISTextInputTraitsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700152FB039E200061801 /* UISTextInputTraitsExtension.swift */; };
+		CED99AC22FF03E7A0003577B /* UISTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700162FB039E200061801 /* UISTextView.swift */; };
+		CED99AC32FF03E7A0003577B /* UISLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700102FB039E200061801 /* UISLabel.swift */; };
+		CED99AC42FF03E7A0003577B /* CASLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87000A2FB039E200061801 /* CASLayer.swift */; };
+		CED99AC52FF03E7A0003577B /* UISStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700132FB039E200061801 /* UISStackView.swift */; };
+		CED99AC62FF03E7A0003577B /* UISImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87000F2FB039E200061801 /* UISImageView.swift */; };
+		CED99AC72FF03E860003577B /* MenuPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE46FBA32FDB26400021013C /* MenuPopover.swift */; };
+		CED99AC82FF03E910003577B /* UIButtonPro.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87002E2FB039E200061801 /* UIButtonPro.swift */; };
+		CED99AC92FF03E9C0003577B /* ArrayHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700342FB039E200061801 /* ArrayHelpers.swift */; };
+		CED99ACA2FF03EA80003577B /* UndoRedo.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE25DA252FE4431F00DE2E22 /* UndoRedo.swift */; };
+		CED99ACB2FF03EB70003577B /* EdgeModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE75165E2FCC3407002C4625 /* EdgeModifier.swift */; };
+		CED99ACC2FF03EBD0003577B /* IdiomHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87002D2FB039E200061801 /* IdiomHelpers.swift */; };
+		CED99ACD2FF03EC40003577B /* SegmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE25DA292FE5B90400DE2E22 /* SegmentView.swift */; };
+		CED99ACE2FF03ED90003577B /* FileManagerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87003D2FB039E200061801 /* FileManagerExtension.swift */; };
+		CED99ACF2FF040E70003577B /* Symbols.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE7516602FCDCA84002C4625 /* Symbols.xcassets */; };
+		CED99AD02FF040E70003577B /* Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEBD6BF92F9D1CC400E176D7 /* Icons.xcassets */; };
+		CED99AD12FF040E70003577B /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEBD6C9A2F9D1D6A00E176D7 /* Colors.xcassets */; };
+		CED99AD22FF0AC9C0003577B /* AppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1718FD2FECE2D900DA1D67 /* AppIntent.swift */; };
+		CED99AD32FF0C2380003577B /* CGImageHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700362FB039E200061801 /* CGImageHelpers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -867,6 +926,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CED99ACF2FF040E70003577B /* Symbols.xcassets in Resources */,
+				CED99AD02FF040E70003577B /* Icons.xcassets in Resources */,
+				CED99AD12FF040E70003577B /* Colors.xcassets in Resources */,
 				CED99A162FEFE5070003577B /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1042,11 +1104,67 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CED99AB52FF03E620003577B /* UIViewFindView.swift in Sources */,
+				CED99A932FF034F30003577B /* Support.swift in Sources */,
+				CED99A9C2FF03BF70003577B /* Loading.swift in Sources */,
 				CED99A142FEFE5070003577B /* ShareViewController.swift in Sources */,
 				CED99A1F2FF01F9B0003577B /* Color.swift in Sources */,
 				CED99A202FF020880003577B /* OptionalHelpers.swift in Sources */,
+				CED99A9D2FF03D540003577B /* Pipeline.swift in Sources */,
 				CED99A1C2FEFEA040003577B /* StitchIntent.swift in Sources */,
+				CED99AA02FF03DF80003577B /* EditStitchTool.swift in Sources */,
+				CED99AA12FF03DF80003577B /* EditCutTool.swift in Sources */,
+				CED99AAE2FF03E050003577B /* ForwardScroll.swift in Sources */,
+				CED99AB62FF03E7A0003577B /* UISToolBar.swift in Sources */,
+				CED99ACC2FF03EBD0003577B /* IdiomHelpers.swift in Sources */,
+				CED99AB72FF03E7A0003577B /* UIBezierPath.swift in Sources */,
+				CED99AB82FF03E7A0003577B /* UISScrollView.swift in Sources */,
+				CED99AB92FF03E7A0003577B /* UISView.swift in Sources */,
+				CED99ACD2FF03EC40003577B /* SegmentView.swift in Sources */,
+				CED99AD22FF0AC9C0003577B /* AppIntent.swift in Sources */,
+				CED99ABA2FF03E7A0003577B /* UISControl.swift in Sources */,
+				CED99ABB2FF03E7A0003577B /* UISButton.swift in Sources */,
+				CED99ABC2FF03E7A0003577B /* UISSearchBar.swift in Sources */,
+				CED99ABD2FF03E7A0003577B /* WKSWebView.swift in Sources */,
+				CED99ABE2FF03E7A0003577B /* UISConstraints.swift in Sources */,
+				CED99ACA2FF03EA80003577B /* UndoRedo.swift in Sources */,
+				CED99AC72FF03E860003577B /* MenuPopover.swift in Sources */,
+				CED99ABF2FF03E7A0003577B /* UISTextField.swift in Sources */,
+				CED99AC02FF03E7A0003577B /* UISBarItem.swift in Sources */,
+				CED99AC12FF03E7A0003577B /* UISTextInputTraitsExtension.swift in Sources */,
+				CED99ACB2FF03EB70003577B /* EdgeModifier.swift in Sources */,
+				CED99AC22FF03E7A0003577B /* UISTextView.swift in Sources */,
+				CED99AC32FF03E7A0003577B /* UISLabel.swift in Sources */,
+				CED99AD32FF0C2380003577B /* CGImageHelpers.swift in Sources */,
+				CED99AC42FF03E7A0003577B /* CASLayer.swift in Sources */,
+				CED99AC52FF03E7A0003577B /* UISStackView.swift in Sources */,
+				CED99AC62FF03E7A0003577B /* UISImageView.swift in Sources */,
+				CED99AA22FF03DF80003577B /* EditOverlay.swift in Sources */,
+				CED99AAF2FF03E0B0003577B /* UIViewPointSubview.swift in Sources */,
+				CED99AA32FF03DF80003577B /* EditStitchControl.swift in Sources */,
+				CED99AA42FF03DF80003577B /* EditContent.swift in Sources */,
+				CED99AA52FF03DF80003577B /* EditSortControl.swift in Sources */,
+				CED99AB12FF03E220003577B /* GlassModifier.swift in Sources */,
+				CED99AB42FF03E4A0003577B /* TouchView.swift in Sources */,
+				CED99AA62FF03DF80003577B /* EditTop.swift in Sources */,
+				CED99AC92FF03E9C0003577B /* ArrayHelpers.swift in Sources */,
+				CED99AA72FF03DF80003577B /* EditCut.swift in Sources */,
+				CED99AA82FF03DF80003577B /* EditSort.swift in Sources */,
+				CED99AA92FF03DF80003577B /* EditBottom.swift in Sources */,
+				CED99AAA2FF03DF80003577B /* EditStitch.swift in Sources */,
+				CED99AAB2FF03DF80003577B /* EditGallery.swift in Sources */,
+				CED99AC82FF03E910003577B /* UIButtonPro.swift in Sources */,
+				CED99AAC2FF03DF80003577B /* EditSortTool.swift in Sources */,
+				CED99AB22FF03E2B0003577B /* MainGlass.swift in Sources */,
+				CED99ACE2FF03ED90003577B /* FileManagerExtension.swift in Sources */,
+				CED99AAD2FF03DF80003577B /* EditCutControl.swift in Sources */,
+				CED99A9E2FF03D7B0003577B /* UIImageHelpers.swift in Sources */,
+				CED99AB32FF03E350003577B /* ViewHelpers.swift in Sources */,
+				CED99A922FF034DA0003577B /* Stitch.swift in Sources */,
 				CED99A1E2FF01F870003577B /* Config.swift in Sources */,
+				CED99AB02FF03E130003577B /* UIView+Constrant+Frame.swift in Sources */,
+				CED99A962FF0352F0003577B /* CGRectHelpers.swift in Sources */,
+				CED99A9F2FF03DEA0003577B /* Edit.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1385,6 +1503,7 @@
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "PhotoStitch2.0/Module/OpenCV/Bridging-Header.h";
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1416,6 +1535,7 @@
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "PhotoStitch2.0/Module/OpenCV/Bridging-Header.h";
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

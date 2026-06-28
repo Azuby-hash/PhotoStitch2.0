@@ -16,7 +16,7 @@ struct Edit: View {
             GeometryReader { geometry in
                 let safeAreaInsets = geometry.safeAreaInsets
                 let bonusInset = getInset(geometry.size)
-                let totalInset = EdgeInsets(top: safeAreaInsets.top + bonusInset.top, leading: safeAreaInsets.leading + bonusInset.leading, bottom: safeAreaInsets.bottom + bonusInset.bottom, trailing: safeAreaInsets.trailing + bonusInset.trailing)
+                let totalInset = EdgeInsets(top: safeAreaInsets.top + bonusInset.top + (editUpdater.shareVer ? 20 : 0), leading: safeAreaInsets.leading + bonusInset.leading, bottom: safeAreaInsets.bottom + bonusInset.bottom, trailing: safeAreaInsets.trailing + bonusInset.trailing)
                 
                 EditGallery(edgeInsets: totalInset, baseInsets: bonusInset)
                     .ignoresSafeArea()
@@ -96,13 +96,17 @@ enum EditTab: String, CaseIterable {
     
     let tapOutside: PassthroughSubject<Void, Never> = .init()
     
-    init(items: [StitchItem], axis: NSLayoutConstraint.Axis) {
+    let shareVer: Bool
+    
+    init(items: [StitchItem], axis: NSLayoutConstraint.Axis, shareVer: Bool = false) {
         self.items = items
         self.axis = axis
         
         self.stitchUpdater = nil
         self.cutUpdater = nil
         self.sortUpdater = nil
+        
+        self.shareVer = shareVer
     }
     
     func animIfNeeded(perform: @escaping () -> Void) {

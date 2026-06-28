@@ -19,13 +19,13 @@ struct EditCutTool: View {
     
     var body: some View {
         HStack(alignment: .bottom) {
-            MenuPopover(showMenu: $showMenu, items: [
+            MenuPopover(showMenu: $showMenu, items: (editUpdater.shareVer ? [] : [
                 .init(icon: Image(editUpdater.clean ? "eye.slash.fill" : "eye.fill"), name: "Scroll Bar", close: false, action: {
                     editUpdater.clean.toggle()
-                }),
+                })]) + (editUpdater.cutUpdater?.mode == .pair ? [] : [
                 .init(icon: Image("trash.square.stack"), name: "Delete All", action: {
                     editUpdater.cutUpdater?.deleteAll.send()
-                }),
+                })]) + [
                 .init(icon: Image(editUpdater.cutUpdater?.mode == .pair ? "scissors.180" : "rectangle.dashed.badge.minus"), name: editUpdater.cutUpdater?.mode == .pair ? "To Cut" : "To Area", action: {
                     editUpdater.cutUpdater?.setMode(editUpdater.cutUpdater?.mode == .pair ? .single: .pair)
                 })

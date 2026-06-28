@@ -86,6 +86,7 @@ class Pipeline {
     }
     
     enum ExportType {
+        case small
         case raw(quality: CGFloat)
         case pdf
     }
@@ -95,7 +96,11 @@ class Pipeline {
         var frames = [CGRect]()
         
         for item in items {
-            await frames.append(item.process.rect * item.size)
+            if case .small = type {
+                await frames.append(item.process.rect * item.size.aspectFill(to: CGSize(width: THUMB_SIZE, height: THUMB_SIZE)))
+            } else {
+                await frames.append(item.process.rect * item.size)
+            }
         }
         
         guard let minWidth = frames.min(by: { $0.width < $1.width })?.width,
@@ -141,7 +146,38 @@ class Pipeline {
         
         progress(0)
         
-        if case let .raw(quality) = type {
+        if case .small = type {
+            let format = UIGraphicsImageRendererFormat()
+            format.scale = 1
+            format.opaque = true
+            let renderer = UIGraphicsImageRenderer(size: size, format: format)
+            var data = renderer.jpegData(withCompressionQuality: COMPRESSION_QUALITY) { _ in
+                for (index, item) in items.enumerated() {
+                    if Task.isCancelled { break }
+                    
+                    autoreleasepool {
+                        do {
+                            let image = clean ? item.clean : item.image
+                            let uiImage = try UIImage.thumbnail(from: image, fillSquareOf: THUMB_SIZE).unwrap()
+                            
+                            let cropCG = try uiImage.cgImage.unwrap().cropping(to: item.process.rect * uiImage.size).unwrap()
+                            
+                            if frames.indices.contains(index) {
+                                UIImage(cgImage: cropCG).draw(in: frames[index])
+                            }
+                        } catch {
+                            print(error)
+                        }
+                    }
+                    
+                    progress(CGFloat(index + 1) / CGFloat(items.count))
+                }
+            }
+            
+            data = addScreenshotMetadata(to: data) ?? data
+            
+            image = data
+        } else if case let .raw(quality) = type {
             let format = UIGraphicsImageRendererFormat()
             format.scale = 1
             format.opaque = true
@@ -225,7 +261,7 @@ class Pipeline {
         })
         
         guard let image = image else {
-            throw ALError.error("Request image failed")
+            throw MainError.error("Request image failed")
         }
         
         return image

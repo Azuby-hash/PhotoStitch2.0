@@ -57,15 +57,19 @@
       allowLocationSimulation = "YES"
       launchAutomaticallySubstyle = "2"
       queueDebuggingEnabled = "No">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <RemoteRunnable
+         runnableDebuggingMode = "0"
+         BundleIdentifier = "com.apple.mobileslideshow"
+         RemotePath = "/var/containers/Bundle/Application/ACF9E063-BE35-4B50-BA50-E36C3821A57F/Photos.app">
+      </RemoteRunnable>
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "CE1FDC5D2F9D180400460178"
             BuildableName = "PhotoStitch2.0.app"
             ReferencedContainer = "container:PhotoStitch2.0.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

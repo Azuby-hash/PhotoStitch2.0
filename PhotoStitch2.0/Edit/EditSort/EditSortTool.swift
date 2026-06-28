@@ -49,7 +49,7 @@ struct EditSortTool: View {
                 }
                 .allowsHitTesting(editUpdater.sortUpdater?.selectItems.isEmpty == false)
                 .animation(.smooth(duration: ANIM_DURATION), value: opacity)
-            } else {
+            } else if !editUpdater.shareVer {
                 Button {
                     if MAX_SELECTION - editUpdater.items.count > 0 {
                         editUpdater.sortUpdater?.photoPosition = .before
