@@ -215,6 +215,8 @@
 		CED99AD12FF040E70003577B /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEBD6C9A2F9D1D6A00E176D7 /* Colors.xcassets */; };
 		CED99AD22FF0AC9C0003577B /* AppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1718FD2FECE2D900DA1D67 /* AppIntent.swift */; };
 		CED99AD32FF0C2380003577B /* CGImageHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700362FB039E200061801 /* CGImageHelpers.swift */; };
+		CED99AD52FF1549C0003577B /* Rating.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CED99AD42FF1549C0003577B /* Rating.xcassets */; };
+		CED99AD82FF156920003577B /* Rating.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED99AD72FF156920003577B /* Rating.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -392,6 +394,8 @@
 		CED99A122FEFE5070003577B /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		CED99A192FEFE9E20003577B /* StitchIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StitchIntent.swift; sourceTree = "<group>"; };
 		CED99A912FF02C390003577B /* PhotoStitchShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PhotoStitchShare.entitlements; sourceTree = "<group>"; };
+		CED99AD42FF1549C0003577B /* Rating.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Rating.xcassets; sourceTree = "<group>"; };
+		CED99AD72FF156920003577B /* Rating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rating.swift; sourceTree = "<group>"; };
 		D4AAEC8C621ECAB52E001FBA /* Pods_PhotoStitch2_0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PhotoStitch2_0.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9BB7334FDF3F5D98FBC647E /* Pods-PhotoStitch2.0.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotoStitch2.0.release.xcconfig"; path = "Target Support Files/Pods-PhotoStitch2.0/Pods-PhotoStitch2.0.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -511,6 +515,7 @@
 				CE4231A22FAB55BD00701039 /* Onboarding.swift */,
 				CE4231A42FAB562000701039 /* Subscription.swift */,
 				CE25DA2D2FEAF0BB00DE2E22 /* VideoInstruction.swift */,
+				CED99AD62FF1549F0003577B /* Rating */,
 				CE25DA2F2FEAF26800DE2E22 /* VideoInstruction.mp4 */,
 			);
 			path = Bonus;
@@ -791,6 +796,15 @@
 			path = PhotoStitchShare;
 			sourceTree = "<group>";
 		};
+		CED99AD62FF1549F0003577B /* Rating */ = {
+			isa = PBXGroup;
+			children = (
+				CED99AD72FF156920003577B /* Rating.swift */,
+				CED99AD42FF1549C0003577B /* Rating.xcassets */,
+			);
+			path = Rating;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -912,6 +926,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE7516612FCDCA84002C4625 /* Symbols.xcassets in Resources */,
+				CED99AD52FF1549C0003577B /* Rating.xcassets in Resources */,
 				CE1FDC832F9D181000460178 /* Assets.xcassets in Resources */,
 				CEBD6C0B2F9D1CC400E176D7 /* Icons.xcassets in Resources */,
 				CEBD6C0D2F9D1CC400E176D7 /* Materials.xcassets in Resources */,
@@ -1002,6 +1017,7 @@
 				CE1FDC802F9D181000460178 /* AppDelegate.swift in Sources */,
 				CE4231A52FAB562500701039 /* Subscription.swift in Sources */,
 				CE1FDC812F9D181000460178 /* SceneDelegate.swift in Sources */,
+				CED99AD82FF156920003577B /* Rating.swift in Sources */,
 				CEBD6BE92F9D1B1400E176D7 /* Home.swift in Sources */,
 				CEBD6C012F9D1CC400E176D7 /* Updater.swift in Sources */,
 				CEBD6C022F9D1CC400E176D7 /* Config.swift in Sources */,

@@ -76,6 +76,11 @@ var AUTO_SHOW_INSTRUCTION: Bool {
     set { UserDefaults.standard.set(newValue, forKey: "85bf6e3cbd2c8cd7") }
 }
 
+var DID_RATING: Bool {
+    get { UserDefaults.standard.object(forKey: "414eba80-a41c-4052-a9e7-72ea23a3c883") as? Bool ?? false }
+    set { UserDefaults.standard.set(newValue, forKey: "414eba80-a41c-4052-a9e7-72ea23a3c883") }
+}
+
 enum RemoveOriginals: Int, CaseIterable {
     case never
     case ask

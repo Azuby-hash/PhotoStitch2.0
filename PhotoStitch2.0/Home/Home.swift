@@ -50,6 +50,18 @@ struct Home: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(homeUpdater.showEdit ? Color._background.ignoresSafeArea() : Color.clear.ignoresSafeArea())
+            
+                ZStack(alignment: .bottom) {
+                    if homeUpdater.showRating {
+                        Color.black.opacity(0.5)
+                            .ignoresSafeArea()
+                            .onTapGesture { }
+
+                        Rating(isPresented: $homeUpdater.showRating)
+                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                    }
+                }
+                .ignoresSafeArea()
         }
         .background(Color._background)
         .onAppear(perform: {
@@ -58,6 +70,12 @@ struct Home: View {
                     try? await homeUpdater.registerChange()
                     addNoti()
                     try? await StitchIntent.shared.trigger()
+                    
+                    try? await Task.sleep(for: .seconds(1))
+                    
+                    if !DID_RATING {
+                        homeUpdater.showRating = true
+                    }
                 }
             }
         })
@@ -66,6 +84,12 @@ struct Home: View {
                 if !SHOW_ONBOARDING {
                     try? await homeUpdater.requestLibraryAccess()
                     try? await StitchIntent.shared.trigger()
+                    
+                    try? await Task.sleep(for: .seconds(1))
+                    
+                    if !DID_RATING {
+                        homeUpdater.showRating = true
+                    }
                 }
             }
         })
@@ -81,6 +105,7 @@ struct Home: View {
         .animation(.smooth(duration: ANIM_DURATION), value: homeUpdater.selecteds)
         .animation(.smooth(duration: ANIM_DURATION), value: homeUpdater.removeOriginals)
         .animation(.smooth(duration: ANIM_DURATION), value: homeUpdater.autoStitch)
+        .animation(.smooth(duration: ANIM_DURATION), value: homeUpdater.showRating)
         .animation(.smooth(duration: ANIM_DURATION), value: homeUpdater.autoSelection)
         .fullScreenCover(isPresented: $homeUpdater.showOnboarding, onDismiss: {
             Task {
@@ -174,6 +199,7 @@ struct Home: View {
     var showMenu = MenuType.none
     var showOnboarding = SHOW_ONBOARDING
     var showSubscription = false
+    var showRating = false
     var showInstruction = false {
         didSet {
             if !showInstruction {

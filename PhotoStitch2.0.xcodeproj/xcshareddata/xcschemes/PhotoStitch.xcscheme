@@ -32,6 +32,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "CE1FDC5D2F9D180400460178"
                BuildableName = "PhotoStitch2.0.app"
+               BlueprintName = "PhotoStitch2.0"
                ReferencedContainer = "container:PhotoStitch2.0.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -67,6 +68,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "CE1FDC5D2F9D180400460178"
             BuildableName = "PhotoStitch2.0.app"
+            BlueprintName = "PhotoStitch2.0"
             ReferencedContainer = "container:PhotoStitch2.0.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -85,6 +87,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "CE1FDC5D2F9D180400460178"
             BuildableName = "PhotoStitch2.0.app"
+            BlueprintName = "PhotoStitch2.0"
             ReferencedContainer = "container:PhotoStitch2.0.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
