@@ -59,7 +59,7 @@ struct HomeTop: View {
                                 }
                             } label: {
                                 HStack {
-                                    Text(homeUpdater.album?.getName() ?? "Screenshots")
+                                    Text(homeUpdater.album?.getName() ?? "Loading...")
                                         .font(.system(size: 26, weight: .bold, design: .rounded))
                                     Image("arrowtriangle.down.fill")
                                         .resizable()
@@ -71,7 +71,7 @@ struct HomeTop: View {
                             }
                         } else {
                             HStack {
-                                Text(homeUpdater.album?.getName() ?? "Recents")
+                                Text(homeUpdater.album?.getName() ?? "Loading...")
                                     .font(.system(size: 26, weight: .bold, design: .rounded))
                             }
                             .foregroundStyle(Color.primary)

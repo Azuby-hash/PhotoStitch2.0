@@ -57,14 +57,16 @@ struct Rating: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 56, height: 56)
+                    .foregroundStyle(Color._primary)
 
                 Text(LocalizedStringKey(label))
                     .font(.system(size: 13, weight: .semibold, design: .rounded))
-                    .foregroundStyle(Color(uiColor: .secondaryLabel))
+                    .foregroundStyle(Color._primary)
             }
+            .shadow(color: ._primary.opacity(0.5), radius: 4, x: 0, y: 4)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 16)
-            .modifier(MainGlass(shape: RoundedRectangle(cornerRadius: 20), type: .clear))
+            .modifier(MainGlass(shape: RoundedRectangle(cornerRadius: 20), type: .color(._primary.opacity(0.2))))
         }
         .buttonStyle(.plain)
     }
