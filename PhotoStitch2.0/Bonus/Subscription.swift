@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct Subscription: View {
+    var config: SubscriptionConfig = .default
+    
     @Environment(\.dismiss) var dismiss
     @State private var subUpdater = SubscriptionUpdater()
     
@@ -72,8 +74,12 @@ struct Subscription: View {
         .onAppear {
             subUpdater.startLoop()
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            if config.showCloseImmediately {
                 showClose = true
+            } else {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    showClose = true
+                }
             }
         }
         .animation(.smooth(duration: ANIM_DURATION), value: showClose)
@@ -227,22 +233,24 @@ struct Subscription: View {
                     }
                 }
                 
-                Text(plan.price)
-                    .font(.system(size: 20, weight: .bold, design: .rounded))
-                    .foregroundStyle(isSelected ? Color._white : Color.primary)
+                HStack(alignment: .lastTextBaseline, spacing: 4) {
+                    Text(plan.price)
+                        .font(.system(size: 20, weight: .bold, design: .rounded))
+                        .foregroundStyle(isSelected ? Color._white : Color.primary)
+                    Text(plan.period)
+                        .font(.system(size: 12, weight: .medium, design: .rounded))
+                        .foregroundStyle(isSelected ? Color._white.opacity(0.8) : Color(uiColor: .secondaryLabel))
+                }
                 
-                Text(plan.period)
-                    .font(.system(size: 12, weight: .medium, design: .rounded))
-                    .foregroundStyle(isSelected ? Color._white.opacity(0.8) : Color(uiColor: .secondaryLabel))
+                Text(String(localized: "3 days free trial"))
+                    .font(.system(size: 11, weight: .semibold, design: .rounded))
+                    .foregroundStyle(isSelected ? Color._white.opacity(0.85) : Color._primary)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(14)
-            .frame(height: 84)
-            .modifier(MainGlass(shape: RoundedRectangle(cornerRadius: 20), type: isSelected ? .color(._primary) : .clear))
-            .overlay {
-                RoundedRectangle(cornerRadius: 20)
-                    .stroke(isSelected ? Color.clear : Color(uiColor: .separator), lineWidth: 1)
-            }
+            .padding(16)
+            .padding(.leading, 2)
+            .background(isSelected ? Color._primary : Color.clear)
+            .modifier(MainGlass(shape: RoundedRectangle(cornerRadius: 20), type: .clear))
         }
         .buttonStyle(.plain)
         .animation(.smooth(duration: ANIM_DURATION), value: isSelected)
@@ -358,6 +366,13 @@ private struct BenefitRow: View {
     }
 }
 
+struct SubscriptionConfig {
+    var showCloseImmediately: Bool = false
+    
+    static let `default` = SubscriptionConfig()
+    static let immediate = SubscriptionConfig(showCloseImmediately: true)
+}
+
 // MARK: - Model
 
 struct SubscriptionBenefit: Identifiable {
@@ -379,8 +394,8 @@ enum SubscriptionPlan {
 
     var price: String {
         switch self {
-        case .weekly: return "$4.99"
-        case .yearly: return "$39.99"
+        case .weekly: return "$0.99"
+        case .yearly: return "$29.99"
         }
     }
 

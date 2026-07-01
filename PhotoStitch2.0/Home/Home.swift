@@ -118,7 +118,7 @@ struct Home: View {
             Onboarding()
         }
         .fullScreenCover(isPresented: $homeUpdater.showSubscription) {
-            Subscription()
+            Subscription(config: homeUpdater.subscriptionConfig)
         }
         .sheet(isPresented: $homeUpdater.showInstruction, content: {
             VideoInstruction()
@@ -198,7 +198,10 @@ struct Home: View {
     
     var showMenu = MenuType.none
     var showOnboarding = SHOW_ONBOARDING
+    
     var showSubscription = false
+    private(set) var subscriptionConfig = SubscriptionConfig()
+    
     var showRating = false
     var showInstruction = false {
         didSet {
@@ -454,6 +457,13 @@ extension HomeUpdater {
         await withCheckedContinuation { continuation in VIEW_CONTROLLER.stopLoading { continuation.resume() } }
         
         return items
+    }
+}
+
+extension HomeUpdater {
+    func openSubscription(_ config: SubscriptionConfig = .default) {
+        subscriptionConfig = config
+        showSubscription = true
     }
 }
 

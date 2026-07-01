@@ -130,6 +130,39 @@ struct HomeMenu: View {
     
     var body: some View {
         VStack(spacing: 0) {
+            Text("Upgrade")
+                .font(.system(size: 13, weight: .medium, design: .rounded))
+                .foregroundStyle(Color(uiColor: .tertiaryLabel))
+                .align(edge: .leading, constant: 8)
+                .padding(.top, 4)
+                .padding(.bottom, 10)
+            
+            Button {
+                homeUpdater.openSubscription(.immediate)
+                homeUpdater.showMenu = .none
+            } label: {
+                HStack(spacing: 12) {
+                    Image("sparkles")
+                        .frame(width: 20)
+                    Text("Photo Stitch Pro")
+                        .font(.system(size: 16, weight: .bold))
+                    Spacer()
+                    Image("crown.fill")
+                }
+                .foregroundStyle(Color.white)
+                .frame(height: 40)
+                .padding(.horizontal, 12)
+                .modifier(MainGlass(shape: .capsule, type: .color(._primary)))
+            }
+            .padding(.horizontal, -12)
+            
+            VStack {
+                Divider()
+                    .frame(maxWidth: .infinity)
+                    .padding(.horizontal, 8)
+            }
+            .frame(height: 21)
+            
             Text("Settings")
                 .font(.system(size: 13, weight: .medium, design: .rounded))
                 .foregroundStyle(Color(uiColor: .tertiaryLabel))
