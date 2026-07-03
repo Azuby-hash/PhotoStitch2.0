@@ -13,6 +13,10 @@ struct PhotoStitchBundle: WidgetBundle {
     var body: some Widget {
         StitchPhotosWidget()
         StitchVideosWidget()
-        PhotoStitchControl()
+        
+        if #available(iOS 18, *) {
+            StitchPhotosControl()
+            StitchVideoControl()
+        }
     }
 }

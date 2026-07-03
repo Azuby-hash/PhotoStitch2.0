@@ -460,11 +460,11 @@ enum SubscriptionPlan {
     }
     
     func subscribe() {
-        // TODO: hook up StoreKit purchase for `selectedPlan`
+//        Task { await StoreKitManager.shared.purchase(selectedPlan) }
     }
-    
+
     func restore() {
-        // TODO: hook up StoreKit restore
+//        Task { await StoreKitManager.shared.restore() }
     }
 }
 

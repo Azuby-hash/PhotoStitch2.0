@@ -223,6 +223,7 @@
 		CED99ADE2FF18B170003577B /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = CED99ADA2FF18B170003577B /* Localizable.xcstrings */; };
 		CED99AE02FF18B170003577B /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = CED99ADF2FF18B170003577B /* InfoPlist.xcstrings */; };
 		CED99AE22FF18B170003577B /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = CED99AE12FF18B170003577B /* InfoPlist.xcstrings */; };
+		CED99B2E2FF6AB9C0003577B /* StoreKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED99B2D2FF6AB950003577B /* StoreKit.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -406,6 +407,7 @@
 		CED99ADA2FF18B170003577B /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		CED99ADF2FF18B170003577B /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		CED99AE12FF18B170003577B /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
+		CED99B2D2FF6AB950003577B /* StoreKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKit.swift; sourceTree = "<group>"; };
 		D4AAEC8C621ECAB52E001FBA /* Pods_PhotoStitch2_0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PhotoStitch2_0.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9BB7334FDF3F5D98FBC647E /* Pods-PhotoStitch2.0.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotoStitch2.0.release.xcconfig"; path = "Target Support Files/Pods-PhotoStitch2.0/Pods-PhotoStitch2.0.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -528,6 +530,7 @@
 				CE4231A22FAB55BD00701039 /* Onboarding.swift */,
 				CE4231A42FAB562000701039 /* Subscription.swift */,
 				CE25DA2D2FEAF0BB00DE2E22 /* VideoInstruction.swift */,
+				CED99B2D2FF6AB950003577B /* StoreKit.swift */,
 				CED99AD62FF1549F0003577B /* Rating */,
 				CE25DA2F2FEAF26800DE2E22 /* VideoInstruction.mp4 */,
 			);
@@ -1111,6 +1114,7 @@
 				CE8700732FB039E200061801 /* CGRectHelpers.swift in Sources */,
 				CE8700742FB039E200061801 /* UISLabel.swift in Sources */,
 				CE8700752FB039E200061801 /* UISConstraints.swift in Sources */,
+				CED99B2E2FF6AB9C0003577B /* StoreKit.swift in Sources */,
 				CE7516552FC9F6F0002C4625 /* EditCutControl.swift in Sources */,
 				CE8700762FB039E200061801 /* UIViewControllerPresent.swift in Sources */,
 				CE8700772FB039E200061801 /* UIViewBorder.swift in Sources */,
@@ -1263,7 +1267,7 @@
 				INFOPLIST_FILE = PhotoStitchExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = PhotoStitchExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 18;
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1294,7 +1298,7 @@
 				INFOPLIST_FILE = PhotoStitchExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = PhotoStitchExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 18;
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1529,13 +1533,13 @@
 				INFOPLIST_FILE = PhotoStitchShare/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = PhotoStitchShare;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.azubylabs.photostitch.share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -1561,13 +1565,13 @@
 				INFOPLIST_FILE = PhotoStitchShare/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = PhotoStitchShare;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.azubylabs.photostitch.share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
