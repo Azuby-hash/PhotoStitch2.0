@@ -15,13 +15,14 @@ enum StoreKitError: Error {
 actor StoreKit {
     static let shared = StoreKit()
     
-    private(set) var products: [ProductPlan: ProductInfo] = [:]
+    private(set) var products: [ProductInfo] = []
+    private var oneTimeDate = Date()
     private var isPrePaid = false
     
     private var updatesTask: Task<Void, Never>?
     
     var isPro: Bool {
-        get { products.values.contains(where: { $0.isActive }) || isPrePaid }
+        get { products.contains(where: { $0.isActive }) || isPrePaid }
     }
     
     enum ProductPlan: String, CaseIterable {
@@ -29,39 +30,48 @@ actor StoreKit {
         case yearly = "yearly"
     }
     
-    func load() async throws {
+    func load(_ oneTimeDate: Date = Date.init(timeIntervalSince1970: 0)) async throws {
+        self.oneTimeDate = oneTimeDate
         let pros = try await Product.products(for: ProductPlan.allCases.map({ $0.rawValue }))
+        
+        products.removeAll()
         
         for pro in pros {
             guard let plan = ProductPlan(rawValue: pro.id) else { continue }
-            products[plan] = try await ProductInfo(product: pro)
+            products.append(try await ProductInfo(product: pro, plan: plan))
         }
         
-        let result = try await AppTransaction.shared
-        
-        switch result {
-        case .verified(let tranaction):
-            print("Verified \(tranaction.originalPurchaseDate)")
-            // User from 1 time paid app, will able to use all premium free forever
+        do {
+            let result = try await AppTransaction.shared
             
-            if tranaction.originalPurchaseDate < Date(timeIntervalSinceNow: -213123123) {
-                isPrePaid = true
+            switch result {
+            case .verified(let tranaction):
+                print("Verified \(tranaction.originalPurchaseDate)")
+                // User from 1 time paid app, will able to use all premium free forever
+                if tranaction.originalPurchaseDate.timeIntervalSince1970 < oneTimeDate.timeIntervalSince1970 {
+                    isPrePaid = true
+                }
+            case .unverified(let tranaction, let error):
+                print("Unverified \(tranaction) \(error)")
             }
-        case .unverified(let tranaction, let error):
-            print("Unverified \(tranaction) \(error)")
+        } catch {
+            print(error)
         }
+        
+        try await check()
         
         if updatesTask == nil {
             updatesTask = Task {
-                do {
-                    for await result in Transaction.updates {
-                        guard case .verified(let transaction) = result else { continue }
-                        
-                        await transaction.finish()
+                for await result in Transaction.updates {
+                    guard case .verified(let transaction) = result else { continue }
+                    
+                    await transaction.finish()
+                    
+                    do {
                         try await self.check()
+                    } catch {
+                        print(error)
                     }
-                } catch {
-                    print(error)
                 }
             }
         }
@@ -73,7 +83,7 @@ actor StoreKit {
     }
     
     func info(for plan: ProductPlan) throws -> ProductInfo {
-        guard let productInfo = products[plan] else {
+        guard let productInfo = products.first(where: { $0.plan == plan }) else {
             throw StoreKitError.error("No product \(plan.rawValue)")
         }
         
@@ -88,18 +98,19 @@ actor StoreKit {
             transactions.append(transaction)
         }
         
-        for product in products.values {
+        for product in products {
             product.isActive = false
         }
         
-        for product in products.values {
+        for product in products {
             if transactions.contains(where: { $0.productID == product.product.id }) {
                 product.isActive = true
             }
         }
     }
     
-    class ProductInfo {
+    final class ProductInfo {
+        fileprivate(set) var plan: ProductPlan
         fileprivate(set) var product: Product
         fileprivate(set) var period: String
         fileprivate(set) var price: String
@@ -107,11 +118,12 @@ actor StoreKit {
         fileprivate(set) var introPeriod: String?
         fileprivate(set) var isActive: Bool = false
         
-        init(product: Product) async throws {
+        init(product: Product, plan: ProductPlan) async throws {
             guard let subscription = product.subscription else {
                 throw StoreKitError.error("No product \(product.id)")
             }
             
+            self.plan = plan
             self.product = product
             self.period = await subscription.subscriptionPeriod.string(.frequency)
             self.price = product.displayPrice

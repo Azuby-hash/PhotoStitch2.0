@@ -77,6 +77,15 @@ struct Home: View {
                         homeUpdater.showRating = true
                     }
                 }
+                
+                do {
+                    let date = try await (CloudKit.shared.load(id: "2D2F4B60-86D9-48F0-9575-E6756D7E4F1E", key: "date") as? Date).unwrap()
+                    try await StoreKit.shared.load(date)
+                } catch {
+                    print(error)
+                }
+                
+                print(await StoreKit.shared.isPro)
             }
         })
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification), perform: { _ in

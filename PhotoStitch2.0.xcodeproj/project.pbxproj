@@ -16,6 +16,7 @@
 		AF1719072FECE2D900DA1D67 /* PhotoStitchBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1719012FECE2D900DA1D67 /* PhotoStitchBundle.swift */; };
 		AF1719082FECE2D900DA1D67 /* PhotoStitchControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1719022FECE2D900DA1D67 /* PhotoStitchControl.swift */; };
 		AF17190A2FECE2D900DA1D67 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF1718FE2FECE2D900DA1D67 /* Assets.xcassets */; };
+		CE11E2C32FF7C8FF00F4FBFA /* CloudKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE11E2C22FF7C8FA00F4FBFA /* CloudKit.swift */; };
 		CE1FDC802F9D181000460178 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1FDC762F9D181000460178 /* AppDelegate.swift */; };
 		CE1FDC812F9D181000460178 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1FDC7D2F9D181000460178 /* SceneDelegate.swift */; };
 		CE1FDC822F9D181000460178 /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1FDC7E2F9D181000460178 /* Main.swift */; };
@@ -269,6 +270,7 @@
 		AF1719002FECE2D900DA1D67 /* PhotoStitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoStitch.swift; sourceTree = "<group>"; };
 		AF1719012FECE2D900DA1D67 /* PhotoStitchBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoStitchBundle.swift; sourceTree = "<group>"; };
 		AF1719022FECE2D900DA1D67 /* PhotoStitchControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoStitchControl.swift; sourceTree = "<group>"; };
+		CE11E2C22FF7C8FA00F4FBFA /* CloudKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKit.swift; sourceTree = "<group>"; };
 		CE1FDC5E2F9D180400460178 /* PhotoStitch2.0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoStitch2.0.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE1FDC762F9D181000460178 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE1FDC772F9D181000460178 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -530,7 +532,6 @@
 				CE4231A22FAB55BD00701039 /* Onboarding.swift */,
 				CE4231A42FAB562000701039 /* Subscription.swift */,
 				CE25DA2D2FEAF0BB00DE2E22 /* VideoInstruction.swift */,
-				CED99B2D2FF6AB950003577B /* StoreKit.swift */,
 				CED99AD62FF1549F0003577B /* Rating */,
 				CE25DA2F2FEAF26800DE2E22 /* VideoInstruction.mp4 */,
 			);
@@ -789,6 +790,8 @@
 			isa = PBXGroup;
 			children = (
 				CE25DA252FE4431F00DE2E22 /* UndoRedo.swift */,
+				CED99B2D2FF6AB950003577B /* StoreKit.swift */,
+				CE11E2C22FF7C8FA00F4FBFA /* CloudKit.swift */,
 				CE8700952FB6A61100061801 /* ForwardScroll.swift */,
 				CE75164A2FC5E99E002C4625 /* TouchView.swift */,
 				CE46FBA32FDB26400021013C /* MenuPopover.swift */,
@@ -1098,6 +1101,7 @@
 				CE8700672FB039E200061801 /* CGPathHelpers.swift in Sources */,
 				CE8700682FB039E200061801 /* CASLayer.swift in Sources */,
 				CE8700692FB039E200061801 /* UISView.swift in Sources */,
+				CE11E2C32FF7C8FF00F4FBFA /* CloudKit.swift in Sources */,
 				CE87006A2FB039E200061801 /* UIViewLoadNib.swift in Sources */,
 				CE87006B2FB039E200061801 /* UISScrollView.swift in Sources */,
 				CE46FBAA2FDEA9F70021013C /* EditSortControl.swift in Sources */,
