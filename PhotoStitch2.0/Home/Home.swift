@@ -252,7 +252,7 @@ struct Home: View {
         didSet {
             PHOTO_FILTER = photofilter
             
-            if photofilter != .images && AUTO_SHOW_INSTRUCTION {
+            if photofilter == .videos && AUTO_SHOW_INSTRUCTION {
                 showInstruction = true
             }
         }

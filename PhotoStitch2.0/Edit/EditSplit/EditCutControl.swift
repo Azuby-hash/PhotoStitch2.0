@@ -109,32 +109,71 @@ extension EditCutControl: ForwardScrollProtocol {
         alpha = editUpdater.tab == .split ? 1 : 0
         
         deleteAll = editUpdater.cutUpdater?.deleteAll.eraseToAnyPublisher().sink(receiveValue: { [weak self] _ in
-            guard let stackView = context.coordinator.stackView,
-                  editUpdater.axis == .vertical,
-                  let self = self
-            else { return }
-            
-            var curNorRects: [CGRect] = []
-            
-            for splitDeletor in splitDeletors {
-                let size = splitDeletor.item.size
-                let stackFrame = stackView.convert(stackView.bounds, to: self)
-                
-                guard size.height > HIGH_REMOVE,
-                      size.height > LOW_REMOVE
-                else { return }
-                
-                if let areaFrame = splitDeletor.before?.area.frame {
-                    curNorRects.append(CGRect(origin: areaFrame.origin - stackFrame.origin, size: areaFrame.size) / stackFrame.size)
-                }
-                
-                if let areaFrame = splitDeletor.after?.area.frame {
-                    curNorRects.append(CGRect(origin: areaFrame.origin - stackFrame.origin, size: areaFrame.size) / stackFrame.size)
-                }
-            }
-            
-            applyCuts(curNorRects, switchStitch: false)
+            self?.deleteAllRemovables()
         })
+    }
+
+    /// Trims the removable top/bottom bands from every item at once.
+    ///
+    /// These bands always sit at an item's edges, so removing them is just a
+    /// crop of the item's rect — no need to route through `applyCuts`, which
+    /// keys cuts by item in a dictionary and therefore drops one band when an
+    /// item has both a top and a bottom removable region.
+    private func deleteAllRemovables() {
+        guard let editUpdater = editUpdater,
+              editUpdater.axis == .vertical
+        else { return }
+
+        editUpdater.anim = false
+        editUpdater.undoRedoBegin()
+
+        var changed = false
+
+        for deletor in splitDeletors {
+            // `before`/`after` are non-nil exactly when the top/bottom band
+            // is present (set in `deletorSetup`).
+            if trimRemovable(item: deletor.item, removeBefore: deletor.before != nil, removeAfter: deletor.after != nil) {
+                changed = true
+            }
+        }
+
+        editUpdater.anim = true
+
+        guard changed else { return }
+
+        editUpdater.items = editUpdater.items.filter({ $0.process.rect.width >= MIN_REMOVE && $0.process.rect.height >= MIN_REMOVE })
+
+        editUpdater.undoRedoCommit()
+    }
+
+    /// Crops the removable top and/or bottom band off a single item's rect.
+    ///
+    /// Each band is a fixed pixel height at the item's edge, so its normalized
+    /// size is `REMOVE / item.size.height`. Returns `true` when the rect changed.
+    private func trimRemovable(item: StitchItem, removeBefore: Bool, removeAfter: Bool) -> Bool {
+        // Skip items too short to have removable regions (e.g. small fragments
+        // from a previous cut).
+        guard item.size.height > HIGH_REMOVE,
+              item.size.height > LOW_REMOVE
+        else { return false }
+
+        let rect = item.process.rect
+        var minY = rect.minY
+        var maxY = rect.maxY
+
+        if removeBefore {
+            minY = LOW_REMOVE / item.size.height
+        }
+
+        if removeAfter {
+            maxY = 1 - HIGH_REMOVE / item.size.height
+        }
+
+        guard maxY - minY > MIN_REMOVE, minY > rect.minY || maxY < rect.maxY else { return false }
+
+        item.process.setRect(CGRect(x: rect.minX, y: minY, width: rect.width, height: maxY - minY))
+
+        return true
     }
     
     func contentUpdate(editUpdater: EditUpdater, context: EditGallery.Context) {
@@ -411,25 +450,23 @@ extension EditCutControl: ForwardScrollProtocol {
     
     @objc private func deleteAction(g: UITapGestureRecognizer) {
         guard let editUpdater = editUpdater,
-              let stackView = context?.coordinator.stackView,
               editUpdater.axis == .vertical,
               let splitDeletor = splitDeletors.first(where: { $0.before?.button == g.view || $0.after?.button == g.view })
         else { return }
-        
-        let size = splitDeletor.item.size
-        let stackFrame = stackView.convert(stackView.bounds, to: self)
-        
-        guard size.height > HIGH_REMOVE,
-              size.height > LOW_REMOVE
-        else { return }
-        
-        if g.view == splitDeletor.before?.button, let areaFrame = splitDeletor.before?.area.frame {
-            applyCuts([CGRect(origin: areaFrame.origin - stackFrame.origin, size: areaFrame.size) / stackFrame.size], switchStitch: false)
-        }
-        
-        if g.view == splitDeletor.after?.button, let areaFrame = splitDeletor.after?.area.frame {
-            applyCuts([CGRect(origin: areaFrame.origin - stackFrame.origin, size: areaFrame.size) / stackFrame.size], switchStitch: false)
-        }
+
+        // Same crop logic as delete-all, but only the single tapped band.
+        editUpdater.anim = false
+        editUpdater.undoRedoBegin()
+
+        let changed = trimRemovable(item: splitDeletor.item, removeBefore: g.view == splitDeletor.before?.button, removeAfter: g.view == splitDeletor.after?.button)
+
+        editUpdater.anim = true
+
+        guard changed else { return }
+
+        editUpdater.items = editUpdater.items.filter({ $0.process.rect.width >= MIN_REMOVE && $0.process.rect.height >= MIN_REMOVE })
+
+        editUpdater.undoRedoCommit()
     }
     
     private func applyCuts(_ rects: [CGRect], switchStitch: Bool) {
