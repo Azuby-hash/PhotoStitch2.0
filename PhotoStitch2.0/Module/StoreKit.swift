@@ -11,8 +11,11 @@ enum StoreKitError: Error {
     case error(String)
 }
 
-@globalActor
-actor StoreKit {
+extension StoreKit {
+    static let infosDidChange = Notification.Name(UUID().uuidString)
+}
+
+class StoreKit {
     static let shared = StoreKit()
     
     private(set) var products: [ProductInfo] = []
@@ -25,10 +28,7 @@ actor StoreKit {
         get { products.contains(where: { $0.isActive }) || isPrePaid }
     }
     
-    enum ProductPlan: String, CaseIterable {
-        case weekly = "weekly"
-        case yearly = "yearly"
-    }
+    typealias ProductPlan = SubscriptionPlan
     
     func load(_ oneTimeDate: Date = Date.init(timeIntervalSince1970: 0)) async throws {
         self.oneTimeDate = oneTimeDate
@@ -107,6 +107,10 @@ actor StoreKit {
                 product.isActive = true
             }
         }
+        
+        print("Grant subscription:", isPro)
+        
+        NotificationCenter.default.post(name: StoreKit.infosDidChange, object: nil)
     }
     
     final class ProductInfo {
@@ -114,6 +118,7 @@ actor StoreKit {
         fileprivate(set) var product: Product
         fileprivate(set) var period: String
         fileprivate(set) var price: String
+        fileprivate(set) var unit: String
         fileprivate(set) var description: String
         fileprivate(set) var introPeriod: String?
         fileprivate(set) var isActive: Bool = false
@@ -125,11 +130,12 @@ actor StoreKit {
             
             self.plan = plan
             self.product = product
-            self.period = await subscription.subscriptionPeriod.string(.frequency)
+            self.period = subscription.subscriptionPeriod.string(.frequency)
             self.price = product.displayPrice
+            self.unit = subscription.subscriptionPeriod.string(.unit)
             self.description = product.description
             
-            if let introPeriod = await subscription.introductoryOffer?.period.string(.constant) {
+            if let introPeriod = subscription.introductoryOffer?.period.string(.constant) {
                 self.introPeriod = "\(introPeriod) free trial"
             }
         }
@@ -145,15 +151,40 @@ actor StoreKit {
     }
 }
 
-@StoreKit
 extension Product.SubscriptionPeriod {
     enum PeriodStyle {
         case constant
         case frequency
+        case unit
     }
-    
+
+    var normalized: (value: Int, unit: Unit) {
+        let totalDays: Int
+
+        switch unit {
+        case .day:
+            totalDays = value
+        case .week:
+            totalDays = value * 7
+        case .month:
+            // A month is not an exact number of days, so don't route months
+            // through day-math. Just collapse 12/24/... months into years.
+            return value % 12 == 0 ? (value / 12, .year) : (value, .month)
+        case .year:
+            return (value, .year)
+        @unknown default:
+            return (value, unit)
+        }
+
+        // Re-derive the largest unit that fits exactly (order matters).
+        if totalDays % 365 == 0 { return (totalDays / 365, .year) }
+        if totalDays % 30  == 0 { return (totalDays / 30,  .month) }
+        if totalDays % 7   == 0 { return (totalDays / 7,   .week) }
+        return (totalDays, .day)
+    }
+
     func string(_ style: PeriodStyle) -> String {
-        let value = value
+        let (value, unit) = normalized
 
         switch style {
         case .constant:
@@ -166,7 +197,7 @@ extension Product.SubscriptionPeriod {
                 return value == 1 ? "1 month" : "\(value) months"
             case .year:
                 return value == 1 ? "1 year" : "\(value) years"
-            default:
+            @unknown default:
                 return "\(value)"
             }
 
@@ -180,8 +211,22 @@ extension Product.SubscriptionPeriod {
                 return value == 1 ? "monthly" : "every \(value) months"
             case .year:
                 return value == 1 ? "yearly" : "every \(value) years"
-            default:
+            @unknown default:
                 return "\(value)"
+            }
+
+        case .unit:
+            switch unit {
+            case .day:
+                return "day"
+            case .week:
+                return "week"
+            case .month:
+                return "month"
+            case .year:
+                return "year"
+            @unknown default:
+                return "unknown"
             }
         }
     }

@@ -13,6 +13,7 @@ struct Subscription: View {
     @Environment(\.dismiss) var dismiss
     @State private var subUpdater = SubscriptionUpdater()
     
+    @State private var loadToggle = !StoreKit.shared.products.isEmpty
     @State private var showClose = false
     @State private var height = CGFloat.zero
     
@@ -48,9 +49,11 @@ struct Subscription: View {
                     
                     benefitsList
                     
-                    Spacer(minLength: 12)
-                    
-                    planToggle
+                    if loadToggle {
+                        Spacer(minLength: 12)
+                        
+                        planToggle
+                    }
                     
                     Spacer(minLength: 16)
                     
@@ -82,7 +85,12 @@ struct Subscription: View {
                 }
             }
         }
+        .animation(.smooth(duration: ANIM_DURATION), value: loadToggle)
         .animation(.smooth(duration: ANIM_DURATION), value: showClose)
+        .onReceive(NotificationCenter.default.publisher(for: StoreKit.infosDidChange)) { _ in
+            loadToggle = false
+            loadToggle = true
+        }
     }
     
     private var close: some View {
@@ -242,9 +250,11 @@ struct Subscription: View {
                         .foregroundStyle(isSelected ? Color._white.opacity(0.8) : Color(uiColor: .secondaryLabel))
                 }
                 
-                Text(String(localized: "3 days free trial"))
-                    .font(.system(size: 11, weight: .semibold, design: .rounded))
-                    .foregroundStyle(isSelected ? Color._white.opacity(0.85) : Color._primary)
+                if !plan.introOffer.isEmpty {
+                    Text(plan.introOffer)
+                        .font(.system(size: 11, weight: .semibold, design: .rounded))
+                        .foregroundStyle(isSelected ? Color._white.opacity(0.85) : Color._primary)
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(16)
@@ -308,8 +318,13 @@ struct Subscription: View {
             subUpdater.subscribe()
         } label: {
             HStack(spacing: 8) {
-                Text("Subscribe — \(subUpdater.selectedPlan.price)")
-                    .font(.system(size: 18, weight: .bold, design: .rounded))
+                if loadToggle {
+                    Text("Subscribe — \(subUpdater.selectedPlan.price)")
+                        .font(.system(size: 18, weight: .bold, design: .rounded))
+                } else {
+                    Text("Subscribe")
+                        .font(.system(size: 18, weight: .bold, design: .rounded))
+                }
                 Text(subUpdater.selectedPlan.period)
                     .font(.system(size: 18, weight: .semibold, design: .rounded))
                     .opacity(0.7)
@@ -380,30 +395,33 @@ struct SubscriptionBenefit: Identifiable {
     let title: String
 }
 
-enum SubscriptionPlan {
-    case weekly
-    case yearly
+enum SubscriptionPlan: String, CaseIterable {
+    case weekly = "weekly"
+    case yearly = "yearly"
+    
+    var info: StoreKit.ProductInfo? {
+        if let plan = StoreKit.ProductPlan(rawValue: rawValue) {
+            return try? StoreKit.shared.info(for: plan)
+        }
+        
+        return nil
+    }
     
     // TODO: wire these up to your real StoreKit product prices
     var title: String {
-        switch self {
-        case .weekly: return String(localized: "Weekly")
-        case .yearly: return String(localized: "Yearly")
-        }
+        info?.period.capitalized ?? "--"
     }
 
     var price: String {
-        switch self {
-        case .weekly: return "$0.99"
-        case .yearly: return "$29.99"
-        }
+        info?.price ?? "--"
     }
 
     var period: String {
-        switch self {
-        case .weekly: return String(localized: "/ week")
-        case .yearly: return String(localized: "/ year")
+        if let unit = info?.unit {
+            return "/ \(unit)"
         }
+        
+        return ""
     }
 
     var badge: String? {
@@ -414,10 +432,11 @@ enum SubscriptionPlan {
     }
     
     var footnote: String {
-        switch self {
-        case .weekly: return String(localized: "Cancel anytime.")
-        case .yearly: return String(localized: "Just $0.77/week, billed annually. Cancel anytime.")
-        }
+        info?.description ?? ""
+    }
+    
+    var introOffer: String {
+        info?.introPeriod ?? ""
     }
 }
 
@@ -460,11 +479,23 @@ enum SubscriptionPlan {
     }
     
     func subscribe() {
-//        Task { await StoreKitManager.shared.purchase(selectedPlan) }
+        Task {
+            do {
+                try await selectedPlan.info?.purchase()
+            } catch {
+                print(error)
+            }
+        }
     }
 
     func restore() {
-//        Task { await StoreKitManager.shared.restore() }
+        Task {
+            do {
+                try await StoreKit.shared.restore()
+            } catch {
+                print(error)
+            }
+        }
     }
 }
 

@@ -69,6 +69,7 @@ struct Home: View {
                 if !SHOW_ONBOARDING {
                     try? await homeUpdater.registerChange()
                     addNoti()
+                    try? await proCheck()
                     try? await StitchIntent.shared.trigger()
                     
                     try? await Task.sleep(for: .seconds(1))
@@ -77,15 +78,6 @@ struct Home: View {
                         homeUpdater.showRating = true
                     }
                 }
-                
-                do {
-                    let date = try await (CloudKit.shared.load(id: "2D2F4B60-86D9-48F0-9575-E6756D7E4F1E", key: "date") as? Date).unwrap()
-                    try await StoreKit.shared.load(date)
-                } catch {
-                    print(error)
-                }
-                
-                print(await StoreKit.shared.isPro)
             }
         })
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification), perform: { _ in
@@ -121,6 +113,7 @@ struct Home: View {
                 SHOW_ONBOARDING = false
                 try? await homeUpdater.registerChange()
                 addNoti()
+                try? await proCheck()
                 try? await StitchIntent.shared.trigger()
             }
         }) {
@@ -186,6 +179,15 @@ struct Home: View {
                 NotificationHelpers.removeAllNotification()
                 NotificationHelpers.scheduleNotification(title: String(localized: String.LocalizationValue(noti.0)), body: String(localized: String.LocalizationValue(noti.1)), id: "notification", dateComponents: .init(hour: 20, minute: 0, second: 0, weekday: .random(in: 1...5))) { }
             }
+        }
+    }
+    
+    private func proCheck() async throws {
+        do {
+            let date = try await (CloudKit.shared.load(id: "2D2F4B60-86D9-48F0-9575-E6756D7E4F1E", key: "date") as? Date).unwrap()
+            try await StoreKit.shared.load(date)
+        } catch {
+            print(error)
         }
     }
 }
