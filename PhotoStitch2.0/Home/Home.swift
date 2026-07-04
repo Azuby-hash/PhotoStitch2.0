@@ -179,16 +179,34 @@ struct Home: View {
     
     private func addNoti() {
         NotificationHelpers.requestForPushNotification { bool in
+            guard bool else { return }
+
+            // Roll the notification schedule once per month so the chosen days
+            // and messages stay stable through the month instead of changing on
+            // every app launch.
+            let month = Calendar.current.dateComponents([.year, .month], from: Date())
+            let monthKey = (month.year ?? 0) * 100 + (month.month ?? 0)
+
+            guard NOTI_MONTH != monthKey else { return }
+            NOTI_MONTH = monthKey
+
             let notis = [
                 ("Time to stitch?", "Stop sending 5 separate screenshots. Combine them into one now!"),
                 ("Ready for your next stitch?", "Your scrolling captures are waiting. Tap to make a long screenshot!"),
                 ("Got a video scrollshot?", "Stitch it into a single clean image now!"),
                 ("Long webpage capture?", "Stitch the whole page together now!"),
             ]
-            
-            if bool, let noti = notis.randomElement() {
-                NotificationHelpers.removeAllNotification()
-                NotificationHelpers.scheduleNotification(title: String(localized: String.LocalizationValue(noti.0)), body: String(localized: String.LocalizationValue(noti.1)), id: "notification", dateComponents: .init(hour: 20, minute: 0, second: 0, weekday: .random(in: 1...5))) { }
+
+            NotificationHelpers.removeAllNotification()
+
+            // Three distinct days within the month (1...28 so they are valid for
+            // every month). Each repeats monthly until the next month re-rolls them.
+            let days = Array(1...28).shuffled().prefix(3)
+
+            for (index, day) in days.enumerated() {
+                guard let noti = notis.randomElement() else { continue }
+
+                NotificationHelpers.scheduleNotification(title: String(localized: String.LocalizationValue(noti.0)), body: String(localized: String.LocalizationValue(noti.1)), id: "notification_\(index)", dateComponents: .init(day: day, hour: 20, minute: 0, second: 0)) { }
             }
         }
     }

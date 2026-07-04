@@ -82,6 +82,13 @@ var DID_RATING: Bool {
     set { UserDefaults.standard.set(newValue, forKey: "414eba80-a41c-4052-a9e7-72ea23a3c883") }
 }
 
+/// Year*100 + month for which local notifications were last scheduled, so the
+/// notification days/messages are rolled once per month instead of every launch.
+var NOTI_MONTH: Int {
+    get { UserDefaults.standard.object(forKey: "6d2f9a1e-8c47-4b90-a1f2-3e5d7c0b9a44") as? Int ?? -1 }
+    set { UserDefaults.standard.set(newValue, forKey: "6d2f9a1e-8c47-4b90-a1f2-3e5d7c0b9a44") }
+}
+
 enum RemoveOriginals: Int, CaseIterable {
     case never
     case ask
