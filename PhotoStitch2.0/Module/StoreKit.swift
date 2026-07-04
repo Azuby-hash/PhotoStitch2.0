@@ -19,19 +19,19 @@ class StoreKit {
     static let shared = StoreKit()
     
     private(set) var products: [ProductInfo] = []
-    private var oneTimeDate = Date()
     private var isPrePaid = false
+    private var isGoneFree = false
     
     private var updatesTask: Task<Void, Never>?
     
     var isPro: Bool {
-        get { products.contains(where: { $0.isActive }) || isPrePaid }
+        get { products.contains(where: { $0.isActive }) || isPrePaid || isGoneFree }
     }
     
     typealias ProductPlan = SubscriptionPlan
     
-    func load(_ oneTimeDate: Date = Date.init(timeIntervalSince1970: 0)) async throws {
-        self.oneTimeDate = oneTimeDate
+    func load(_ freeUntilDate: Date = Date.init(timeIntervalSince1970: 0), _ isGoneFree: Bool = false) async throws {
+        self.isGoneFree = isGoneFree
         let pros = try await Product.products(for: ProductPlan.allCases.map({ $0.rawValue }))
         
         products.removeAll()
@@ -48,7 +48,7 @@ class StoreKit {
             case .verified(let tranaction):
                 print("Verified \(tranaction.originalPurchaseDate)")
                 // User from 1 time paid app, will able to use all premium free forever
-                if tranaction.originalPurchaseDate.timeIntervalSince1970 < oneTimeDate.timeIntervalSince1970 {
+                if tranaction.originalPurchaseDate.timeIntervalSince1970 < freeUntilDate.timeIntervalSince1970 {
                     isPrePaid = true
                 }
             case .unverified(let tranaction, let error):
