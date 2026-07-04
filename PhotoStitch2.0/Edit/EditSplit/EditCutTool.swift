@@ -12,11 +12,30 @@ fileprivate let ANIM_ID = "99ff4d39331756d1"
 
 struct EditCutTool: View {
     @Environment(EditUpdater.self) var editUpdater
-    
+    @Environment(HomeUpdater.self) var homeUpdater
+
     @State var showMenu = false
     
     @Namespace var namespace
     
+    // Area cutting is a Pro feature — the whole toggle is hidden outside the main app.
+    private var toolSwitch: [MenuPopoverItem] {
+        #if MAIN_APP
+        return [
+            MenuPopoverItem(icon: Image(editUpdater.cutUpdater?.mode == .pair ? "scissors.180" : "rectangle.dashed.badge.minus"), name: editUpdater.cutUpdater?.mode == .pair ? "To Cut" : "To Area", action: {
+                // Pair (area) mode is Pro; single (cut) mode is free.
+                if editUpdater.cutUpdater?.mode == .single, !StoreKit.shared.isPro {
+                    homeUpdater.openSubscription(.immediate)
+                    return
+                }
+                editUpdater.cutUpdater?.setMode(editUpdater.cutUpdater?.mode == .pair ? .single: .pair)
+            })
+        ]
+        #else
+        return []
+        #endif
+    }
+
     var body: some View {
         HStack(alignment: .bottom) {
             MenuPopover(showMenu: $showMenu, items: (editUpdater.shareVer ? [] : [
@@ -25,11 +44,7 @@ struct EditCutTool: View {
                 })]) + (editUpdater.cutUpdater?.mode == .pair ? [] : [
                 .init(icon: Image("trash.square.stack"), name: "Delete All", action: {
                     editUpdater.cutUpdater?.deleteAll.send()
-                })]) + [
-                .init(icon: Image(editUpdater.cutUpdater?.mode == .pair ? "scissors.180" : "rectangle.dashed.badge.minus"), name: editUpdater.cutUpdater?.mode == .pair ? "To Cut" : "To Area", action: {
-                    editUpdater.cutUpdater?.setMode(editUpdater.cutUpdater?.mode == .pair ? .single: .pair)
-                })
-            ]) {
+                })]) + toolSwitch, content: {
                 HStack {
                     Image("rectangle.grid.1x2.fill.badge.ellipsis")
                     Text("Options")
@@ -39,8 +54,8 @@ struct EditCutTool: View {
                 .padding(.horizontal, 20)
                 .frame(width: 150, height: 60)
                 .modifier(MainGlass(shape: .capsule, type: .clear))
-            }
-            
+            })
+
             Button {
                 editUpdater.tab = .stitch
             } label: {
@@ -65,6 +80,18 @@ struct EditCutTool: View {
         .onAppear {
             editUpdater.cutUpdater = EditCutUpdater()
             editUpdater.cutUpdater?.context = editUpdater.editGallery.context
+
+            // Pair (area) mode is Pro-only in the main app and unavailable elsewhere
+            // (the toggle is hidden), so fall back to the free single (cut) mode if it was persisted.
+            #if MAIN_APP
+            if !StoreKit.shared.isPro, editUpdater.cutUpdater?.mode == .pair {
+                editUpdater.cutUpdater?.setMode(.single)
+            }
+            #else
+            if editUpdater.cutUpdater?.mode == .pair {
+                editUpdater.cutUpdater?.setMode(.single)
+            }
+            #endif
         }
         .onDisappear {
             editUpdater.cutUpdater = nil

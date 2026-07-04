@@ -9,9 +9,10 @@ import SwiftUI
 import AVKit
 
 struct VideoInstruction: View {
-    @Environment(\.dismiss) var dismiss
+    @Environment(HomeUpdater.self) var homeUpdater
 
     @State private var player: AVPlayer?
+    @State private var isPro = StoreKit.shared.isPro
 
     var body: some View {
         ZStack(alignment: .top) {
@@ -27,12 +28,36 @@ struct VideoInstruction: View {
                     StepRow(number: "1", text: "Turn on Record and scroll your content.")
                     StepRow(number: "2", text: "Select the recorded video in the Photo Stitch app.")
                 }
+                .frame(maxWidth: .infinity)
                 .padding(16)
                 .background(
                     RoundedRectangle(cornerRadius: 14)
                         .fill(Color(uiColor: .secondarySystemBackground))
                 )
-                
+
+                if !isPro {
+                    Button {
+                        homeUpdater.showInstruction = false
+                        homeUpdater.openSubscription(.immediate)
+                    } label: {
+                        HStack(spacing: 10) {
+                            Image("crown.fill")
+                                .font(.system(size: 15, weight: .bold))
+                            Text("Video stitching is a Pro feature. Subscribe to select and stitch videos.")
+                                .fixedSize(horizontal: false, vertical: true)
+                                .font(.system(size: 14, weight: .semibold, design: .rounded))
+                                .multilineTextAlignment(.leading)
+                        }
+                        .foregroundStyle(Color._black)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(16)
+                        .background(
+                            RoundedRectangle(cornerRadius: 14)
+                                .fill(Color._yellow)
+                        )
+                    }
+                }
+
                 VStack {
                     // Video Player
                     VideoPlayer(player: player)
@@ -48,7 +73,7 @@ struct VideoInstruction: View {
                 }
                 .frame(maxWidth: .infinity)
             }
-            .padding(.horizontal, 16)
+            .padding(16)
             .padding(.top, 60)
 
             // Close button
@@ -59,7 +84,7 @@ struct VideoInstruction: View {
                     .padding(.leading, 8)
                 Spacer()
                 Button {
-                    dismiss()
+                    homeUpdater.showInstruction = false
                 } label: {
                     Image("xmark")
                         .font(.system(size: 18, weight: .bold))
@@ -69,7 +94,6 @@ struct VideoInstruction: View {
                 }
             }
             .padding(.horizontal, 16)
-            .padding(.top, 16)
             .onAppear {
                 if let videoURL = Bundle.main.url(forResource: "VideoInstruction.mp4", withExtension: nil) {
                     player = AVPlayer(url: videoURL)

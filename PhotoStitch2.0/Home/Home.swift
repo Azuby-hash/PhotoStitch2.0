@@ -62,6 +62,13 @@ struct Home: View {
                     }
                 }
                 .ignoresSafeArea()
+            
+            ZStack {
+                if homeUpdater.showInstruction {
+                    VideoInstruction()
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                }
+            }
         }
         .background(Color._background)
         .onAppear(perform: {
@@ -108,6 +115,7 @@ struct Home: View {
         .animation(.smooth(duration: ANIM_DURATION), value: homeUpdater.autoStitch)
         .animation(.smooth(duration: ANIM_DURATION), value: homeUpdater.showRating)
         .animation(.smooth(duration: ANIM_DURATION), value: homeUpdater.autoSelection)
+        .animation(.smooth(duration: ANIM_DURATION), value: homeUpdater.showInstruction)
         .fullScreenCover(isPresented: $homeUpdater.showOnboarding, onDismiss: {
             Task {
                 SHOW_ONBOARDING = false
@@ -115,6 +123,12 @@ struct Home: View {
                 addNoti()
                 try? await proCheck()
                 try? await StitchIntent.shared.trigger()
+
+                await MainActor.run {
+                    if !StoreKit.shared.isPro {
+                        homeUpdater.openSubscription(.default)
+                    }
+                }
             }
         }) {
             Onboarding()
@@ -122,9 +136,6 @@ struct Home: View {
         .fullScreenCover(isPresented: $homeUpdater.showSubscription) {
             Subscription(config: homeUpdater.subscriptionConfig)
         }
-        .sheet(isPresented: $homeUpdater.showInstruction, content: {
-            VideoInstruction()
-        })
         .onReceive(NotificationCenter.default.publisher(for: StitchIntent.IMAGE_NOTI), perform: { _ in
             guard !homeUpdater.showEdit, let firstAsset = homeUpdater.filterAssets()?.first(where: { $0.mediaType == .image }) else { return }
             
@@ -255,6 +266,12 @@ struct Home: View {
     @ObservationIgnored var axis: NSLayoutConstraint.Axis = .vertical
     
     func select(_ asset: PHAsset, maxCount: Int = 4) {
+        // Pro gate: video stitching requires a subscription.
+        if asset.mediaType == .video, !StoreKit.shared.isPro {
+            openSubscription(.immediate)
+            return
+        }
+
         if selecteds.contains(where: { $0.mediaType == .video }),
            asset.mediaType == .video {
             warningAlert("Only one video can be selected at a time.")
@@ -266,7 +283,13 @@ struct Home: View {
         } catch {
             print(error)
         }
-        
+
+        // Pro gate: free users can select at most FREE_MAX_SELECTION images.
+        if handleFreeSelectionLimit() {
+            openSubscription(.immediate)
+            return
+        }
+
         let lastIsVideo = selecteds.last?.mediaType == .video
         
         if handleMaxSelection() {
@@ -289,6 +312,11 @@ struct Home: View {
         if handleMaxSelection() {
             selecteds = curr
         }
+
+        // Pro gate: free users can select at most FREE_MAX_SELECTION images.
+        if handleFreeSelectionLimit() {
+            openSubscription(.immediate)
+        }
     }
     
     func deselectAll() {
@@ -309,6 +337,15 @@ struct Home: View {
         })
     }
     
+    /// Trims the selection to the free limit for non-Pro users.
+    /// Returns true when the limit was exceeded (so the caller can prompt to upgrade).
+    @discardableResult
+    private func handleFreeSelectionLimit() -> Bool {
+        guard !StoreKit.shared.isPro, selecteds.count > FREE_MAX_SELECTION else { return false }
+        selecteds = Array(selecteds.prefix(FREE_MAX_SELECTION))
+        return true
+    }
+
     @discardableResult
     private func handleMaxSelection() -> Bool {
         var total = selecteds.reduce(0.0) { sum, asset in
@@ -337,7 +374,10 @@ struct Home: View {
         }
 
         let calendar = Calendar.current
-        
+
+        let remaining = StoreKit.shared.isPro ? max(maxCount, FREE_MAX_SELECTION - selecteds.count) : max(1, FREE_MAX_SELECTION - selecteds.count)
+        let effectiveMaxCount = min(maxCount, remaining)
+
         var currAsset = asset
         var pendingSelecteds = [currAsset]
         
@@ -347,8 +387,8 @@ struct Home: View {
                   asset != currAsset,
                   asset.mediaType != .video
             else { continue }
-            
-            if calendar.isDate(currDate, inSameDayAs: date), abs(date.timeIntervalSince(currDate)) < INTERVAL_AUTO, pendingSelecteds.count < maxCount {
+
+            if calendar.isDate(currDate, inSameDayAs: date), abs(date.timeIntervalSince(currDate)) < INTERVAL_AUTO, pendingSelecteds.count < effectiveMaxCount {
                 pendingSelecteds.append(asset)
                 currAsset = asset
                 currDate = date

@@ -11,15 +11,17 @@ import SwiftUI
 fileprivate let MENU_ID = "fc7f0176616fa4c0"
 fileprivate let MENU_SPACE = "a1c7df036f346c9e"
 
+struct MenuPopoverItem: Identifiable {
+    let id = UUID()
+    var icon: Image?
+    var name: String
+    var close: Bool = true
+    var action: () -> Void
+}
+
 struct MenuPopover<Content: View>: View {
-    struct Item: Identifiable {
-        let id = UUID()
-        var icon: Image?
-        var name: String
-        var close: Bool = true
-        var action: ()->Void
-    }
-    
+    typealias Item = MenuPopoverItem
+
     @Binding var showMenu: Bool
     var items: [Item]
     @ViewBuilder let content: () -> Content

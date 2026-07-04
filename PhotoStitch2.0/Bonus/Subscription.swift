@@ -74,9 +74,11 @@ struct Subscription: View {
                 close.padding(.horizontal, 20)
             }
         }
+        .allowsHitTesting(!subUpdater.isPurchasing)
         .onAppear {
             subUpdater.startLoop()
-            
+            subUpdater.syncSelectedToActive()
+
             if config.showCloseImmediately {
                 showClose = true
             } else {
@@ -90,6 +92,7 @@ struct Subscription: View {
         .onReceive(NotificationCenter.default.publisher(for: StoreKit.infosDidChange)) { _ in
             loadToggle = false
             loadToggle = true
+            subUpdater.syncSelectedToActive()
         }
     }
     
@@ -218,7 +221,8 @@ struct Subscription: View {
     
     private func planCard(_ plan: SubscriptionPlan) -> some View {
         let isSelected = subUpdater.selectedPlan == plan
-        
+        let isActive = plan.isActive
+
         return Button {
             subUpdater.selectedPlan = plan
         } label: {
@@ -227,9 +231,9 @@ struct Subscription: View {
                     Text(plan.title)
                         .font(.system(size: 14, weight: .semibold, design: .rounded))
                         .foregroundStyle(isSelected ? Color._white : Color.primary)
-                    
+
                     Spacer()
-                    
+
                     if let badge = plan.badge {
                         Text(badge)
                             .font(.system(size: 11, weight: .bold, design: .rounded))
@@ -260,7 +264,27 @@ struct Subscription: View {
             .padding(16)
             .padding(.leading, 2)
             .background(isSelected ? Color._primary : Color.clear)
+            .overlay {
+                if isActive && !isSelected {
+                    RoundedRectangle(cornerRadius: 20)
+                        .strokeBorder(Color._white, lineWidth: 2)
+                }
+            }
             .modifier(MainGlass(shape: RoundedRectangle(cornerRadius: 20), type: .clear))
+            .overlay(alignment: .topLeading) {
+                if isActive {
+                    Image("checkmark.circle.fill")
+                        .font(.system(size: 18, weight: .bold))
+                        .foregroundStyle(Color._white)
+                        .background {
+                            Circle()
+                                .fill(Color.black)
+                                .blendMode(.destinationOut)
+                        }
+                        .offset(x: -6, y: -6)
+                }
+            }
+            .compositingGroup()
         }
         .buttonStyle(.plain)
         .animation(.smooth(duration: ANIM_DURATION), value: isSelected)
@@ -318,16 +342,26 @@ struct Subscription: View {
             subUpdater.subscribe()
         } label: {
             HStack(spacing: 8) {
-                if loadToggle {
+                if subUpdater.isPurchasing {
+                    ProgressView()
+                        .progressViewStyle(.circular)
+                        .tint(Color._white)
+                } else if subUpdater.selectedPlan.isActive {
+                    Text("You're subscribed")
+                        .font(.system(size: 18, weight: .bold, design: .rounded))
+                } else if loadToggle {
                     Text("Subscribe — \(subUpdater.selectedPlan.price)")
                         .font(.system(size: 18, weight: .bold, design: .rounded))
+                    Text(subUpdater.selectedPlan.period)
+                        .font(.system(size: 18, weight: .semibold, design: .rounded))
+                        .opacity(0.7)
                 } else {
                     Text("Subscribe")
                         .font(.system(size: 18, weight: .bold, design: .rounded))
+                    Text(subUpdater.selectedPlan.period)
+                        .font(.system(size: 18, weight: .semibold, design: .rounded))
+                        .opacity(0.7)
                 }
-                Text(subUpdater.selectedPlan.period)
-                    .font(.system(size: 18, weight: .semibold, design: .rounded))
-                    .opacity(0.7)
             }
             .foregroundStyle(Color._white)
             .frame(maxWidth: .infinity)
@@ -357,6 +391,10 @@ struct Subscription: View {
             .shadow(color: Color._primary.opacity(0.35), radius: 20, x: 0, y: 8)
         }
         .buttonStyle(.plain)
+        .disabled(subUpdater.isPurchasing || subUpdater.selectedPlan.isActive)
+        .opacity(subUpdater.selectedPlan.isActive ? 0.6 : 1)
+        .animation(.smooth(duration: ANIM_DURATION), value: subUpdater.isPurchasing)
+        .animation(.smooth(duration: ANIM_DURATION), value: subUpdater.selectedPlan.isActive)
     }
 }
 
@@ -383,7 +421,7 @@ private struct BenefitRow: View {
 
 struct SubscriptionConfig {
     var showCloseImmediately: Bool = false
-    
+
     static let `default` = SubscriptionConfig()
     static let immediate = SubscriptionConfig(showCloseImmediately: true)
 }
@@ -434,6 +472,10 @@ enum SubscriptionPlan: String, CaseIterable {
     var footnote: String {
         info?.description ?? ""
     }
+
+    var isActive: Bool {
+        info?.isActive ?? false
+    }
     
     var introOffer: String {
         info?.introPeriod ?? ""
@@ -445,6 +487,7 @@ enum SubscriptionPlan: String, CaseIterable {
 @Observable class SubscriptionUpdater {
     var selectedPlan: SubscriptionPlan = .yearly
     var shimmerOffset: CGFloat = -220
+    var isPurchasing = false
     
     // TODO: replace with your real 6 benefits
     var benefits: [SubscriptionBenefit] = [
@@ -479,7 +522,10 @@ enum SubscriptionPlan: String, CaseIterable {
     }
     
     func subscribe() {
-        Task {
+        guard !isPurchasing else { return }
+        isPurchasing = true
+        Task { @MainActor in
+            defer { isPurchasing = false }
             do {
                 try await selectedPlan.info?.purchase()
             } catch {
@@ -489,12 +535,21 @@ enum SubscriptionPlan: String, CaseIterable {
     }
 
     func restore() {
-        Task {
+        guard !isPurchasing else { return }
+        isPurchasing = true
+        Task { @MainActor in
+            defer { isPurchasing = false }
             do {
                 try await StoreKit.shared.restore()
             } catch {
                 print(error)
             }
+        }
+    }
+
+    func syncSelectedToActive() {
+        if let active = SubscriptionPlan.allCases.first(where: { $0.isActive }) {
+            selectedPlan = active
         }
     }
 }
