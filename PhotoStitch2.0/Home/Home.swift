@@ -228,6 +228,11 @@ struct Home: View {
     }
     
     private func proCheck() async throws {
+        VIEW_CONTROLLER.view.isUserInteractionEnabled = false
+        defer {
+            VIEW_CONTROLLER.view.isUserInteractionEnabled = true
+        }
+        
         do {
             let freeUntilDate = try await (CloudKit.shared.load(id: "2D2F4B60-86D9-48F0-9575-E6756D7E4F1E", key: "date") as? Date).unwrap()
             let goneFree = (try? await (CloudKit.shared.load(id: "738D440D-5D33-4BF6-AEB3-2D36ED9821C1", key: "int") as? Int)) ?? -1
