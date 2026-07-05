@@ -17,6 +17,9 @@
 		AF1719082FECE2D900DA1D67 /* PhotoStitchControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1719022FECE2D900DA1D67 /* PhotoStitchControl.swift */; };
 		AF17190A2FECE2D900DA1D67 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF1718FE2FECE2D900DA1D67 /* Assets.xcassets */; };
 		CE11E2C32FF7C8FF00F4FBFA /* CloudKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE11E2C22FF7C8FA00F4FBFA /* CloudKit.swift */; };
+		CE11E2C52FFA05BB00F4FBFA /* PhotoStitchIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = CE11E2C42FFA05BB00F4FBFA /* PhotoStitchIcon.icon */; };
+		CE11E2C62FFA05EE00F4FBFA /* PhotoStitchIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = CE11E2C42FFA05BB00F4FBFA /* PhotoStitchIcon.icon */; };
+		CE11E2C72FFA05EE00F4FBFA /* PhotoStitchIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = CE11E2C42FFA05BB00F4FBFA /* PhotoStitchIcon.icon */; };
 		CE1FDC802F9D181000460178 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1FDC762F9D181000460178 /* AppDelegate.swift */; };
 		CE1FDC812F9D181000460178 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1FDC7D2F9D181000460178 /* SceneDelegate.swift */; };
 		CE1FDC822F9D181000460178 /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1FDC7E2F9D181000460178 /* Main.swift */; };
@@ -271,6 +274,7 @@
 		AF1719012FECE2D900DA1D67 /* PhotoStitchBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoStitchBundle.swift; sourceTree = "<group>"; };
 		AF1719022FECE2D900DA1D67 /* PhotoStitchControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoStitchControl.swift; sourceTree = "<group>"; };
 		CE11E2C22FF7C8FA00F4FBFA /* CloudKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKit.swift; sourceTree = "<group>"; };
+		CE11E2C42FFA05BB00F4FBFA /* PhotoStitchIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = PhotoStitchIcon.icon; sourceTree = "<group>"; };
 		CE1FDC5E2F9D180400460178 /* PhotoStitch2.0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoStitch2.0.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE1FDC762F9D181000460178 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE1FDC772F9D181000460178 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -510,6 +514,7 @@
 				CE7516602FCDCA84002C4625 /* Symbols.xcassets */,
 				CEBD6C9A2F9D1D6A00E176D7 /* Colors.xcassets */,
 				CEBD6BFA2F9D1CC400E176D7 /* Materials.xcassets */,
+				CE11E2C42FFA05BB00F4FBFA /* PhotoStitchIcon.icon */,
 				CE1FDC7A2F9D181000460178 /* LaunchScreen.storyboard */,
 			);
 			path = PhotoStitch2.0;
@@ -940,6 +945,7 @@
 			files = (
 				CED99AE02FF18B170003577B /* InfoPlist.xcstrings in Resources */,
 				AF17190A2FECE2D900DA1D67 /* Assets.xcassets in Resources */,
+				CE11E2C62FFA05EE00F4FBFA /* PhotoStitchIcon.icon in Resources */,
 				CED99ADD2FF18B170003577B /* Localizable.xcstrings in Resources */,
 				CED999FB2FED94520003577B /* Symbols.xcassets in Resources */,
 				CED999F92FED8CC80003577B /* Icons.xcassets in Resources */,
@@ -960,6 +966,7 @@
 				CEBD6C0D2F9D1CC400E176D7 /* Materials.xcassets in Resources */,
 				CE25DA302FEAF26800DE2E22 /* VideoInstruction.mp4 in Resources */,
 				CEBD6C9B2F9D1D6A00E176D7 /* Colors.xcassets in Resources */,
+				CE11E2C52FFA05BB00F4FBFA /* PhotoStitchIcon.icon in Resources */,
 				CE1FDC852F9D181000460178 /* LaunchScreen.storyboard in Resources */,
 				CE1FDC862F9D181000460178 /* Main.storyboard in Resources */,
 			);
@@ -971,6 +978,7 @@
 			files = (
 				CED99AE22FF18B170003577B /* InfoPlist.xcstrings in Resources */,
 				CED99ACF2FF040E70003577B /* Symbols.xcassets in Resources */,
+				CE11E2C72FFA05EE00F4FBFA /* PhotoStitchIcon.icon in Resources */,
 				CED99ADE2FF18B170003577B /* Localizable.xcstrings in Resources */,
 				CED99AD02FF040E70003577B /* Icons.xcassets in Resources */,
 				CED99AD12FF040E70003577B /* Colors.xcassets in Resources */,
@@ -1262,6 +1270,7 @@
 		AF1718F92FECE2CC00DA1D67 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = PhotoStitchIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_STYLE = Automatic;
@@ -1293,6 +1302,7 @@
 		AF1718FA2FECE2CC00DA1D67 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = PhotoStitchIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_STYLE = Automatic;
@@ -1325,7 +1335,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A06B175C88053133C0789ED4 /* Pods-PhotoStitch2.0.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = PhotoStitchIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = PhotoStitch2.0/PhotoStitch2.0.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -1366,7 +1376,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D9BB7334FDF3F5D98FBC647E /* Pods-PhotoStitch2.0.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = PhotoStitchIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = PhotoStitch2.0/PhotoStitch2.0.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -1391,7 +1401,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.azubylabs.photostitch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "MAIN_APP";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = MAIN_APP;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1529,6 +1539,7 @@
 		CED99A0D2FEFE4F50003577B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = PhotoStitchIcon;
 				CODE_SIGN_ENTITLEMENTS = PhotoStitchShare/PhotoStitchShare.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1561,6 +1572,7 @@
 		CED99A0E2FEFE4F50003577B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = PhotoStitchIcon;
 				CODE_SIGN_ENTITLEMENTS = PhotoStitchShare/PhotoStitchShare.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
