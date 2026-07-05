@@ -170,7 +170,7 @@ struct EditSortTool: View {
     }
     
     func getItems() async throws -> [StitchItem] {
-        guard let sortUpdater = editUpdater.sortUpdater else {
+        guard let sortUpdater = editUpdater.sortUpdater, !sortUpdater.photoItems.isEmpty else {
             throw MainError.error("No sort updater")
         }
         
