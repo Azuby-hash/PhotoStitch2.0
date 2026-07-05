@@ -137,16 +137,24 @@ struct Home: View {
             Subscription(config: homeUpdater.subscriptionConfig)
         }
         .onReceive(NotificationCenter.default.publisher(for: StitchIntent.IMAGE_NOTI), perform: { _ in
-            guard !homeUpdater.showEdit, let firstAsset = homeUpdater.filterAssets()?.first(where: { $0.mediaType == .image }) else { return }
-            
-            if let screenshotAlbum = homeUpdater.getScreenshots() {
-                homeUpdater.selectAlbum(screenshotAlbum)
-            }
-            
-            homeUpdater.select(firstAsset, maxCount: 30)
+            VIEW_CONTROLLER.startLoading("Loading...")
             
             Task {
                 do {
+                    try await proCheck()
+                    
+                    if !StoreKit.shared.isPro {
+                        homeUpdater.openSubscription(.immediate)
+                        return
+                    }
+                    
+                    guard !homeUpdater.showEdit, let firstAsset = homeUpdater.filterAssets()?.first(where: { $0.mediaType == .image }) else { return }
+                    
+                    if let screenshotAlbum = homeUpdater.getScreenshots() {
+                        homeUpdater.selectAlbum(screenshotAlbum)
+                    }
+                    
+                    homeUpdater.select(firstAsset, maxCount: 30)
                     homeUpdater.items = try await homeUpdater.getItems()
                     homeUpdater.axis = .vertical
                     homeUpdater.showEdit = true
@@ -156,16 +164,24 @@ struct Home: View {
             }
         })
         .onReceive(NotificationCenter.default.publisher(for: StitchIntent.VIDEO_NOTI), perform: { _ in
-            guard !homeUpdater.showEdit, let firstAsset = homeUpdater.filterAssets()?.first(where: { $0.mediaType == .video }) else { return }
-            
-            if let screenshotAlbum = homeUpdater.getScreenshots() {
-                homeUpdater.selectAlbum(screenshotAlbum)
-            }
-            
-            homeUpdater.select(firstAsset)
+            VIEW_CONTROLLER.startLoading("Loading...")
             
             Task {
                 do {
+                    try await proCheck()
+                    
+                    if !StoreKit.shared.isPro {
+                        homeUpdater.openSubscription(.immediate)
+                        return
+                    }
+                    
+                    guard !homeUpdater.showEdit, let firstAsset = homeUpdater.filterAssets()?.first(where: { $0.mediaType == .video }) else { return }
+                    
+                    if let screenshotAlbum = homeUpdater.getScreenshots() {
+                        homeUpdater.selectAlbum(screenshotAlbum)
+                    }
+                    
+                    homeUpdater.select(firstAsset)
                     homeUpdater.items = try await homeUpdater.getItems()
                     homeUpdater.axis = .vertical
                     homeUpdater.showEdit = true
