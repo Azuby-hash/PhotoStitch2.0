@@ -1,8 +1,8 @@
 //
 //  WebViewSnapshot.swift
-//  StitchPhotos2.0
+//  PhotoStitch2
 //
-//  Created by TapUniverse Dev9 on 18/3/26.
+//  Created by Azuby on 18/3/26.
 //
 
 import UIKit
@@ -17,9 +17,11 @@ class WebViewSnapshotView: WKWebView {
 
 class WebViewSnapshot {
     static let shared = WebViewSnapshot()
-    
-    func capture(webView: WebViewSnapshotView, completion: @escaping (UIImage) -> Void, doneUI: @escaping () -> Void) {
-        guard let hider = VIEW_CONTROLLER.view.snapshotView(afterScreenUpdates: true) else { return }
+
+    func capture(webView: WebViewSnapshotView) async throws -> UIImage {
+        guard let hider = VIEW_CONTROLLER.view.snapshotView(afterScreenUpdates: true) else {
+            throw MainError.error("Cant overlay snapshot")
+        }
 
         VIEW_CONTROLLER.view.addSubview(hider)
 
@@ -40,70 +42,21 @@ class WebViewSnapshot {
 
         VIEW_CONTROLLER.startLoading(String(localized: "Website Capturing...   \(0)%"))
 
-        webView.evaluateJavaScript("document.documentElement.style.overflow = 'hidden'; document.body.style.overflow = 'hidden';")
+        await runJS(webView, "document.documentElement.style.overflow = 'hidden'; document.body.style.overflow = 'hidden';")
 
-        let height = webView.scrollView.contentSize.height - webView.scrollView.contentInset.top - webView.scrollView.contentInset.bottom
+        let height = await contentHeight(of: webView)
         let eachHeight = round(webView.bounds.height / 3)
-        let count = Int(ceil((height - (webView.bounds.height - eachHeight)) / eachHeight))
+        let count = max(Int(ceil((height - (webView.bounds.height - eachHeight)) / eachHeight)), 1)
         
-        webView.frame = CGRect(origin: .zero, size: CGSize(width: webView.scrollView.contentSize.width, height: min(webView.scrollView.contentSize.height - webView.scrollView.contentInset.top - webView.scrollView.contentInset.bottom, 2000)))
+        print(height)
+        
+        webView.frame = CGRect(origin: .zero, size: CGSize(width: webView.scrollView.contentSize.width, height: min(height, 2000)))
         
         var images = [UIImage]()
-        
-        func snapshot(at index: Int) {
-            DispatchQueue.main.async {
-                VIEW_CONTROLLER.startLoading(String(localized: "Website Capturing...   \(index * 100 / count)%"))
-            }
-            
-            if index == count {
-                webView.evaluateJavaScript("document.documentElement.style.overflow = ''; document.body.style.overflow = '';")
-                webView.scrollView.contentOffset = contentOffset
-                webView.scrollView.zoomScale = zoomScale
-                webView.translatesAutoresizingMaskIntoConstraints = false
-                webView.scrollView.showsHorizontalScrollIndicator = true
-                webView.scrollView.showsVerticalScrollIndicator = true
-                
-                if #available(iOS 26.0, *) {
-                    webView.scrollView.topEdgeEffect.isHidden = false
-                    webView.scrollView.bottomEdgeEffect.isHidden = false
-                    webView.scrollView.leftEdgeEffect.isHidden = false
-                    webView.scrollView.rightEdgeEffect.isHidden = false
-                }
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                    hider.removeFromSuperview()
-                }
-                
-                let bounds = webView.bounds
-                
-                DispatchQueue.global(qos: .default).async {
-                    let format = UIGraphicsImageRendererFormat()
-                    format.scale = 1
-                    let renderer = UIGraphicsImageRenderer(size: CGSize(width: bounds.width * scale, height: height * scale), format: format)
-                    
-                    var currHeight = CGFloat.zero
-                    
-                    let image = renderer.image(actions: { _ in
-                        images.enumerated().forEach { (index, image) in
-                            let height = bounds.width * scale * image.size.height / image.size.width
-                            image.draw(in: CGRect(x: 0, y: currHeight, width: bounds.width * scale, height: height))
-                            currHeight += height
-                        }
-                    })
-                    
-                    completion(image)
 
-                    DispatchQueue.main.async {
-                        VIEW_CONTROLLER.stopLoading {
-                            doneUI()
-                            VIEW_CONTROLLER.view.isUserInteractionEnabled = true
-                        }
-                    }
-                }
-                
-                return
-            }
-            
+        for index in 0..<count {
+            VIEW_CONTROLLER.startLoading(String(localized: "Website Capturing...   \(index * 100 / count)%"))
+
             webView.scrollView.contentOffset = .init(x: 0, y: eachHeight * CGFloat(index))
             
             let config = WKSnapshotConfiguration()
@@ -121,31 +74,115 @@ class WebViewSnapshot {
             if index == 0 && index == count - 1 {
                 config.rect = CGRect(x: 0, y: 0, width: webView.bounds.width, height: height)
             }
-            
-            waitForContentLoaded(webView: webView) {
-                webView.takeSnapshot(with: config) { image, _ in
-                    guard let image = image else {
-                        return
-                    }
-                    
-                    images.append(image)
-                    
-                    snapshot(at: index + 1)
-                }
+
+            await waitForContentLoaded(webView: webView)
+
+            let image = try await webView.takeSnapshot(configuration: config)
+
+            images.append(image)
+        }
+
+        await runJS(webView, "document.documentElement.style.overflow = ''; document.body.style.overflow = '';")
+
+        let bounds = webView.bounds
+
+        webView.scrollView.contentOffset = contentOffset
+        webView.scrollView.zoomScale = zoomScale
+        webView.translatesAutoresizingMaskIntoConstraints = false
+        webView.scrollView.showsHorizontalScrollIndicator = true
+        webView.scrollView.showsVerticalScrollIndicator = true
+        
+        if #available(iOS 26.0, *) {
+            webView.scrollView.topEdgeEffect.isHidden = false
+            webView.scrollView.bottomEdgeEffect.isHidden = false
+            webView.scrollView.leftEdgeEffect.isHidden = false
+            webView.scrollView.rightEdgeEffect.isHidden = false
+        }
+
+        try await Task.sleep(for: .seconds(0.25))
+        
+        hider.removeFromSuperview()
+        
+        let image = await stitch(images: images, width: bounds.width * scale, height: height * scale)
+
+        await withCheckedContinuation { continuation in
+            VIEW_CONTROLLER.stopLoading {
+                continuation.resume()
+                VIEW_CONTROLLER.view.isUserInteractionEnabled = true
             }
         }
-        
-        snapshot(at: 0)
+
+        return try image.unwrap()
+    }
+
+    // Safe async wrapper around evaluateJavaScript. (The built-in async
+    // overload can crash when the script returns nil, so we bridge the
+    // completion-based API ourselves.)
+    @discardableResult
+    private func runJS(_ webView: WKWebView, _ js: String) async -> Any? {
+        await withCheckedContinuation { continuation in
+            webView.evaluateJavaScript(js) { result, _ in
+                continuation.resume(returning: result)
+            }
+        }
     }
     
-    private func waitForContentLoaded(webView: WKWebView, retries: Int = 5, then next: @escaping () -> Void) {
-        if !webView.isLoading {
-            next()
-            return
-        }
+    private func contentHeight(of webView: WKWebView) async -> CGFloat {
+        let js = """
+        const getMaxY = () => {
+            let maxY = 0;
+            for (const el of document.body.getElementsByTagName('*')) {
+                const rect = el.getBoundingClientRect();
+                const bottom = rect.bottom + window.scrollY;
+                if (bottom > maxY && rect.height > 0) maxY = bottom;
+            }
+            return maxY;
+        };
+
+        return await new Promise(resolve => {
+            const deadline = Date.now() + 10000;
+            let last = 0, stable = 0;
+            const check = () => {
+                const y = getMaxY();
+                if (y === last) stable++; else { stable = 0; last = y; }
+                if (stable >= 3 || Date.now() > deadline) return resolve(y);
+                setTimeout(check, 200);
+            };
+            check();
+        });
+        """
+        let result = try? await webView.callAsyncJavaScript(js, contentWorld: .page)
+        return (result as? NSNumber).map { CGFloat(truncating: $0) } ?? 0
+    }
+
+    private func waitForContentLoaded(webView: WKWebView, retries: Int = 5) async {
+        var remaining = retries
+
+        try? await Task.sleep(for: .seconds(0.25))
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-            self.waitForContentLoaded(webView: webView, retries: retries - 1, then: next)
+        while webView.isLoading && remaining > 0 {
+            try? await Task.sleep(for: .seconds(0.25))
+            remaining -= 1
         }
+    }
+
+    private func stitch(images: [UIImage], width: CGFloat, height: CGFloat) async -> UIImage? {
+        guard !images.isEmpty, width > 0, height > 0 else { return nil }
+
+        return await Task.detached(priority: .userInitiated) {
+            let format = UIGraphicsImageRendererFormat()
+            format.scale = 1
+            let renderer = UIGraphicsImageRenderer(size: CGSize(width: width, height: height), format: format)
+
+            var currHeight = CGFloat.zero
+
+            return renderer.image { _ in
+                images.forEach { image in
+                    let height = width * image.size.height / image.size.width
+                    image.draw(in: CGRect(x: 0, y: currHeight, width: width, height: height))
+                    currHeight += height
+                }
+            }
+        }.value
     }
 }

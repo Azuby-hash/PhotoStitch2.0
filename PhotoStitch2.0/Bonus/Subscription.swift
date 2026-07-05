@@ -74,7 +74,7 @@ struct Subscription: View {
                 close.padding(.horizontal, 20)
             }
         }
-        .allowsHitTesting(!subUpdater.isPurchasing)
+        .allowsHitTesting(!subUpdater.isPurchasing && !subUpdater.isRestoring)
         .onAppear {
             subUpdater.startLoop()
             subUpdater.syncSelectedToActive()
@@ -394,6 +394,7 @@ struct Subscription: View {
         .disabled(subUpdater.isPurchasing || subUpdater.selectedPlan.isActive)
         .opacity(subUpdater.selectedPlan.isActive ? 0.6 : 1)
         .animation(.smooth(duration: ANIM_DURATION), value: subUpdater.isPurchasing)
+        .animation(.smooth(duration: ANIM_DURATION), value: subUpdater.isRestoring)
         .animation(.smooth(duration: ANIM_DURATION), value: subUpdater.selectedPlan.isActive)
     }
 }
@@ -488,6 +489,7 @@ enum SubscriptionPlan: String, CaseIterable {
     var selectedPlan: SubscriptionPlan = .yearly
     var shimmerOffset: CGFloat = -220
     var isPurchasing = false
+    var isRestoring = false
     
     // TODO: replace with your real 6 benefits
     var benefits: [SubscriptionBenefit] = [
@@ -535,10 +537,10 @@ enum SubscriptionPlan: String, CaseIterable {
     }
 
     func restore() {
-        guard !isPurchasing else { return }
-        isPurchasing = true
+        guard !isRestoring else { return }
+        isRestoring = true
         Task { @MainActor in
-            defer { isPurchasing = false }
+            defer { isRestoring = false }
             do {
                 try await StoreKit.shared.restore()
             } catch {

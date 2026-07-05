@@ -342,21 +342,17 @@ struct HomeWebDetail: UIViewRepresentable {
               let homeUpdater = homeUpdater
         else { return }
         
-        var currItem: StitchItem?
-        
-        WebViewSnapshot.shared.capture(webView: webView) { image in
+        Task {
             do {
+                let image = try await WebViewSnapshot.shared.capture(webView: webView)
+                
                 let item = try StitchItem(image: image, asset: nil)
-                currItem = item
-
+                
                 homeUpdater.items = [item]
                 homeUpdater.axis = .vertical
+                homeUpdater.showEdit = true
             } catch {
                 print(error)
-            }
-        } doneUI: {
-            if currItem != nil {
-                homeUpdater.showEdit = true
             }
         }
     }
