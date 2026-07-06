@@ -21,6 +21,7 @@ class StoreKit {
     private(set) var products: [ProductInfo] = []
     private var isPrePaid = false
     private var isGoneFree = false
+    private(set) var isLoaded = false
     
     private var updatesTask: Task<Void, Never>?
     
@@ -109,6 +110,8 @@ class StoreKit {
         }
         
         print("Grant subscription:", isPro)
+        
+        isLoaded = true
         
         NotificationCenter.default.post(name: StoreKit.infosDidChange, object: nil)
     }

@@ -140,6 +140,10 @@ struct Home: View {
             VIEW_CONTROLLER.startLoading("Loading...")
             
             Task {
+                defer {
+                    VIEW_CONTROLLER.stopLoading()
+                }
+                
                 do {
                     try await proCheck()
                     
@@ -167,6 +171,10 @@ struct Home: View {
             VIEW_CONTROLLER.startLoading("Loading...")
             
             Task {
+                defer {
+                    VIEW_CONTROLLER.stopLoading()
+                }
+                
                 do {
                     try await proCheck()
                     
@@ -346,6 +354,10 @@ struct Home: View {
     }
     
     func setSelect(_ assets: [PHAsset]) {
+        if !StoreKit.shared.isLoaded {
+            return
+        }
+        
         let curr = selecteds
         selecteds = assets
         
@@ -553,6 +565,10 @@ extension HomeUpdater {
 
 extension HomeUpdater {
     func openSubscription(_ config: SubscriptionConfig = .default) {
+        if !StoreKit.shared.isLoaded {
+            return
+        }
+        
         subscriptionConfig = config
         showSubscription = true
     }
