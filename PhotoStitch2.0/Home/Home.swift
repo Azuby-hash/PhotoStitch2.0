@@ -506,7 +506,7 @@ extension HomeUpdater {
 
 extension HomeUpdater {
     func getItems() async throws -> [StitchItem] {
-        VIEW_CONTROLLER.startLoading(String(localized: "Loading \(0) / \(selecteds.count) Photos..."))
+        VIEW_CONTROLLER.startLoading(String(localized: "Loading \(0) / \(selecteds.count) Items..."))
         
         let items = await withTaskGroup(of: Optional<StitchItem>.self) { group in
             var items = [StitchItem]()
@@ -536,7 +536,7 @@ extension HomeUpdater {
                 if let item = item {
                     items.append(item)
                     
-                    VIEW_CONTROLLER.startLoading(String(localized: "Loading \(items.count) / \(selecteds.count) Photos..."))
+                    VIEW_CONTROLLER.startLoading(String(localized: "Loading \(items.count) / \(selecteds.count) Items..."))
                 }
             }
             

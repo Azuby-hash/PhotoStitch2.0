@@ -1438,6 +1438,35 @@
         }
       }
     },
+    "Loading %lld / %lld Items..." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جارٍ تحميل العناصر %lld / %lld..."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "항목 불러오는 중 %lld / %lld..."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在载入条目 %lld / %lld..."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在載入條目 %lld / %lld..."
+          }
+        }
+      }
+    },
     "Loading %lld / %lld Photos..." : {
       "extractionState" : "manual",
       "localizations" : {

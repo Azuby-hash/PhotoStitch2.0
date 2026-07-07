@@ -101,7 +101,7 @@ struct Home: View {
             return results.sorted(by: { $0.0 < $1.0 }).map { ($0.1, $0.2) }
         }
         
-        VIEW_CONTROLLER.startLoading("Loading 0 / \(images.count) Photos...")
+        VIEW_CONTROLLER.startLoading("Loading 0 / \(images.count) Items...")
         
         var items = [StitchItem]()
         
@@ -110,7 +110,7 @@ struct Home: View {
                 items.append(StitchItem(asset: nil, size: image.1, image: image.0, clean: image.0, process: StitchProcess()))
             }
             
-            VIEW_CONTROLLER.startLoading("Loading \(items.count) / \(images.count) Photos...")
+            VIEW_CONTROLLER.startLoading("Loading \(items.count) / \(images.count) Items...")
         }
         
         guard !items.isEmpty else {

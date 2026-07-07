@@ -36,7 +36,7 @@ struct EditStitchTool: View {
                         Text("Auto")
                     }
                     .font(.system(size: 18, weight: .semibold, design: .rounded))
-                    .foregroundStyle(Color.primary)
+                    .foregroundStyle(Color._primary)
                     .padding(.horizontal, 20)
                     .frame(height: 60)
                     .modifier(MainGlass(shape: .capsule, type: .clear))
