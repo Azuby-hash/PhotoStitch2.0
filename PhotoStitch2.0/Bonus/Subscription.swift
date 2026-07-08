@@ -350,17 +350,23 @@ struct Subscription: View {
                     Text("You're subscribed")
                         .font(.system(size: 18, weight: .bold, design: .rounded))
                 } else if loadToggle {
-                    Text("Subscribe — \(subUpdater.selectedPlan.price)")
+                    Text(!subUpdater.selectedPlan.introOffer.isEmpty ? "Start your \(subUpdater.selectedPlan.introOffer)" : "Subscribe — \(subUpdater.selectedPlan.price)")
                         .font(.system(size: 18, weight: .bold, design: .rounded))
-                    Text(subUpdater.selectedPlan.period)
-                        .font(.system(size: 18, weight: .semibold, design: .rounded))
-                        .opacity(0.7)
+                    
+                    if subUpdater.selectedPlan.introOffer.isEmpty {
+                        Text(subUpdater.selectedPlan.period)
+                            .font(.system(size: 18, weight: .semibold, design: .rounded))
+                            .opacity(0.7)
+                    }
                 } else {
-                    Text("Subscribe")
+                    Text(!subUpdater.selectedPlan.introOffer.isEmpty ? "Start your \(subUpdater.selectedPlan.introOffer)" : "Subscribe")
                         .font(.system(size: 18, weight: .bold, design: .rounded))
-                    Text(subUpdater.selectedPlan.period)
-                        .font(.system(size: 18, weight: .semibold, design: .rounded))
-                        .opacity(0.7)
+                    
+                    if subUpdater.selectedPlan.introOffer.isEmpty {
+                        Text(subUpdater.selectedPlan.period)
+                            .font(.system(size: 18, weight: .semibold, design: .rounded))
+                            .opacity(0.7)
+                    }
                 }
             }
             .foregroundStyle(Color._white)
