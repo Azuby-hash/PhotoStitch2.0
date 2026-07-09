@@ -94,6 +94,7 @@ struct EditCutTool: View {
             #endif
         }
         .onDisappear {
+            editUpdater.cutUpdater?.detach()
             editUpdater.cutUpdater = nil
         }
     }
@@ -107,7 +108,7 @@ struct EditCutTool: View {
     
     let deleteAll = PassthroughSubject<Void, Never>()
     
-    deinit {
+    func detach() {
         constraints.forEach({ $0.isActive = false })
     }
     

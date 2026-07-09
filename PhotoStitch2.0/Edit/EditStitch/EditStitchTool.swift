@@ -63,6 +63,7 @@ struct EditStitchTool: View {
             editUpdater.stitchUpdater?.context = editUpdater.editGallery.context
         }
         .onDisappear {
+            editUpdater.stitchUpdater?.detach()
             editUpdater.stitchUpdater = nil
         }
     }
@@ -77,7 +78,7 @@ struct EditStitchTool: View {
     private(set) var translateBefore: CGPoint = .zero
     private(set) var translateAfter: CGPoint = .zero
     
-    deinit {
+    func detach() {
         constraints.forEach({ $0.isActive = false })
     }
     
