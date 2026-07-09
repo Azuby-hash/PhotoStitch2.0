@@ -18,7 +18,7 @@ struct VideoInstruction: View {
         ZStack(alignment: .top) {
             Color._background.ignoresSafeArea()
 
-            VStack(alignment: .leading, spacing: 20) {
+            VStack(alignment: .center, spacing: 20) {
                 // Description
                 VStack(alignment: .leading, spacing: 12) {
                     Text("Follow these steps to stitch a video shot:")
@@ -49,7 +49,7 @@ struct VideoInstruction: View {
                                 .multilineTextAlignment(.leading)
                         }
                         .foregroundStyle(Color._black)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .frame(maxWidth: 450)
                         .padding(16)
                         .background(
                             RoundedRectangle(cornerRadius: 14)

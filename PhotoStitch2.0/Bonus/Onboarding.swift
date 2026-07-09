@@ -41,13 +41,13 @@ struct Onboarding: View {
                 bottomControls
                     .padding(.horizontal, 24)
                     .padding(.bottom, 40)
+                    .frame(maxWidth: 450)
             }
 
             closeButton
                 .padding(.horizontal, 16)
         }
         .animation(.smooth(duration: ANIM_DURATION), value: currentPage)
-        .frame(maxWidth: 450)
     }
 
     // MARK: - Pages
@@ -93,6 +93,7 @@ struct Onboarding: View {
                     .foregroundStyle(Color(uiColor: .secondaryLabel))
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 32)
+                    .frame(maxWidth: 450)
             }
 
             Spacer()

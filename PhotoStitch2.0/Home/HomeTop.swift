@@ -115,6 +115,7 @@ struct HomeTop: View {
                         .padding(.leading, 6)
                         .padding(.trailing, 16)
                         .frame(height: 44)
+                        .fixedSize(horizontal: true, vertical: false)
                         .modifier(MainGlass(shape: .capsule, type: .clear))
                     }
                 }
