@@ -24,6 +24,8 @@ struct EditTop: View {
     @State var showSave = false
     @AppStorage("e9e7f46efc9b8b9d") var saveMode: Mode = .jpeg
     @AppStorage("cd9987b109254938") var quality: Double = 0.8
+    // Non-Pro users get a limited number of free successful saves/shares; afterwards it's Pro-gated.
+    @AppStorage("b2e5d47f19c8a306") var freeExportCount = 0
     @State var url: URL?
     @State var progress = 0.0
     
@@ -202,7 +204,11 @@ struct EditTop: View {
                 .modifier(MainGlass(shape: RoundedRectangle(cornerRadius: 38), type: .clear))
                 
                 HStack {
-                    ShareLink(item: url) {
+                    Button {
+                        if blockedByProGate() { return }
+
+                        share(url)
+                    } label: {
                         HStack {
                             Image("square.and.arrow.up.fill")
                                 .font(.system(size: 18, weight: .semibold, design: .rounded))
@@ -217,12 +223,18 @@ struct EditTop: View {
                     
                     if saveMode != .pdf {
                         Button {
+                            if blockedByProGate() { return }
+
                             PHPhotoLibrary.requestAuthorization { status in
                                 if status == .authorized {
                                     PHPhotoLibrary.shared().performChanges({
                                         PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: url)
                                     }) { success, err in
                                         DispatchQueue.main.async {
+                                            if success {
+                                                markFreeExportUsed()
+                                            }
+
                                             if status == .denied {
                                                 showAlert(title: "Saved", message: "Image successfully saved to Library.", actions: [
                                                     UIAlertAction(title: String(localized: "OK"), style: .default)
@@ -411,6 +423,58 @@ struct EditTop: View {
         }
     }
     
+    // The free save/share credits are only spent by non-Pro users; Pro is never gated.
+    // The share extension has no Pro concept, so the gate is disabled there.
+    private var exportRequiresPro: Bool {
+        #if MAIN_APP
+        return !StoreKit.shared.isPro && freeExportCount >= FREE_EXPORT_LIMIT
+        #else
+        return false
+        #endif
+    }
+
+    // Returns true when the action is blocked (non-Pro user who already spent
+    // their free saves/shares) and surfaces the subscription upsell.
+    private func blockedByProGate() -> Bool {
+        guard exportRequiresPro else { return false }
+
+        #if MAIN_APP
+        homeUpdater.openSubscription(.immediate)
+        #endif
+
+        url = nil
+        showSave = false
+        return true
+    }
+
+    private func markFreeExportUsed() {
+        #if MAIN_APP
+        if !StoreKit.shared.isPro {
+            freeExportCount += 1
+        }
+        #endif
+    }
+
+    private func share(_ url: URL) {
+        let activity = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+        activity.completionWithItemsHandler = { _, completed, _, _ in
+            if completed {
+                self.markFreeExportUsed()
+            }
+        }
+
+        // iPad requires a popover anchor.
+        activity.popoverPresentationController?.sourceView = VIEW_CONTROLLER.view
+        activity.popoverPresentationController?.sourceRect = CGRect(
+            x: VIEW_CONTROLLER.view.bounds.midX,
+            y: VIEW_CONTROLLER.view.bounds.maxY,
+            width: 0,
+            height: 0
+        )
+
+        VIEW_CONTROLLER.present(activity, animated: true)
+    }
+
     private func saveFinish() {
         showSave = false
         url = nil
