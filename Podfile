@@ -7,7 +7,7 @@ target 'PhotoStitch2.0' do
 
   # Pods for PhotoStitch2.0
 
-  pod 'OpenCV', :podspec => 'OpenCV.podspec'
+  pod 'OpenCV'
 end
 
 post_install do |installer|

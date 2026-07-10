@@ -70,7 +70,6 @@
 		CE87004E2FB039E200061801 /* MeshHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87003F2FB039E200061801 /* MeshHelpers.swift */; };
 		CE87004F2FB039E200061801 /* UISControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87000E2FB039E200061801 /* UISControl.swift */; };
 		CE8700502FB039E200061801 /* UIViewMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700262FB039E200061801 /* UIViewMask.swift */; };
-		CE8700512FB039E200061801 /* WKSWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700192FB039E200061801 /* WKSWebView.swift */; };
 		CE8700522FB039E200061801 /* UISImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87000F2FB039E200061801 /* UISImageView.swift */; };
 		CE8700532FB039E200061801 /* UIStackViewHighlight.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700052FB039E200061801 /* UIStackViewHighlight.swift */; };
 		CE8700542FB039E200061801 /* UIViewPointDetect.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700282FB039E200061801 /* UIViewPointDetect.swift */; };
@@ -196,7 +195,6 @@
 		CED99ABA2FF03E7A0003577B /* UISControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87000E2FB039E200061801 /* UISControl.swift */; };
 		CED99ABB2FF03E7A0003577B /* UISButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87000C2FB039E200061801 /* UISButton.swift */; };
 		CED99ABC2FF03E7A0003577B /* UISSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700122FB039E200061801 /* UISSearchBar.swift */; };
-		CED99ABD2FF03E7A0003577B /* WKSWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700192FB039E200061801 /* WKSWebView.swift */; };
 		CED99ABE2FF03E7A0003577B /* UISConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87000D2FB039E200061801 /* UISConstraints.swift */; };
 		CED99ABF2FF03E7A0003577B /* UISTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700142FB039E200061801 /* UISTextField.swift */; };
 		CED99AC02FF03E7A0003577B /* UISBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87000B2FB039E200061801 /* UISBarItem.swift */; };
@@ -338,7 +336,6 @@
 		CE8700162FB039E200061801 /* UISTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISTextView.swift; sourceTree = "<group>"; };
 		CE8700172FB039E200061801 /* UISToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISToolBar.swift; sourceTree = "<group>"; };
 		CE8700182FB039E200061801 /* UISView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISView.swift; sourceTree = "<group>"; };
-		CE8700192FB039E200061801 /* WKSWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKSWebView.swift; sourceTree = "<group>"; };
 		CE87001B2FB039E200061801 /* UINavigationOrientationSubController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationOrientationSubController.swift; sourceTree = "<group>"; };
 		CE87001C2FB039E200061801 /* UIViewControllerHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerHelpers.swift; sourceTree = "<group>"; };
 		CE87001D2FB039E200061801 /* UIViewControllerPresent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerPresent.swift; sourceTree = "<group>"; };
@@ -628,7 +625,6 @@
 				CE8700162FB039E200061801 /* UISTextView.swift */,
 				CE8700172FB039E200061801 /* UISToolBar.swift */,
 				CE8700182FB039E200061801 /* UISView.swift */,
-				CE8700192FB039E200061801 /* WKSWebView.swift */,
 				CE4262622FD25214002916A4 /* UIBezierPath.swift */,
 			);
 			path = UISwift;
@@ -1074,7 +1070,6 @@
 				CE87004E2FB039E200061801 /* MeshHelpers.swift in Sources */,
 				CE87004F2FB039E200061801 /* UISControl.swift in Sources */,
 				CE8700502FB039E200061801 /* UIViewMask.swift in Sources */,
-				CE8700512FB039E200061801 /* WKSWebView.swift in Sources */,
 				CE8700522FB039E200061801 /* UISImageView.swift in Sources */,
 				CE25DA262FE4432300DE2E22 /* UndoRedo.swift in Sources */,
 				CED99A1A2FEFE9E60003577B /* StitchIntent.swift in Sources */,
@@ -1181,7 +1176,6 @@
 				CED99ABA2FF03E7A0003577B /* UISControl.swift in Sources */,
 				CED99ABB2FF03E7A0003577B /* UISButton.swift in Sources */,
 				CED99ABC2FF03E7A0003577B /* UISSearchBar.swift in Sources */,
-				CED99ABD2FF03E7A0003577B /* WKSWebView.swift in Sources */,
 				CED99ABE2FF03E7A0003577B /* UISConstraints.swift in Sources */,
 				CED99ACA2FF03EA80003577B /* UndoRedo.swift in Sources */,
 				CED99AC72FF03E860003577B /* MenuPopover.swift in Sources */,
@@ -1345,6 +1339,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PhotoStitch2.0/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Photo Stitch";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Please allow this app to save your edited photos to your photo library.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Please allow this app to import from your selected photos for editing. ";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -1386,6 +1381,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PhotoStitch2.0/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Photo Stitch";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Please allow this app to save your edited photos to your photo library.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Please allow this app to import from your selected photos for editing. ";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
