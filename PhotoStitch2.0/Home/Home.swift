@@ -125,7 +125,7 @@ struct Home: View {
                 try? await StitchIntent.shared.trigger()
 
                 await MainActor.run {
-                    if !StoreKit.shared.isPro {
+                    if !StoreKitManager.shared.isPro {
                         homeUpdater.openSubscription(.default)
                     }
                 }
@@ -147,7 +147,7 @@ struct Home: View {
                 do {
                     try await proCheck()
                     
-                    if !StoreKit.shared.isPro {
+                    if !StoreKitManager.shared.isPro {
                         homeUpdater.openSubscription(.immediate)
                         return
                     }
@@ -178,7 +178,7 @@ struct Home: View {
                 do {
                     try await proCheck()
                     
-                    if !StoreKit.shared.isPro {
+                    if !StoreKitManager.shared.isPro {
                         homeUpdater.openSubscription(.immediate)
                         return
                     }
@@ -237,9 +237,9 @@ struct Home: View {
     
     private func proCheck() async throws {
         do {
-            let freeUntilDate = try await (CloudKit.shared.load(id: "2D2F4B60-86D9-48F0-9575-E6756D7E4F1E", key: "date") as? Date).unwrap()
-            let goneFree = (try? await (CloudKit.shared.load(id: "738D440D-5D33-4BF6-AEB3-2D36ED9821C1", key: "int") as? Int)) ?? -1
-            try await StoreKit.shared.load(freeUntilDate, goneFree == 918131221)
+            let freeUntilDate = try await (CloudKitManager.shared.load(id: "2D2F4B60-86D9-48F0-9575-E6756D7E4F1E", key: "date") as? Date).unwrap()
+            let goneFree = (try? await (CloudKitManager.shared.load(id: "738D440D-5D33-4BF6-AEB3-2D36ED9821C1", key: "int") as? Int)) ?? -1
+            try await StoreKitManager.shared.load(freeUntilDate, goneFree == 918131221)
         } catch {
             print(error)
         }
@@ -310,7 +310,7 @@ struct Home: View {
     
     func select(_ asset: PHAsset, maxCount: Int = 4) {
         // Pro gate: video stitching requires a subscription.
-        if asset.mediaType == .video, !StoreKit.shared.isPro {
+        if asset.mediaType == .video, !StoreKitManager.shared.isPro {
             openSubscription(.immediate)
             return
         }
@@ -349,7 +349,7 @@ struct Home: View {
     }
     
     func setSelect(_ assets: [PHAsset]) {
-        if !StoreKit.shared.isLoaded {
+        if !StoreKitManager.shared.isLoaded {
             return
         }
         
@@ -388,7 +388,7 @@ struct Home: View {
     /// Returns true when the limit was exceeded (so the caller can prompt to upgrade).
     @discardableResult
     private func handleFreeSelectionLimit() -> Bool {
-        guard !StoreKit.shared.isPro, selecteds.count > FREE_MAX_SELECTION else { return false }
+        guard !StoreKitManager.shared.isPro, selecteds.count > FREE_MAX_SELECTION else { return false }
         selecteds = Array(selecteds.prefix(FREE_MAX_SELECTION))
         return true
     }
@@ -422,7 +422,7 @@ struct Home: View {
 
         let calendar = Calendar.current
 
-        let remaining = StoreKit.shared.isPro ? max(maxCount, FREE_MAX_SELECTION - selecteds.count) : max(1, FREE_MAX_SELECTION - selecteds.count)
+        let remaining = StoreKitManager.shared.isPro ? max(maxCount, FREE_MAX_SELECTION - selecteds.count) : max(1, FREE_MAX_SELECTION - selecteds.count)
         let effectiveMaxCount = min(maxCount, remaining)
 
         var currAsset = asset
@@ -560,7 +560,7 @@ extension HomeUpdater {
 
 extension HomeUpdater {
     func openSubscription(_ config: SubscriptionConfig = .default) {
-        if !StoreKit.shared.isLoaded {
+        if !StoreKitManager.shared.isLoaded {
             return
         }
         

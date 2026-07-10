@@ -16,7 +16,7 @@
 		AF1719072FECE2D900DA1D67 /* PhotoStitchBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1719012FECE2D900DA1D67 /* PhotoStitchBundle.swift */; };
 		AF1719082FECE2D900DA1D67 /* PhotoStitchControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1719022FECE2D900DA1D67 /* PhotoStitchControl.swift */; };
 		AF17190A2FECE2D900DA1D67 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF1718FE2FECE2D900DA1D67 /* Assets.xcassets */; };
-		CE11E2C32FF7C8FF00F4FBFA /* CloudKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE11E2C22FF7C8FA00F4FBFA /* CloudKit.swift */; };
+		CE11E2C32FF7C8FF00F4FBFA /* CloudKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE11E2C22FF7C8FA00F4FBFA /* CloudKitManager.swift */; };
 		CE11E2C52FFA05BB00F4FBFA /* PhotoStitchIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = CE11E2C42FFA05BB00F4FBFA /* PhotoStitchIcon.icon */; };
 		CE11E2C62FFA05EE00F4FBFA /* PhotoStitchIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = CE11E2C42FFA05BB00F4FBFA /* PhotoStitchIcon.icon */; };
 		CE11E2C72FFA05EE00F4FBFA /* PhotoStitchIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = CE11E2C42FFA05BB00F4FBFA /* PhotoStitchIcon.icon */; };
@@ -227,7 +227,7 @@
 		CED99ADE2FF18B170003577B /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = CED99ADA2FF18B170003577B /* Localizable.xcstrings */; };
 		CED99AE02FF18B170003577B /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = CED99ADF2FF18B170003577B /* InfoPlist.xcstrings */; };
 		CED99AE22FF18B170003577B /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = CED99AE12FF18B170003577B /* InfoPlist.xcstrings */; };
-		CED99B2E2FF6AB9C0003577B /* StoreKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED99B2D2FF6AB950003577B /* StoreKit.swift */; };
+		CED99B2E2FF6AB9C0003577B /* StoreKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED99B2D2FF6AB950003577B /* StoreKitManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -273,7 +273,7 @@
 		AF1719002FECE2D900DA1D67 /* PhotoStitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoStitch.swift; sourceTree = "<group>"; };
 		AF1719012FECE2D900DA1D67 /* PhotoStitchBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoStitchBundle.swift; sourceTree = "<group>"; };
 		AF1719022FECE2D900DA1D67 /* PhotoStitchControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoStitchControl.swift; sourceTree = "<group>"; };
-		CE11E2C22FF7C8FA00F4FBFA /* CloudKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKit.swift; sourceTree = "<group>"; };
+		CE11E2C22FF7C8FA00F4FBFA /* CloudKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitManager.swift; sourceTree = "<group>"; };
 		CE11E2C42FFA05BB00F4FBFA /* PhotoStitchIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = PhotoStitchIcon.icon; sourceTree = "<group>"; };
 		CE1FDC5E2F9D180400460178 /* PhotoStitch2.0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoStitch2.0.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE1FDC762F9D181000460178 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -413,7 +413,7 @@
 		CED99ADA2FF18B170003577B /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		CED99ADF2FF18B170003577B /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		CED99AE12FF18B170003577B /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
-		CED99B2D2FF6AB950003577B /* StoreKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKit.swift; sourceTree = "<group>"; };
+		CED99B2D2FF6AB950003577B /* StoreKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKitManager.swift; sourceTree = "<group>"; };
 		D4AAEC8C621ECAB52E001FBA /* Pods_PhotoStitch2_0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PhotoStitch2_0.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9BB7334FDF3F5D98FBC647E /* Pods-PhotoStitch2.0.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotoStitch2.0.release.xcconfig"; path = "Target Support Files/Pods-PhotoStitch2.0/Pods-PhotoStitch2.0.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -795,8 +795,8 @@
 			isa = PBXGroup;
 			children = (
 				CE25DA252FE4431F00DE2E22 /* UndoRedo.swift */,
-				CED99B2D2FF6AB950003577B /* StoreKit.swift */,
-				CE11E2C22FF7C8FA00F4FBFA /* CloudKit.swift */,
+				CED99B2D2FF6AB950003577B /* StoreKitManager.swift */,
+				CE11E2C22FF7C8FA00F4FBFA /* CloudKitManager.swift */,
 				CE8700952FB6A61100061801 /* ForwardScroll.swift */,
 				CE75164A2FC5E99E002C4625 /* TouchView.swift */,
 				CE46FBA32FDB26400021013C /* MenuPopover.swift */,
@@ -1109,7 +1109,7 @@
 				CE8700672FB039E200061801 /* CGPathHelpers.swift in Sources */,
 				CE8700682FB039E200061801 /* CASLayer.swift in Sources */,
 				CE8700692FB039E200061801 /* UISView.swift in Sources */,
-				CE11E2C32FF7C8FF00F4FBFA /* CloudKit.swift in Sources */,
+				CE11E2C32FF7C8FF00F4FBFA /* CloudKitManager.swift in Sources */,
 				CE87006A2FB039E200061801 /* UIViewLoadNib.swift in Sources */,
 				CE87006B2FB039E200061801 /* UISScrollView.swift in Sources */,
 				CE46FBAA2FDEA9F70021013C /* EditSortControl.swift in Sources */,
@@ -1126,7 +1126,7 @@
 				CE8700732FB039E200061801 /* CGRectHelpers.swift in Sources */,
 				CE8700742FB039E200061801 /* UISLabel.swift in Sources */,
 				CE8700752FB039E200061801 /* UISConstraints.swift in Sources */,
-				CED99B2E2FF6AB9C0003577B /* StoreKit.swift in Sources */,
+				CED99B2E2FF6AB9C0003577B /* StoreKitManager.swift in Sources */,
 				CE7516552FC9F6F0002C4625 /* EditCutControl.swift in Sources */,
 				CE8700762FB039E200061801 /* UIViewControllerPresent.swift in Sources */,
 				CE8700772FB039E200061801 /* UIViewBorder.swift in Sources */,

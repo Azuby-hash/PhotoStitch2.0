@@ -12,7 +12,7 @@ struct VideoInstruction: View {
     @Environment(HomeUpdater.self) var homeUpdater
 
     @State private var player: AVPlayer?
-    @State private var isPro = StoreKit.shared.isPro
+    @State private var isPro = StoreKitManager.shared.isPro
 
     var body: some View {
         ZStack(alignment: .top) {

@@ -11,12 +11,12 @@ enum StoreKitError: Error {
     case error(String)
 }
 
-extension StoreKit {
+extension StoreKitManager {
     static let infosDidChange = Notification.Name(UUID().uuidString)
 }
 
-class StoreKit {
-    static let shared = StoreKit()
+class StoreKitManager {
+    static let shared = StoreKitManager()
     
     private(set) var products: [ProductInfo] = []
     private var isPrePaid = false
@@ -113,7 +113,7 @@ class StoreKit {
         
         isLoaded = true
         
-        NotificationCenter.default.post(name: StoreKit.infosDidChange, object: nil)
+        NotificationCenter.default.post(name: StoreKitManager.infosDidChange, object: nil)
     }
     
     final class ProductInfo {
@@ -148,7 +148,7 @@ class StoreKit {
             
             if case let .success(verification) = result, case let .verified(transaction) = verification {
                 await transaction.finish()
-                try await StoreKit.shared.check()
+                try await StoreKitManager.shared.check()
             }
         }
     }

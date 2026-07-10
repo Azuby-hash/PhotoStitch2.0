@@ -7,8 +7,8 @@
 
 import CloudKit
 
-actor CloudKit {
-    static let shared = CloudKit()
+actor CloudKitManager {
+    static let shared = CloudKitManager()
     
     private let database = CKContainer(identifier: "iCloud.com.azubylabs.cloudkit").publicCloudDatabase
     

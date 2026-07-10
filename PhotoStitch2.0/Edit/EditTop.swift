@@ -427,7 +427,7 @@ struct EditTop: View {
     // The share extension has no Pro concept, so the gate is disabled there.
     private var exportRequiresPro: Bool {
         #if MAIN_APP
-        return !StoreKit.shared.isPro && freeExportCount >= FREE_EXPORT_LIMIT
+        return !StoreKitManager.shared.isPro && freeExportCount >= FREE_EXPORT_LIMIT
         #else
         return false
         #endif
@@ -449,7 +449,7 @@ struct EditTop: View {
 
     private func markFreeExportUsed() {
         #if MAIN_APP
-        if !StoreKit.shared.isPro {
+        if !StoreKitManager.shared.isPro {
             freeExportCount += 1
         }
         #endif

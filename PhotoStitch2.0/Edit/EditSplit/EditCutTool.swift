@@ -24,7 +24,7 @@ struct EditCutTool: View {
         return [
             MenuPopoverItem(icon: Image(editUpdater.cutUpdater?.mode == .pair ? "scissors.180" : "rectangle.dashed.badge.minus"), name: editUpdater.cutUpdater?.mode == .pair ? "To Cut" : "To Area", action: {
                 // Pair (area) mode is Pro; single (cut) mode is free.
-                if editUpdater.cutUpdater?.mode == .single, !StoreKit.shared.isPro {
+                if editUpdater.cutUpdater?.mode == .single, !StoreKitManager.shared.isPro {
                     homeUpdater.openSubscription(.immediate)
                     return
                 }
@@ -84,7 +84,7 @@ struct EditCutTool: View {
             // Pair (area) mode is Pro-only in the main app and unavailable elsewhere
             // (the toggle is hidden), so fall back to the free single (cut) mode if it was persisted.
             #if MAIN_APP
-            if !StoreKit.shared.isPro, editUpdater.cutUpdater?.mode == .pair {
+            if !StoreKitManager.shared.isPro, editUpdater.cutUpdater?.mode == .pair {
                 editUpdater.cutUpdater?.setMode(.single)
             }
             #else

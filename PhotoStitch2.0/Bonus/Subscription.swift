@@ -13,7 +13,7 @@ struct Subscription: View {
     @Environment(\.dismiss) var dismiss
     @State private var subUpdater = SubscriptionUpdater()
     
-    @State private var loadToggle = !StoreKit.shared.products.isEmpty
+    @State private var loadToggle = !StoreKitManager.shared.products.isEmpty
     @State private var showClose = false
     @State private var height = CGFloat.zero
     
@@ -89,7 +89,7 @@ struct Subscription: View {
         }
         .animation(.smooth(duration: ANIM_DURATION), value: loadToggle)
         .animation(.smooth(duration: ANIM_DURATION), value: showClose)
-        .onReceive(NotificationCenter.default.publisher(for: StoreKit.infosDidChange)) { _ in
+        .onReceive(NotificationCenter.default.publisher(for: StoreKitManager.infosDidChange)) { _ in
             loadToggle = false
             loadToggle = true
             subUpdater.syncSelectedToActive()
@@ -444,9 +444,9 @@ enum SubscriptionPlan: String, CaseIterable {
     case weekly = "weekly"
     case yearly = "yearly"
     
-    var info: StoreKit.ProductInfo? {
-        if let plan = StoreKit.ProductPlan(rawValue: rawValue) {
-            return try? StoreKit.shared.info(for: plan)
+    var info: StoreKitManager.ProductInfo? {
+        if let plan = StoreKitManager.ProductPlan(rawValue: rawValue) {
+            return try? StoreKitManager.shared.info(for: plan)
         }
         
         return nil
@@ -548,7 +548,7 @@ enum SubscriptionPlan: String, CaseIterable {
         Task { @MainActor in
             defer { isRestoring = false }
             do {
-                try await StoreKit.shared.restore()
+                try await StoreKitManager.shared.restore()
             } catch {
                 print(error)
             }
