@@ -40,7 +40,12 @@ func viewEmbed<Content: View>(@ViewBuilder content: () -> Content) -> UIView {
 
 fileprivate class ViewEmbedView<Content: View>: UIView {
     var hosting: UIHostingController<ViewEmbedContent<Content>>? // DO NOT ADD WEAK
-    
+
+    // Workaround: the Release SIL optimizer (EarlyPerfInliner) crashes on the
+    // synthesized deinit of this class, so opt this function out of optimization.
+    @_optimize(none)
+    deinit {}
+
     override func layoutSubviews() {
         super.layoutSubviews()
         

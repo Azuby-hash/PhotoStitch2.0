@@ -157,10 +157,15 @@ struct MenuPopover<Content: View>: View {
         }
         
         // MARK: - Coordinator
-        class Coordinator: NSObject {
+        final class Coordinator: NSObject {
             var onChanged: ((CGPoint) -> Void)?
             var onEnded: (() -> Void)?
-            
+
+            // Workaround: the Release SIL optimizer (EarlyPerfInliner) crashes on the
+            // synthesized deinit of this class, so opt this function out of optimization.
+            @_optimize(none)
+            deinit {}
+
             @objc func handleLongPress(_ recognizer: UIGestureRecognizer) {
                 guard let view = recognizer.view else { return }
                 
