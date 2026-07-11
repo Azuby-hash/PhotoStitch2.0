@@ -78,7 +78,6 @@
 		CE8700572FB039E200061801 /* UISButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87000C2FB039E200061801 /* UISButton.swift */; };
 		CE8700582FB039E200061801 /* UIImageStroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700022FB039E200061801 /* UIImageStroke.swift */; };
 		CE8700592FB039E200061801 /* StringHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700422FB039E200061801 /* StringHelpers.swift */; };
-		CE87005A2FB039E200061801 /* UISTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700142FB039E200061801 /* UISTextField.swift */; };
 		CE87005B2FB039E200061801 /* UIViewClicking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700222FB039E200061801 /* UIViewClicking.swift */; };
 		CE87005C2FB039E200061801 /* IdiomHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87002D2FB039E200061801 /* IdiomHelpers.swift */; };
 		CE87005D2FB039E200061801 /* GlassModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87FFFD2FB039E200061801 /* GlassModifier.swift */; };
@@ -87,7 +86,6 @@
 		CE8700602FB039E200061801 /* UIStackViewPointSubview.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700062FB039E200061801 /* UIStackViewPointSubview.swift */; };
 		CE8700612FB039E200061801 /* UIStackViewSegmentPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700072FB039E200061801 /* UIStackViewSegmentPage.swift */; };
 		CE8700622FB039E200061801 /* UIImageViewDarkMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700032FB039E200061801 /* UIImageViewDarkMode.swift */; };
-		CE8700632FB039E200061801 /* UISTextInputTraitsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700152FB039E200061801 /* UISTextInputTraitsExtension.swift */; };
 		CE8700642FB039E200061801 /* UIView+Constrant+Frame.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87001F2FB039E200061801 /* UIView+Constrant+Frame.swift */; };
 		CE8700652FB039E200061801 /* FileManagerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87003D2FB039E200061801 /* FileManagerExtension.swift */; };
 		CE8700662FB039E200061801 /* UIViewParallax.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700272FB039E200061801 /* UIViewParallax.swift */; };
@@ -96,7 +94,6 @@
 		CE8700692FB039E200061801 /* UISView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700182FB039E200061801 /* UISView.swift */; };
 		CE87006A2FB039E200061801 /* UIViewLoadNib.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700252FB039E200061801 /* UIViewLoadNib.swift */; };
 		CE87006B2FB039E200061801 /* UISScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700112FB039E200061801 /* UISScrollView.swift */; };
-		CE87006C2FB039E200061801 /* UISTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700162FB039E200061801 /* UISTextView.swift */; };
 		CE87006D2FB039E200061801 /* UISSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700122FB039E200061801 /* UISSearchBar.swift */; };
 		CE87006E2FB039E200061801 /* UIViewZPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87002B2FB039E200061801 /* UIViewZPosition.swift */; };
 		CE87006F2FB039E200061801 /* UILabelHighlightColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700302FB039E200061801 /* UILabelHighlightColor.swift */; };
@@ -196,10 +193,7 @@
 		CED99ABB2FF03E7A0003577B /* UISButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87000C2FB039E200061801 /* UISButton.swift */; };
 		CED99ABC2FF03E7A0003577B /* UISSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700122FB039E200061801 /* UISSearchBar.swift */; };
 		CED99ABE2FF03E7A0003577B /* UISConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87000D2FB039E200061801 /* UISConstraints.swift */; };
-		CED99ABF2FF03E7A0003577B /* UISTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700142FB039E200061801 /* UISTextField.swift */; };
 		CED99AC02FF03E7A0003577B /* UISBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87000B2FB039E200061801 /* UISBarItem.swift */; };
-		CED99AC12FF03E7A0003577B /* UISTextInputTraitsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700152FB039E200061801 /* UISTextInputTraitsExtension.swift */; };
-		CED99AC22FF03E7A0003577B /* UISTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700162FB039E200061801 /* UISTextView.swift */; };
 		CED99AC32FF03E7A0003577B /* UISLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700102FB039E200061801 /* UISLabel.swift */; };
 		CED99AC42FF03E7A0003577B /* CASLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87000A2FB039E200061801 /* CASLayer.swift */; };
 		CED99AC52FF03E7A0003577B /* UISStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8700132FB039E200061801 /* UISStackView.swift */; };
@@ -331,9 +325,6 @@
 		CE8700112FB039E200061801 /* UISScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISScrollView.swift; sourceTree = "<group>"; };
 		CE8700122FB039E200061801 /* UISSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISSearchBar.swift; sourceTree = "<group>"; };
 		CE8700132FB039E200061801 /* UISStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISStackView.swift; sourceTree = "<group>"; };
-		CE8700142FB039E200061801 /* UISTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISTextField.swift; sourceTree = "<group>"; };
-		CE8700152FB039E200061801 /* UISTextInputTraitsExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISTextInputTraitsExtension.swift; sourceTree = "<group>"; };
-		CE8700162FB039E200061801 /* UISTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISTextView.swift; sourceTree = "<group>"; };
 		CE8700172FB039E200061801 /* UISToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISToolBar.swift; sourceTree = "<group>"; };
 		CE8700182FB039E200061801 /* UISView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISView.swift; sourceTree = "<group>"; };
 		CE87001B2FB039E200061801 /* UINavigationOrientationSubController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationOrientationSubController.swift; sourceTree = "<group>"; };
@@ -620,9 +611,6 @@
 				CE8700112FB039E200061801 /* UISScrollView.swift */,
 				CE8700122FB039E200061801 /* UISSearchBar.swift */,
 				CE8700132FB039E200061801 /* UISStackView.swift */,
-				CE8700142FB039E200061801 /* UISTextField.swift */,
-				CE8700152FB039E200061801 /* UISTextInputTraitsExtension.swift */,
-				CE8700162FB039E200061801 /* UISTextView.swift */,
 				CE8700172FB039E200061801 /* UISToolBar.swift */,
 				CE8700182FB039E200061801 /* UISView.swift */,
 				CE4262622FD25214002916A4 /* UIBezierPath.swift */,
@@ -1085,7 +1073,6 @@
 				CE8700572FB039E200061801 /* UISButton.swift in Sources */,
 				CE8700582FB039E200061801 /* UIImageStroke.swift in Sources */,
 				CE8700592FB039E200061801 /* StringHelpers.swift in Sources */,
-				CE87005A2FB039E200061801 /* UISTextField.swift in Sources */,
 				CE87005B2FB039E200061801 /* UIViewClicking.swift in Sources */,
 				CE87005C2FB039E200061801 /* IdiomHelpers.swift in Sources */,
 				CE75165D2FCB0714002C4625 /* EditBottom.swift in Sources */,
@@ -1097,7 +1084,6 @@
 				CE8700602FB039E200061801 /* UIStackViewPointSubview.swift in Sources */,
 				CE8700612FB039E200061801 /* UIStackViewSegmentPage.swift in Sources */,
 				CE8700622FB039E200061801 /* UIImageViewDarkMode.swift in Sources */,
-				CE8700632FB039E200061801 /* UISTextInputTraitsExtension.swift in Sources */,
 				CE8700642FB039E200061801 /* UIView+Constrant+Frame.swift in Sources */,
 				CE8700652FB039E200061801 /* FileManagerExtension.swift in Sources */,
 				CE8700662FB039E200061801 /* UIViewParallax.swift in Sources */,
@@ -1109,7 +1095,6 @@
 				CE87006B2FB039E200061801 /* UISScrollView.swift in Sources */,
 				CE46FBAA2FDEA9F70021013C /* EditSortControl.swift in Sources */,
 				CE46FBAB2FDEA9F70021013C /* EditSortTool.swift in Sources */,
-				CE87006C2FB039E200061801 /* UISTextView.swift in Sources */,
 				CE87006D2FB039E200061801 /* UISSearchBar.swift in Sources */,
 				CE25DA2A2FE5B90400DE2E22 /* SegmentView.swift in Sources */,
 				CE87006E2FB039E200061801 /* UIViewZPosition.swift in Sources */,
@@ -1179,11 +1164,8 @@
 				CED99ABE2FF03E7A0003577B /* UISConstraints.swift in Sources */,
 				CED99ACA2FF03EA80003577B /* UndoRedo.swift in Sources */,
 				CED99AC72FF03E860003577B /* MenuPopover.swift in Sources */,
-				CED99ABF2FF03E7A0003577B /* UISTextField.swift in Sources */,
 				CED99AC02FF03E7A0003577B /* UISBarItem.swift in Sources */,
-				CED99AC12FF03E7A0003577B /* UISTextInputTraitsExtension.swift in Sources */,
 				CED99ACB2FF03EB70003577B /* EdgeModifier.swift in Sources */,
-				CED99AC22FF03E7A0003577B /* UISTextView.swift in Sources */,
 				CED99AC32FF03E7A0003577B /* UISLabel.swift in Sources */,
 				CED99AD32FF0C2380003577B /* CGImageHelpers.swift in Sources */,
 				CED99AC42FF03E7A0003577B /* CASLayer.swift in Sources */,
@@ -1339,6 +1321,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PhotoStitch2.0/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Photo Stitch";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Allow camera access to take new photos and merge them into long, stitched screenshots.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Please allow this app to save your edited photos to your photo library.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Please allow this app to import from your selected photos for editing. ";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1381,6 +1364,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PhotoStitch2.0/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Photo Stitch";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Allow camera access to take new photos and merge them into long, stitched screenshots.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Please allow this app to save your edited photos to your photo library.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Please allow this app to import from your selected photos for editing. ";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
