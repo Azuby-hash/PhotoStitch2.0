@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomeTop: View {
     @Environment(HomeUpdater.self) var homeUpdater
-    
+
     var body: some View {
         HStack(alignment: .top, spacing: homeUpdater.selecteds.isEmpty ? -1000 : 16) {
             HStack(alignment: .top) {
@@ -30,26 +30,30 @@ struct HomeTop: View {
                 
                 GlassContainer {
                     if homeUpdater.showMenu == .albums {
-                        VStack(spacing: 0) {
-                            ForEach(homeUpdater.getAllAlbum(), id: \.localizedTitle) { album in
-                                Button {
-                                    homeUpdater.selectAlbum(album)
-                                    homeUpdater.showMenu = .none
-                                } label: {
-                                    HStack(spacing: 12) {
-                                        Text(album.getName())
-                                        Spacer()
-                                        Image("checkmark")
-                                            .opacity(homeUpdater.album?.getName() == album.getName() ? 1 : 0)
+                        let albums = homeUpdater.getAllAlbum()
+                        ScrollView {
+                            VStack(spacing: 0) {
+                                ForEach(albums, id: \.localizedTitle) { album in
+                                    Button {
+                                        homeUpdater.selectAlbum(album)
+                                        homeUpdater.showMenu = .none
+                                    } label: {
+                                        HStack(spacing: 12) {
+                                            Text(album.getName())
+                                            Spacer()
+                                            Image("checkmark")
+                                                .opacity(homeUpdater.album?.getName() == album.getName() ? 1 : 0)
+                                        }
+                                        .foregroundStyle(Color(uiColor: .label))
+                                        .frame(height: 40)
                                     }
-                                    .foregroundStyle(Color(uiColor: .label))
-                                    .frame(height: 40)
                                 }
                             }
+                            .padding(.horizontal, 20)
+                            .padding(.vertical, 8)
                         }
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 8)
                         .frame(maxWidth: 240)
+                        .frame(height: min(CGFloat(albums.count) * 40 + 16, 450))
                         .modifier(MainGlass(shape: RoundedRectangle(cornerRadius: 24), type: .clear))
                     } else {
                         if homeUpdater.selecteds.isEmpty {
