@@ -211,7 +211,8 @@ struct EditSortTool: View {
             throw MainError.error("No Items")
         }
         
-        if AUTO_STITCH, items.count >= 2 {
+        // autoStitch trims overlap along Y only, so it must never run for horizontal stitching
+        if AUTO_STITCH, items.count >= 2, editUpdater.axis == .vertical {
             VIEW_CONTROLLER.startLoading(String(localized: "Auto Stitch..."))
             try await PIPELINE.autoStitch(items)
         }

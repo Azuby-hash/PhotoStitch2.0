@@ -59,7 +59,7 @@ struct HomeBottom: View {
                 Button {
                     Task {
                         do {
-                            homeUpdater.items = try await homeUpdater.getItems()
+                            homeUpdater.items = try await homeUpdater.getItems(axis: .horizontal)
                             homeUpdater.axis = .horizontal
                             homeUpdater.showEdit = true
                         } catch {
@@ -102,7 +102,7 @@ struct HomeBottom: View {
                 Button {
                     Task {
                         do {
-                            homeUpdater.items = try await homeUpdater.getItems()
+                            homeUpdater.items = try await homeUpdater.getItems(axis: .vertical)
                             homeUpdater.axis = .vertical
                             homeUpdater.showEdit = true
                         } catch {

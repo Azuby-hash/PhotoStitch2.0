@@ -159,7 +159,7 @@ struct Home: View {
                     }
                     
                     homeUpdater.select(firstAsset, maxCount: 30)
-                    homeUpdater.items = try await homeUpdater.getItems()
+                    homeUpdater.items = try await homeUpdater.getItems(axis: .vertical)
                     homeUpdater.axis = .vertical
                     homeUpdater.showEdit = true
                 } catch {
@@ -190,7 +190,7 @@ struct Home: View {
                     }
                     
                     homeUpdater.select(firstAsset)
-                    homeUpdater.items = try await homeUpdater.getItems()
+                    homeUpdater.items = try await homeUpdater.getItems(axis: .vertical)
                     homeUpdater.axis = .vertical
                     homeUpdater.showEdit = true
                 } catch {
@@ -505,7 +505,7 @@ extension HomeUpdater {
 }
 
 extension HomeUpdater {
-    func getItems() async throws -> [StitchItem] {
+    func getItems(axis: NSLayoutConstraint.Axis) async throws -> [StitchItem] {
         VIEW_CONTROLLER.startLoading(String(localized: "Loading \(0) / \(selecteds.count) Items..."))
         
         let items = await withTaskGroup(of: Optional<StitchItem>.self) { group in
@@ -547,7 +547,8 @@ extension HomeUpdater {
             throw MainError.error("No Items")
         }
         
-        if autoStitch {
+        // autoStitch trims overlap along Y only, so it must never run for horizontal stitching
+        if autoStitch, axis == .vertical {
             VIEW_CONTROLLER.startLoading(String(localized: "Auto Stitch..."))
             try await PIPELINE.autoStitch(items)
         }
