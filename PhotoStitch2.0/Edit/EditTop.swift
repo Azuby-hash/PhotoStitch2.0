@@ -388,6 +388,8 @@ struct EditTop: View {
     private func export(saveMode: Mode) {
         if task == nil {
             task = Task {
+                editUpdater.onExport = true
+                
                 do {
                     let type: Pipeline.ExportType
                     let url: URL
@@ -422,6 +424,7 @@ struct EditTop: View {
                     }
                 }
 
+                editUpdater.onExport = false
                 task = nil
             }
         }

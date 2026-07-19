@@ -83,6 +83,8 @@ enum EditTab: String, CaseIterable {
     var anim = true
     var block = false
     
+    var onExport = false
+    
     var stitchUpdater: EditStitchUpdater? = .init() // DO NOT SET NIL HERE OR INSIDE WILL NOT UPDATE
     var cutUpdater: EditCutUpdater? = .init() // DO NOT SET NIL HERE OR INSIDE WILL NOT UPDATE
     var sortUpdater: EditSortUpdater? = .init() // DO NOT SET NIL HERE OR INSIDE WILL NOT UPDATE

@@ -38,6 +38,7 @@ let SECOND_PER_SELECTION: TimeInterval = 5
 
 let INTERVAL_AUTO: TimeInterval = 500
 let THUMB_SIZE: TimeInterval = 480
+let DUMP_SIZE: TimeInterval = 240
 
 var SHOW_ONBOARDING: Bool {
     get { UserDefaults.standard.object(forKey: "4aac33cf6c6a8064") as? Bool ?? true }

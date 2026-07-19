@@ -284,6 +284,8 @@ class EditItem: UIView {
     private weak var imgWidth: NSLayoutConstraint?
     private weak var imgHeight: NSLayoutConstraint?
     
+    private var onExport = false
+    
     let imageView = UIImageView().econtentMode(.scaleAspectFill)
     
     func setSize(_ size: CGSize) {
@@ -305,10 +307,13 @@ class EditItem: UIView {
         
         let data = editUpdater.clean ? item.clean : item.image
         
-        if data != self.data {
+        if data != self.data || onExport != editUpdater.onExport {
             self.data = data
+            self.onExport = editUpdater.onExport
             
-            if editUpdater.shareVer {
+            if editUpdater.onExport {
+                imageView.image = UIImage.thumbnail(from: data, fillSquareOf: DUMP_SIZE)
+            } else if editUpdater.shareVer {
                 imageView.image = UIImage.thumbnail(from: data, fillSquareOf: THUMB_SIZE)
             } else {
                 imageView.image = UIImage(data: data)
