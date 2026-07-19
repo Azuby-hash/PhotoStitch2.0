@@ -508,20 +508,26 @@ extension HomeUpdater {
     func getItems(axis: NSLayoutConstraint.Axis) async throws -> [StitchItem] {
         VIEW_CONTROLLER.startLoading(String(localized: "Loading \(0) / \(selecteds.count) Items..."))
         
+        try await Task.sleep(for: .seconds(0.5))
+        
         let items = await withTaskGroup(of: Optional<StitchItem>.self) { group in
             var items = [StitchItem]()
             
             for asset in selecteds {
-                group.addTask {
+                group.addTask { [self] in
                     let item: StitchItem?
                     
                     do {
                         if asset.mediaType == .image {
                             item = try await PIPELINE.assetImageToItem(asset)
+                            
+                            await VIEW_CONTROLLER.startLoading(String(localized: "Loading \(items.count) / \(selecteds.count) Items..."))
                         } else {
                             item = try await PIPELINE.assetVideoToItem(asset) { progress in
                                 print(progress)
                             }
+                            
+                            await VIEW_CONTROLLER.startLoading(String(localized: "Loading \(items.count) / \(selecteds.count) Items..."))
                         }
                     } catch {
                         print(error)
@@ -535,8 +541,6 @@ extension HomeUpdater {
             for await item in group {
                 if let item = item {
                     items.append(item)
-                    
-                    VIEW_CONTROLLER.startLoading(String(localized: "Loading \(items.count) / \(selecteds.count) Items..."))
                 }
             }
             

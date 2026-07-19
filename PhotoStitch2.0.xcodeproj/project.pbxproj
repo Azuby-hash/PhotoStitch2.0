@@ -1528,6 +1528,7 @@
 				INFOPLIST_FILE = PhotoStitchShare/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = PhotoStitchShare;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Please allow this app to save your edited photos to your photo library.";
 				IPHONEOS_DEPLOYMENT_TARGET = 17;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1561,6 +1562,7 @@
 				INFOPLIST_FILE = PhotoStitchShare/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = PhotoStitchShare;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Please allow this app to save your edited photos to your photo library.";
 				IPHONEOS_DEPLOYMENT_TARGET = 17;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

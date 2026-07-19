@@ -225,8 +225,8 @@ struct EditTop: View {
                         Button {
                             if blockedByProGate() { return }
 
-                            PHPhotoLibrary.requestAuthorization { status in
-                                if status == .authorized {
+                            PHPhotoLibrary.requestAuthorization(for: .addOnly) { status in
+                                if status == .authorized || status == .limited {
                                     PHPhotoLibrary.shared().performChanges({
                                         PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: url)
                                     }) { success, err in
@@ -416,8 +416,12 @@ struct EditTop: View {
                     self.url = url
                 } catch {
                     print(error)
+
+                    if !(error is CancellationError) {
+                        editUpdater.warningAlert("Failed to export")
+                    }
                 }
-                
+
                 task = nil
             }
         }

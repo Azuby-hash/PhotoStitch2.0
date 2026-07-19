@@ -53,10 +53,12 @@ class Pipeline {
         print(date.timeIntervalSinceNow)
     }
     
+    @PipelineActor
     func assetImageToItem(_ asset: PHAsset) throws -> StitchItem {
         return try autoreleasepool { try StitchItem(image: try getUIImage(from: asset), asset: asset) }
     }
     
+    @PipelineActor
     func assetVideoToItem(_ asset: PHAsset, progress: @escaping (CGFloat) -> Void) async throws -> StitchItem {
         let video: AVAsset? = await withCheckedContinuation { continuation in
             getAVAsset(asset) { result in
@@ -104,7 +106,8 @@ class Pipeline {
         }
         
         guard let minWidth = frames.min(by: { $0.width < $1.width })?.width,
-              let minHeight = frames.min(by: { $0.height < $1.height })?.height
+              let minHeight = frames.min(by: { $0.height < $1.height })?.height,
+              minWidth > 0, minHeight > 0
         else { throw MainError.error("Estimate size too small") }
         
         let width: CGFloat
@@ -140,10 +143,31 @@ class Pipeline {
             height = sumHeight
         }
         
-        let size = CGSize(width: width, height: height)
-        
+        var size = CGSize(width: width, height: height)
+
+        var isPdf = false
+        if case .pdf = type { isPdf = true }
+
+        // Cap total pixel count (~40 iPhone screens); area grows with the square
+        // of the constant dimension, so shrink both axes by sqrt of the overshoot.
+        // PDF is exempt: it embeds images at native resolution without a bitmap canvas
+        if !isPdf, size.width * size.height > (await EXPORT_MAX_AREA) {
+            let scale = sqrt(await EXPORT_MAX_AREA / (size.width * size.height))
+
+            size = CGSize(width: size.width * scale, height: size.height * scale)
+            var calFrames = [CGRect]()
+            
+            for frame in frames {
+                let rect = await frame * scale
+                calFrames.append(rect)
+            }
+            
+            frames = calFrames
+        }
+
         let image: Data
-        
+        var renderError: Error?
+
         progress(0)
         
         if case .small = type {
@@ -151,7 +175,7 @@ class Pipeline {
             format.scale = 1
             format.opaque = true
             let renderer = UIGraphicsImageRenderer(size: size, format: format)
-            var data = renderer.jpegData(withCompressionQuality: COMPRESSION_QUALITY) { _ in
+            let output = renderer.image { _ in
                 for (index, item) in items.enumerated() {
                     if Task.isCancelled { break }
                     
@@ -166,6 +190,7 @@ class Pipeline {
                                 UIImage(cgImage: cropCG).draw(in: frames[index])
                             }
                         } catch {
+                            renderError = error
                             print(error)
                         }
                     }
@@ -173,6 +198,8 @@ class Pipeline {
                     progress(CGFloat(index + 1) / CGFloat(items.count))
                 }
             }
+            
+            var data = try await output.jpegData(compressionQuality: COMPRESSION_QUALITY).unwrap()
             
             data = addScreenshotMetadata(to: data) ?? data
             
@@ -182,49 +209,58 @@ class Pipeline {
             format.scale = 1
             format.opaque = true
             let renderer = UIGraphicsImageRenderer(size: size, format: format)
-            var data = renderer.jpegData(withCompressionQuality: quality) { _ in
+            let output = renderer.image { _ in
                 for (index, item) in items.enumerated() {
                     if Task.isCancelled { break }
-                    
+
                     autoreleasepool {
                         do {
+                            guard frames.indices.contains(index) else { return }
+
                             let image = clean ? item.clean : item.image
-                            
-                            let cropCG = try UIImage(data: image).unwrap().cgImage.unwrap().cropping(to: item.process.rect * item.size).unwrap()
-                            
-                            if frames.indices.contains(index) {
-                                UIImage(cgImage: cropCG).draw(in: frames[index])
-                            }
+
+                            // Decode at just the resolution the frame needs (downsampled when the
+                            // canvas was scaled) with EXIF orientation baked into the pixels
+                            let needPixel = max(frames[index].width / item.process.rect.width, frames[index].height / item.process.rect.height)
+                            let uiImage = try UIImage.thumbnail(from: image, maxPixel: needPixel.rounded(.up)).unwrap()
+
+                            let cropCG = try uiImage.cgImage.unwrap().cropping(to: item.process.rect * uiImage.size).unwrap()
+
+                            UIImage(cgImage: cropCG).draw(in: frames[index])
                         } catch {
+                            renderError = error
                             print(error)
                         }
                     }
-                    
+
                     progress(CGFloat(index + 1) / CGFloat(items.count))
                 }
             }
-            
+
+            var data = try await output.heicData().unwrap()
+
             data = addScreenshotMetadata(to: data) ?? data
-            
+
             image = data
         } else {
             let renderer = UIGraphicsPDFRenderer(bounds: CGRect(origin: .zero, size: size))
             image = renderer.pdfData { context in
                 context.beginPage()
-                
+
                 for (index, item) in items.enumerated() {
                     if Task.isCancelled { break }
-                    
+
                     autoreleasepool {
                         do {
+                            guard frames.indices.contains(index) else { return }
+
                             let image = clean ? item.clean : item.image
-                            
+
                             let cropCG = try UIImage(data: image).unwrap().cgImage.unwrap().cropping(to: item.process.rect * item.size).unwrap()
-                            
-                            if frames.indices.contains(index) {
-                                UIImage(cgImage: cropCG).draw(in: frames[index])
-                            }
+
+                            UIImage(cgImage: cropCG).draw(in: frames[index])
                         } catch {
+                            renderError = error
                             print(error)
                         }
                     }
@@ -235,7 +271,11 @@ class Pipeline {
         }
         
         try Task.checkCancellation()
-        
+
+        if let renderError = renderError {
+            throw renderError
+        }
+
         return image
     }
     
@@ -279,6 +319,27 @@ class Pipeline {
         }
     }
     
+    @PipelineActor
+    private func heicData(from image: UIImage, quality: CGFloat) -> Data? {
+        guard let cgImage = image.cgImage else { return nil }
+
+        let mutableData = NSMutableData()
+
+        guard let destination = CGImageDestinationCreateWithData(mutableData, "public.heic" as CFString, 1, nil) else { return nil }
+
+        let options: [CFString: Any] = [
+            kCGImageDestinationLossyCompressionQuality: quality
+        ]
+
+        CGImageDestinationAddImage(destination, cgImage, options as CFDictionary)
+
+        if CGImageDestinationFinalize(destination) {
+            return mutableData as Data
+        }
+
+        return nil
+    }
+
     @PipelineActor
     private func addScreenshotMetadata(to data: Data) -> Data? {
         guard let source = CGImageSourceCreateWithData(data as CFData, nil),

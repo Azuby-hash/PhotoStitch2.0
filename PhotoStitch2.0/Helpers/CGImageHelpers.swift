@@ -33,6 +33,16 @@ extension UIImage {
             maxPixel = max(w, h) * scale
         }
 
+        return thumbnail(from: data, maxPixel: maxPixel)
+    }
+
+    /**
+     Decode at most `maxPixel` on the longer side (never upscales past native),
+     with EXIF orientation baked into the pixels.
+     */
+    static func thumbnail(from data: Data, maxPixel: CGFloat) -> UIImage? {
+        guard let source = CGImageSourceCreateWithData(data as CFData, nil) else { return nil }
+
         let options: [CFString: Any] = [
             kCGImageSourceCreateThumbnailFromImageAlways: true,
             kCGImageSourceCreateThumbnailWithTransform: true,   // respect EXIF orientation

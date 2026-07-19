@@ -36,6 +36,18 @@
           }
         }
       }
+    },
+    "NSPhotoLibraryAddUsageDescription" : {
+      "comment" : "Privacy - Photo Library Additions Usage Description",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Please allow this app to save your edited photos to your photo library."
+          }
+        }
+      }
     }
   },
   "version" : "1.3"

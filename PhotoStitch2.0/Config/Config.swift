@@ -21,6 +21,7 @@ let ANIM_DURATION = CGFloat(0.25)
 let MAX_ZOOM = CGFloat(100)
 let PROCESS_SIZE = CGFloat(512)
 let COMPRESSION_QUALITY: CGFloat = 0.8
+let EXPORT_MAX_AREA: CGFloat = 2532 * 1170 * 30
 
 let LOW_REMOVE: CGFloat = 141
 let HIGH_REMOVE: CGFloat = 156
